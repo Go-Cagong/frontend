@@ -1,0 +1,17 @@
+<resources>
+    <!--  Base Application Theme  -->
+    <style name="Theme.GoKagong" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/yellow_400</item>
+        <item name="colorPrimaryVariant">@color/yellow_600</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/yellow_400</item>
+        <item name="colorOnSecondary">@color/gray_900</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+    <!--  Rounded Image View  -->
+    <style name="RoundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_lg</item>
+    </style>
+</resources>

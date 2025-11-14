@@ -1,0 +1,36 @@
+<resources>
+
+    <color name="text_primary">#111827</color>   <!-- 진한 글자 -->
+    <color name="text_secondary">#6B7280</color> <!-- 보조 글자, 안내/설명용 -->
+    <color name="text_hint">#9CA3AF</color>      <!-- 입력 힌트용 -->
+    <color name="gray">#E5E7EB</color>
+    <color name="background_gray">#F3F4F6</color>   <!-- 배경용 연한 회색 -->
+    <color name="border_gray">#E5E7EB</color>       <!-- 테두리용 회색 -->
+    <color name="star_yellow">#FACC15</color>
+    <!--  Primary Colors  -->
+    <color name="yellow">#FFC107</color>
+    <color name="yellow_primary">#FACC15</color>
+    <color name="yellow_dark">#CA8A04</color>
+    <color name="yellow_light">#FEF9C3</color>
+    <color name="yellow_50">#FEFCE8</color>
+    <color name="yellow_100">#FEF9C3</color>
+    <color name="yellow_400">#FACC15</color>
+    <color name="yellow_500">#EAB308</color>
+    <color name="yellow_600">#CA8A04</color>
+    <color name="yellow_700">#A16207</color>
+    <!--  Neutral Colors  -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_50">#F9FAFB</color>
+    <color name="gray_100">#F3F4F6</color>
+    <color name="gray_200">#E5E7EB</color>
+    <color name="gray_400">#9CA3AF</color>
+    <color name="gray_500">#6B7280</color>
+    <color name="gray_600">#4B5563</color>
+    <color name="gray_700">#374151</color>
+    <color name="gray_900">#111827</color>
+    <!--  Kakao  -->
+    <color name="kakao_yellow">#FEE500</color>
+    <color name="kakao_brown">#3C1E1E</color>
+    <color name="red">#FF0000</color>
+</resources>

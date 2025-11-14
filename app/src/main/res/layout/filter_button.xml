@@ -1,0 +1,83 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainFrame"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    tools:context=".MainActivity">
+
+    <!-- 네이버 지도 -->
+
+    <!-- 상단 필터 버튼 영역 (투명 배경, 맵 위에 떠있음) -->
+    <HorizontalScrollView
+        android:id="@+id/filterScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:layout_gravity="top">
+
+        <LinearLayout
+            android:id="@+id/filterContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <Button
+                app:backgroundTint="@null"
+                android:textColor="@color/black"
+                android:backgroundTint="@null"
+                android:background="@drawable/filter_button_background"
+                android:id="@+id/btnFilter1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="분위기"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                app:backgroundTint="@null"
+                android:textColor="@color/black"
+                android:backgroundTint="@null"
+                android:background="@drawable/filter_button_background"
+                android:id="@+id/btnFilter2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="콘센트"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                app:backgroundTint="@null"
+                android:textColor="@color/black"
+                android:backgroundTint="@null"
+                android:background="@drawable/filter_button_background"
+                android:id="@+id/btnFilter3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가격"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                app:backgroundTint="@null"
+                android:textColor="@color/black"
+                android:backgroundTint="@null"
+                android:background="@drawable/filter_button_background"
+                android:id="@+id/btnFilter4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="와이파이"
+                android:layout_marginEnd="8dp"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- 드롭다운 ListView (버튼 바로 아래) -->
+    <ListView
+        android:id="@+id/optionListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:divider="#CCCCCC"
+        android:dividerHeight="1dp"
+        android:background="@android:color/transparent"
+        android:visibility="gone"/>
+</FrameLayout>

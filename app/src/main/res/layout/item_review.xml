@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_margin="12dp"
+    android:background="@color/white">
+
+    <!-- 별점 표시 -->
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="1"
+        android:isIndicator="true"
+        android:rating="4"
+        android:progressTint="@color/star_yellow" />
+
+    <!-- 리뷰 내용 -->
+    <TextView
+        android:id="@+id/tvReviewText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="리뷰 내용이 들어갑니다."
+        android:textSize="15sp"
+        android:textColor="@color/text_primary"
+        android:layout_marginTop="6dp" />
+
+    <!-- 날짜 -->
+    <TextView
+        android:id="@+id/tvReviewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2025.01.01"
+        android:textSize="12sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>

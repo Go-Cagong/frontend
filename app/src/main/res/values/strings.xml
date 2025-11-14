@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Go 카공</string>
+    <!--  Login Screen  -->
+    <string name="login_subtitle">카공하기 좋은 카페를 찾아보세요</string>
+    <string name="login_google">Google로 계속하기</string>
+    <string name="login_kakao">카카오로 계속하기</string>
+    <string name="login_terms">로그인하시면 이용약관 및 개인정보처리방침에 동의하는 것으로 간주됩니다</string>
+    <!--  Bottom Navigation  -->
+    <string name="nav_map">지도</string>
+    <string name="nav_my">MY</string>
+    <!--  Map Screen  -->
+    <string name="ai_summary">AI 요약 리뷰</string>
+    <string name="address_label">주소</string>
+    <string name="hours_label">영업시간</string>
+    <string name="rating_label">평점</string>
+    <string name="seats_label">좌석</string>
+    <string name="noise_label">소음 정도</string>
+    <string name="wifi">와이파이</string>
+    <string name="outlets">콘센트</string>
+    <string name="save">저장하기</string>
+    <!--  My Screen  -->
+    <string name="profile_name">카공러</string>
+    <string name="profile_bio">카공하는 삶</string>
+    <string name="edit_profile">프로필 수정</string>
+    <string name="saved_cafes">저장한 카페</string>
+    <string name="visited_cafes">방문한 카페</string>
+    <string name="my_reviews">작성한 리뷰</string>
+    <string name="recent_visits">최근 방문</string>
+    <string name="view_all">전체보기</string>
+    <string name="settings">설정</string>
+
+    <!-- bottom_sheet_cafe_detail   -->
+    <string name="atmosphere">분위기</string>
+    <string name="concent">콘센트</string>
+    <string name="price">가격</string>
+
+</resources>
