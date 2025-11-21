@@ -15,6 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cookandroid.gocafestudy.R;
 import com.cookandroid.gocafestudy.activities.ActivityMyReviews;
 import com.cookandroid.gocafestudy.activities.ActivitySavedCafes;
+import com.cookandroid.gocafestudy.adapters.SavedCafesAdapter;
+import com.cookandroid.gocafestudy.datas.MockData;
+import com.cookandroid.gocafestudy.models.Bookmark;
+import com.cookandroid.gocafestudy.models.CafeItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyFragment extends Fragment {
 
@@ -34,6 +41,26 @@ public class MyFragment extends Fragment {
         RecyclerView rvSavedCafes = view.findViewById(R.id.rv_saved_cafes);
         rvSavedCafes.setLayoutManager(new LinearLayoutManager(getContext()));
         // TODO: Set adapter for saved cafes
+        // ★ Bookmark → CafeItem 변환 (ActivitySavedCafes와 동일한 로직)
+        List<Bookmark> bookmarks = MockData.getBookmarks();
+        List<CafeItem> allSaved = new ArrayList<>();
+
+        for (Bookmark b : bookmarks) {
+            allSaved.add(new CafeItem(
+                    b.getCafeName(),
+                    b.getAddress(),
+                    b.getMainImageUrl()
+            ));
+        }
+
+        // ★ 3개만 표시
+        List<CafeItem> previewList = new ArrayList<>();
+        for (int i = 0; i < Math.min(3, allSaved.size()); i++) {
+            previewList.add(allSaved.get(i));
+        }
+
+        SavedCafesAdapter adapter = new SavedCafesAdapter(getContext(), previewList);
+        rvSavedCafes.setAdapter(adapter);
 
         // 기존 메뉴 클릭 이벤트
         View menuMyReviews = view.findViewById(R.id.menu_my_reviews);

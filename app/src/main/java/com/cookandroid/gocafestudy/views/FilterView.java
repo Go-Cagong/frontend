@@ -46,11 +46,19 @@ public class FilterView extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.filter_button, this, true);
         filterContainer = findViewById(R.id.filterContainer);
 
-        // 필터 옵션 초기화
-        filterMap.put("분위기", Arrays.asList("조용함", "대화가능", "시끄러움"));
-        filterMap.put("콘센트", Arrays.asList("많음", "중간", "적음"));
-        filterMap.put("가격", Arrays.asList("저렴함", "보통", "비쌈"));
-        filterMap.put("와이파이", Arrays.asList("있음", "없음"));
+// 필터 옵션 초기화 (수정 버전)
+        filterMap.put(" 분위기 ", Arrays.asList("조용함", "대화가능", "시끄러움"));
+
+        filterMap.put(" 아메리카노 가격 ", Arrays.asList(
+                "3000원 이하",
+                "3000~5000원",
+                "5000원 이상"
+        ));
+
+        filterMap.put("주차", Arrays.asList(
+                "가능",
+                "불가능"
+        ));
 
         setupFilterButtons();
     }
