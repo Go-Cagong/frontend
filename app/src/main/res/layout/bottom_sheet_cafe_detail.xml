@@ -31,6 +31,34 @@
             android:textColor="@color/gray_900"
             android:layout_marginBottom="@dimen/spacing_lg" />
 
+        <LinearLayout
+            android:layout_width="130dp"
+            android:layout_height="43dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_star" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/rating_label"
+                android:textColor="@color/gray_600"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4.8 / 5.0"
+                android:textColor="@color/gray_900"
+                android:textSize="14sp" />
+        </LinearLayout>
+
         <!-- ===== Images Section (1:1 비율, 정사각형 느낌) ===== -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -181,26 +209,6 @@
                     android:textColor="@color/text_secondary" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="8dp">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_outlet" />
-                <TextView
-                    android:text="@string/concent"
-                    android:id="@+id/tv_outlet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -233,9 +241,9 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_wifi" />
+                    android:src="@drawable/ic_parking" />
                 <TextView
-                    android:text="@string/wifi"
+                    android:text="주차"
                     android:id="@+id/tv_wifi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -299,7 +307,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/spacing_md">
+            android:paddingTop="@dimen/spacing_md"
+            android:paddingStart="@dimen/spacing_md"
+            android:paddingEnd="@dimen/spacing_md"
+            android:paddingBottom="0dp">
 
             <!-- Grid: Hours + Phone Number -->
             <LinearLayout
@@ -378,55 +389,39 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Rating -->
             <!-- Rating + 리뷰보기 버튼 -->
+
+
+                <!-- Rating -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingTop="@dimen/spacing_md"
-                android:paddingBottom="@dimen/spacing_md"
-                android:weightSum="2">
+                android:layout_marginBottom="@dimen/spacing_md"
+                android:color="#FFE4E1"
+                android:gravity="end|center_vertical"
+                android:orientation="horizontal">
 
-                <!-- Rating -->
-                <LinearLayout
-                    android:layout_width="221dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:text="@string/rating_label"
-                        android:textColor="@color/gray_600"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tv_rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="4.8 / 5.0"
-                        android:textColor="@color/gray_900"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <!-- 리뷰보기 버튼 -->
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_view_all_saved"
+                    style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:backgroundTint="@color/yellow_primary"
-                    android:text="리뷰보기"
-                    android:textColor="@color/white" />
+                    android:text="리뷰 전체보기"
+                    android:textColor="@color/yellow_600" />
             </LinearLayout>
+            <!-- 리뷰보기 버튼 -->
+
+
 
 
         </LinearLayout>
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_preview_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginBottom="@dimen/spacing_md"/>
 
         <!-- Save Button -->
         <com.google.android.material.button.MaterialButton

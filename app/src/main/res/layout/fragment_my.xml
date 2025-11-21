@@ -99,13 +99,6 @@
                             android:textColor="@color/gray_900"
                             android:textSize="18sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/profile_bio"
-                            android:textColor="@color/gray_500"
-                            android:textSize="14sp" />
                     </LinearLayout>
                     <!--  Edit Button  -->
                 </LinearLayout>

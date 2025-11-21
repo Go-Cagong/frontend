@@ -16,10 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cookandroid.gocafestudy.R;
 import com.cookandroid.gocafestudy.activities.ActivityReviewList;
+import com.cookandroid.gocafestudy.adapters.ReviewAdapter;
 import com.cookandroid.gocafestudy.models.Cafe;
+import com.cookandroid.gocafestudy.models.Review;
 import com.cookandroid.gocafestudy.repository.MockRepository;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.naver.maps.geometry.LatLng;
@@ -159,7 +163,6 @@ public class MapFragment extends Fragment {
     // ⭐ 카페 상세 BottomSheet + 리뷰보기 버튼 연결
     // ===============================================================
     private void showCafeDetailBottomSheet(int cafeId) {
-
         Cafe cafe = repository.getCafeById(cafeId);
         if (cafe == null) return;
 
@@ -169,19 +172,32 @@ public class MapFragment extends Fragment {
         TextView tvName = v.findViewById(R.id.tv_cafe_name);
         TextView tvAddress = v.findViewById(R.id.tv_address);
         ImageView ivImage = v.findViewById(R.id.iv_cafe_image);
-
-        // 리뷰보기 버튼
         Button btnReview = v.findViewById(R.id.btn_view_all_saved);
 
-        // 데이터 적용
+        // RecyclerView 초기화
+        RecyclerView rvPreviewReviews = v.findViewById(R.id.rv_preview_reviews);
+        rvPreviewReviews.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        // 리뷰 데이터 가져오기 (백엔드 연동 시 repository.getReviewsByCafeId() 사용)
+        List<Review> allReviews = repository.getReviewsByCafeId(cafeId);
+
+        // 최대 3개만 보여주기
+        List<Review> previewReviews = new ArrayList<>();
+        for (int i = 0; i < Math.min(3, allReviews.size()); i++) {
+            previewReviews.add(allReviews.get(i));
+        }
+
+        ReviewAdapter adapter = new ReviewAdapter(previewReviews);
+        rvPreviewReviews.setAdapter(adapter);
+
+        // 기본 데이터 적용
         tvName.setText(cafe.getName());
         tvAddress.setText(cafe.getAddress());
-
         if (!cafe.getPhotos().isEmpty()) {
             ivImage.setImageResource(R.drawable.ic_cafe1_img);
         }
 
-        // 리뷰 보기 버튼 → ActivityReviewList로 카페ID 전달
+        // 리뷰 전체보기 버튼 클릭 → ActivityReviewList로 이동
         btnReview.setOnClickListener(click -> {
             Intent intent = new Intent(requireContext(), ActivityReviewList.class);
             intent.putExtra("cafeId", cafeId);
@@ -192,4 +208,5 @@ public class MapFragment extends Fragment {
         dialog.setContentView(v);
         dialog.show();
     }
+
 }
