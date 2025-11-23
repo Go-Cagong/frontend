@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cookandroid.gocafestudy.R;
-import com.cookandroid.gocafestudy.models.Review;
+import com.cookandroid.gocafestudy.models.GET.Review;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -41,11 +41,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         holder.ratingBar.setRating(review.getRating());
         holder.tvReviewText.setText(review.getContent());
 
-        // 날짜 형식 변환
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-        String dateString = sdf.format(review.getCreatedAt());
-
-        holder.tvReviewDate.setText(dateString);
+        // String 그대로 사용
+        holder.tvReviewDate.setText(review.getCreatedAt());
     }
 
     @Override

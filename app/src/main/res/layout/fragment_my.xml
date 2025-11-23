@@ -93,6 +93,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_profile_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/profile_name"
@@ -130,10 +131,11 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/tv_review_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_sm"
-                    android:text="8"
+                    android:text="0"
                     android:textColor="@color/gray_400"
                     android:textSize="14sp" />
 
@@ -192,6 +194,14 @@
                     android:text="@string/saved_cafes"
                     android:textColor="@color/gray_900"
                     android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_bookmark_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/gray_400"
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/btn_view_all_saved"

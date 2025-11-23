@@ -1,27 +1,20 @@
 package com.cookandroid.gocafestudy.repository;
 
 import com.cookandroid.gocafestudy.datas.MockData;
-import com.cookandroid.gocafestudy.models.*;
+import com.cookandroid.gocafestudy.models.GET.*;
+import com.cookandroid.gocafestudy.models.POST.*;
+import com.cookandroid.gocafestudy.models.DELETE.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-/**
- * 앱에서 서버 대신 목 데이터를 제공하는 Repository 클래스
- * 실제 서버 연동 시 Retrofit, Volley, OkHttp 등으로 대체
- */
 public class MockRepository {
 
     // ---------------------------
     // User 관련
     // ---------------------------
-    public List<User> getUsers() {
-        // TODO: 서버 연동 시 GET /users API 호출
-        return MockData.getUsers();
-    }
-
     public User getUserById(int userId) {
-        // TODO: 서버 연동 시 GET /users/{id}
         for (User u : MockData.getUsers()) {
             if (u.getUserId() == userId) return u;
         }
@@ -29,85 +22,142 @@ public class MockRepository {
     }
 
     // ---------------------------
-    // Cafe 관련
+    // Cafe 관련 (GET)
     // ---------------------------
-    public List<Cafe> getCafes() {
-        // TODO: 서버 연동 시 GET /cafes
-        return MockData.getCafes();
+    public List<CafeMapItem> getCafeMap() {
+        return MockData.getCafeMap();
     }
 
-    public Cafe getCafeById(int cafeId) {
-        // TODO: 서버 연동 시 GET /cafes/{id}
-        for (Cafe c : MockData.getCafes()) {
-            if (c.getCafeId() == cafeId) return c;
-        }
-        return null;
+    public CafeDetail getCafeDetail(int cafeId) {
+        return MockData.getCafeDetail(cafeId);
     }
 
     // ---------------------------
-    // Review 관련
+    // Review 관련 (GET)
     // ---------------------------
-    public List<Review> getReviews() {
-        // TODO: 서버 연동 시 GET /reviews
-        return MockData.getReviews();
-    }
-
     public List<Review> getReviewsByCafeId(int cafeId) {
-        // TODO: 서버 연동 시 GET /cafes/{id}/reviews
-        List<Review> result = new java.util.ArrayList<>();
+        return MockData.getCafeReviews(cafeId);
+    }
+
+    /*
+    // ---------------------------
+    // Review 관련 (POST/DELETE)
+    */
+    public ReviewCreateResponse addReview(int cafeId, ReviewCreateRequest request, int userId) {
+        int newReviewId = MockData.getReviews().size() + 301;
+
+        // POST DTO 타입으로 Review 객체 생성
+        ReviewCreateResponse.Review postReview =
+                new ReviewCreateResponse.Review(
+                        newReviewId,
+                        cafeId,
+                        userId,
+                        request.getRating(),
+                        request.getContent(),
+                        new java.util.Date()  // Date 사용
+                );
+
+        // GET Review 타입은 MockData에 넣어서 리스트 유지
+        MockData.getReviews().add(
+                new com.cookandroid.gocafestudy.models.GET.Review(
+                        newReviewId,
+                        userId,
+                        cafeId,
+                        request.getRating(),
+                        request.getContent(),
+                        new java.util.Date().toString()
+                )
+        );
+
+        return new ReviewCreateResponse("리뷰가 등록되었습니다.", postReview);
+    }
+
+    public ReviewDeleteResponse deleteReview(int reviewId) {
+        Review target = null;
         for (Review r : MockData.getReviews()) {
-            if (r.getCafeId() == cafeId) result.add(r);
+            if (r.getReviewId() == reviewId) {
+                target = r;
+                break;
+            }
         }
-        return result;
+
+        ReviewDeleteResponse response = new ReviewDeleteResponse();
+
+        if (target != null) {
+            MockData.getReviews().remove(target);
+            response.message = "리뷰가 삭제되었습니다.";
+            response.reviewId = reviewId;
+        } else {
+            response.message = "삭제할 리뷰를 찾을 수 없습니다.";
+            response.reviewId = reviewId;
+        }
+
+        return response;
     }
 
     // ---------------------------
-    // Bookmark 관련
+    // Bookmark 관련 (GET)
     // ---------------------------
     public List<Bookmark> getBookmarksByUserId(int userId) {
-        // TODO: 서버 연동 시 GET /users/{id}/bookmarks
-        List<Bookmark> result = new java.util.ArrayList<>();
+        List<Bookmark> result = new ArrayList<>();
         for (Bookmark b : MockData.getBookmarks()) {
             if (b.getUserId() == userId) result.add(b);
         }
         return result;
     }
+    public BookmarkCreateResponse createBookmark(int cafeId) {
+        // 실제 서버는 Request Body 없이 URL + 토큰으로 처리 가능
+        // MockData에서는 bookmark_id 자동 증가처럼 처리
+        int newBookmarkId = MockData.getNextBookmarkId(); // MockData에서 생성 함수 필요
 
+        BookmarkCreateResponse response = new BookmarkCreateResponse();
+        response.message = "카페가 저장되었습니다.";
+        response.bookmark_id = newBookmarkId;
+        response.cafe_id = cafeId;
 
+        // MockData에 저장 (목적: 상태 관리용)
+        MockData.addBookmark(cafeId, newBookmarkId);
 
-
-
-
-
-    // ---------------------------
-    // Category / Feature 관련
-    // ---------------------------
-    public List<Category> getCategories() {
-        // TODO: 서버 연동 시 GET /categories
-        return MockData.getCategories();
+        return response;
+    }
+    public BookmarkDeleteResponse deleteBookmark(int cafeId) {
+        boolean removed = false;
+        Iterator<Bookmark> iter = MockData.getBookmarks().iterator();
+        while (iter.hasNext()) {
+            Bookmark b = iter.next();
+            if (b.getCafeId() == cafeId) {
+                iter.remove();
+                removed = true;
+                break;
+            }
+        }
+        BookmarkDeleteResponse response = new BookmarkDeleteResponse();
+        response.message = removed ? "저장한 카페가 삭제되었습니다." : "삭제할 카페를 찾을 수 없습니다.";
+        return response;
     }
 
-    public List<Feature> getFeatures() {
-        // TODO: 서버 연동 시 GET /features
-        return MockData.getFeatures();
+    // ---------------------------
+    // MyPage / User Info (GET)
+    // ---------------------------
+    public MyPageInfo getMyPageInfo(int userId) {
+        // 그냥 목데이터 값 그대로
+        return MockData.getMyPageInfo();
     }
 
-    // ---------------------------
-    // POST, PUT, DELETE 예시 (주석)
-    // ---------------------------
-    // public void addReview(Review review) {
-    //     // TODO: 서버 연동 시 POST /reviews
-    // }
-    //
-    // public void addBookmark(Bookmark bookmark) {
-    //     // TODO: 서버 연동 시 POST /bookmarks
-    // }
-    //
-    // public void updateUser(User user) {
-    //     // TODO: 서버 연동 시 PUT /users/{id}
-    // }
-    //
-    // public void deleteBookmark(int bookmarkId) {
-    //     // TODO: 서버 연동 시 DELETE /bookmarks/{id}
-    // }
+    public List<MyReviewItem> getMyReviews(int userId) {
+        List<MyReviewItem> result = new ArrayList<>();
+        for (Review r : MockData.getReviews()) {
+            if (r.getUserId() == userId) {
+                result.add(new MyReviewItem(
+                        r.getReviewId(),
+                        r.getCafeId(),
+                        MockData.getCafeDetail(r.getCafeId()).getName(),
+                        MockData.getCafeDetail(r.getCafeId()).getImages().get(0),
+                        r.getRating(),
+                        r.getContent()
+                ));
+            }
+        }
+        return result;
+    }
 }

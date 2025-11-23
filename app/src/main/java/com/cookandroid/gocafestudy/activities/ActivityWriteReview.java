@@ -22,6 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.cookandroid.gocafestudy.R;
+import com.cookandroid.gocafestudy.repository.MockRepository;
+import com.cookandroid.gocafestudy.models.POST.ReviewCreateRequest;
+import com.cookandroid.gocafestudy.models.POST.ReviewCreateResponse;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
@@ -30,8 +33,6 @@ import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ActivityWriteReview extends AppCompatActivity {
 
@@ -110,13 +111,7 @@ public class ActivityWriteReview extends AppCompatActivity {
         btnGallery.setOnClickListener(v -> galleryLauncher.launch("image/*"));
         ivRemoveImage.setOnClickListener(v -> removeReceipt());
 
-        btnSubmit.setOnClickListener(v -> {
-            String reviewText = etReview.getText().toString();
-            android.content.Intent intent = new android.content.Intent();
-            intent.putExtra("review", reviewText);
-            setResult(RESULT_OK, intent);
-            finish();
-        });
+        btnSubmit.setOnClickListener(v -> submitReview());
 
         // 초기 버튼 상태
         btnSubmit.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
@@ -179,7 +174,7 @@ public class ActivityWriteReview extends AppCompatActivity {
         InputImage image = InputImage.fromBitmap(bitmap, 0);
         TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build())
                 .process(image)
-                .addOnSuccessListener(result -> analyzeText(result))
+                .addOnSuccessListener(this::analyzeText)
                 .addOnFailureListener(e -> {
                     tvReceiptStatus.setText("인식 오류 ❌");
                     ivReceiptStatusIcon.setVisibility(View.VISIBLE);
@@ -201,18 +196,15 @@ public class ActivityWriteReview extends AppCompatActivity {
 
         // 키워드 체크
         List<String> keywords = Arrays.asList("합계", "금액", "원", "결제", "영수증", "카드", "매장명", "일자", "승인", "구매", "POS");
-        List<String> matched = new ArrayList<>();
+        int matchCount = 0;
         for (String keyword : keywords) {
-            if (text.contains(keyword)) matched.add(keyword);
+            if (text.contains(keyword)) matchCount++;
         }
 
+        receiptVerified = matchCount >= 2;
 
-        boolean isReceipt = matched.size() >= 2;
-
-        receiptVerified = isReceipt;
-
-        if (isReceipt) {
-            tvReceiptStatus.setText("✅ 영수증으로 인식됨" );
+        if (receiptVerified) {
+            tvReceiptStatus.setText("✅ 영수증으로 인식됨");
             ivReceiptStatusIcon.setVisibility(View.VISIBLE);
             ivReceiptStatusIcon.setImageResource(R.drawable.ic_check_circle);
         } else {
@@ -224,9 +216,6 @@ public class ActivityWriteReview extends AppCompatActivity {
         checkSubmitEnable();
     }
 
-    // --- 날짜 추출 ---
-
-
     // --- 제출 버튼 활성화 체크 ---
     private void checkSubmitEnable() {
         boolean enable = etReview.getText().length() >= 10 && receiptVerified && ratingBar.getRating() > 0;
@@ -234,5 +223,31 @@ public class ActivityWriteReview extends AppCompatActivity {
         btnSubmit.setBackgroundColor(enable ?
                 getResources().getColor(R.color.yellow_primary) :
                 getResources().getColor(android.R.color.darker_gray));
+    }
+
+    // --- 리뷰 제출 (MockRepository 호출 + Toast) ---
+    private void submitReview() {
+        String reviewText = etReview.getText().toString();
+        int rating = (int) ratingBar.getRating();
+        int cafeId = getIntent().getIntExtra("cafeId", -1); // Intent로 전달받는 카페 ID
+        int userId = 1; // 임시 목데이터 유저 ID
+
+        // 1. 요청 객체 생성
+        ReviewCreateRequest request = new ReviewCreateRequest(rating, reviewText);
+
+        // 2. Repository 호출
+        MockRepository repository = new MockRepository();
+        ReviewCreateResponse response = repository.addReview(cafeId, request, userId);
+
+        // 3. Toast
+        Toast.makeText(this, response.getMessage(), Toast.LENGTH_SHORT).show();
+
+        // 4. 이전 Activity에 새 리뷰 ID 전달
+        android.content.Intent intent = new android.content.Intent();
+        intent.putExtra("newReviewId", response.getReview().getReviewId());
+        setResult(RESULT_OK, intent);
+
+        // 5. Activity 종료
+        finish();
     }
 }

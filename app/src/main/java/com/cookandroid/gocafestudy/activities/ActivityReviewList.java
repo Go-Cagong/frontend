@@ -2,7 +2,6 @@ package com.cookandroid.gocafestudy.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Button;
 
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cookandroid.gocafestudy.R;
 import com.cookandroid.gocafestudy.adapters.ReviewAdapter;
-import com.cookandroid.gocafestudy.models.Review;
+import com.cookandroid.gocafestudy.models.GET.Review;
 import com.cookandroid.gocafestudy.repository.MockRepository;
 
 import java.util.List;

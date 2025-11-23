@@ -1,4 +1,7 @@
-package com.cookandroid.gocafestudy.models;
+//리뷰 전체 조회
+///api/cafe/{id}/review
+
+package com.cookandroid.gocafestudy.models.GET;
 
 import java.util.Date;
 
@@ -6,23 +9,20 @@ public class Review {
     private int reviewId;
     private int userId;
     private int cafeId;
-    private String cafeName;
-    private String cafeImageUrl;
     private int rating;
     private String content;
-    private Date createdAt;
+    private String createdAt;
 
-    public Review(int reviewId, int userId, int cafeId, String cafeName,
-                  String cafeImageUrl, int rating, String content, Date createdAt) {
+    public Review(int reviewId, int userId, int cafeId, int rating, String content, String createdAt) {
         this.reviewId = reviewId;
         this.userId = userId;
         this.cafeId = cafeId;
-        this.cafeName = cafeName;
-        this.cafeImageUrl = cafeImageUrl;
         this.rating = rating;
         this.content = content;
         this.createdAt = createdAt;
     }
+
+    // getter, setter 생략
 
     public int getReviewId() {
         return reviewId;
@@ -48,22 +48,6 @@ public class Review {
         this.cafeId = cafeId;
     }
 
-    public String getCafeName() {
-        return cafeName;
-    }
-
-    public void setCafeName(String cafeName) {
-        this.cafeName = cafeName;
-    }
-
-    public String getCafeImageUrl() {
-        return cafeImageUrl;
-    }
-
-    public void setCafeImageUrl(String cafeImageUrl) {
-        this.cafeImageUrl = cafeImageUrl;
-    }
-
     public int getRating() {
         return rating;
     }
@@ -80,12 +64,11 @@ public class Review {
         this.content = content;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
-// Getter, Setter 생략
 }

@@ -1,4 +1,8 @@
-package com.cookandroid.gocafestudy.models;
+
+// 사용자가 저장한 카페 정보
+///api/user/bookmarks
+
+package com.cookandroid.gocafestudy.models.GET;
 
 import java.util.Date;
 
@@ -25,6 +29,7 @@ public class Bookmark {
         this.mainImageUrl = mainImageUrl;
         this.savedAt = savedAt;
     }
+
 
     public int getBookmarkId() {
         return bookmarkId;
@@ -91,3 +96,4 @@ public class Bookmark {
     }
     // Getter, Setter 생략
 }
+

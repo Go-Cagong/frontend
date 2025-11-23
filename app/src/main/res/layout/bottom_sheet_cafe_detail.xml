@@ -207,6 +207,14 @@
                     android:layout_marginTop="4dp"
                     android:textSize="12sp"
                     android:textColor="@color/text_secondary" />
+                <TextView
+                    android:text="@string/atmosphere"
+                    android:id="@+id/cafe_atmosphere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary" />
             </LinearLayout>
 
 
@@ -229,6 +237,14 @@
                     android:layout_marginTop="4dp"
                     android:textSize="12sp"
                     android:textColor="@color/text_secondary" />
+                <TextView
+                    android:text="@string/price"
+                    android:id="@+id/cafe_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary" />
             </LinearLayout>
 
             <LinearLayout
@@ -244,7 +260,15 @@
                     android:src="@drawable/ic_parking" />
                 <TextView
                     android:text="주차"
-                    android:id="@+id/tv_wifi"
+                    android:id="@+id/tv_parking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary" />
+                <TextView
+                    android:text="주차"
+                    android:id="@+id/cafe_parking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

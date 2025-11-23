@@ -1,6 +1,7 @@
 package com.cookandroid.gocafestudy.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,83 +11,69 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide; // 서버 이미지 로딩
-import com.cookandroid.gocafestudy.models.CafeItem;
+import com.bumptech.glide.Glide;
 import com.cookandroid.gocafestudy.R;
+import com.cookandroid.gocafestudy.models.GET.Bookmark;
 
 import java.util.List;
 
-public class SavedCafesAdapter extends RecyclerView.Adapter<SavedCafesAdapter.CafeViewHolder> {
+public class SavedCafesAdapter extends RecyclerView.Adapter<SavedCafesAdapter.ViewHolder> {
 
     private Context context;
-    private List<CafeItem> cafeList;
+    private List<Bookmark> bookmarkList;
+    private OnCafeClickListener listener;
 
-    public SavedCafesAdapter(Context context, List<CafeItem> cafeList) {
+    public interface OnCafeClickListener {
+        void onCafeClick(int cafeId);
+    }
+
+    public SavedCafesAdapter(Context context, List<Bookmark> bookmarkList, OnCafeClickListener listener) {
         this.context = context;
-        this.cafeList = cafeList;
+        this.bookmarkList = bookmarkList;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
-    public CafeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_saved_cafe, parent, false);
-        return new CafeViewHolder(view);
+        return new ViewHolder(view);
     }
 
-
     @Override
-    public void onBindViewHolder(@NonNull CafeViewHolder holder, int position) {
-        CafeItem cafe = cafeList.get(position);
-        holder.tvCafeName.setText(cafe.getName());
-        holder.tvCafeLocation.setText(cafe.getLocation());
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Bookmark bookmark = bookmarkList.get(position);
+
+        holder.tvCafeName.setText(bookmark.getCafeName());
+        holder.tvAddress.setText(bookmark.getAddress());
 
         Glide.with(context)
-                .load(cafe.getImageUrl())
+                .load(bookmark.getMainImageUrl())
                 .placeholder(R.drawable.ic_cafe1_img)
                 .into(holder.ivCafeImage);
 
-        // 클릭 시 bottom sheet 열기
         holder.itemView.setOnClickListener(v -> {
-            // bottom sheet layout inflate
-            View bottomSheetView = LayoutInflater.from(context)
-                    .inflate(R.layout.bottom_sheet_cafe_detail, null);
-
-            // BottomSheetDialog 생성
-            com.google.android.material.bottomsheet.BottomSheetDialog bottomSheetDialog =
-                    new com.google.android.material.bottomsheet.BottomSheetDialog(context);
-            bottomSheetDialog.setContentView(bottomSheetView);
-
-            // bottom sheet 안에 있는 뷰들 세팅 (예: 이름, 주소, 이미지)
-            TextView tvName = bottomSheetView.findViewById(R.id.tv_cafe_name);
-            TextView tvAddress = bottomSheetView.findViewById(R.id.tv_address);
-            ImageView ivImage = bottomSheetView.findViewById(R.id.iv_cafe_image);
-
-            tvName.setText(cafe.getName());
-            tvAddress.setText(cafe.getLocation());
-            Glide.with(context)
-                    .load(cafe.getImageUrl())
-                    .placeholder(R.drawable.ic_cafe1_img)
-                    .into(ivImage);
-
-            bottomSheetDialog.show();
+            Log.d("SavedCafesAdapter", "Clicked cafeId=" + bookmark.getCafeId());
+            if (listener != null) listener.onCafeClick(bookmark.getCafeId());
         });
     }
 
-
     @Override
     public int getItemCount() {
-        return cafeList.size();
+        return bookmarkList.size();
     }
 
-    public static class CafeViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivCafeImage;
-        TextView tvCafeName, tvCafeLocation;
+        TextView tvCafeName, tvAddress;
 
-        public CafeViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivCafeImage = itemView.findViewById(R.id.ivCafeImage);
             tvCafeName = itemView.findViewById(R.id.tvCafeName);
-            tvCafeLocation = itemView.findViewById(R.id.tvCafeLocation);
+            tvAddress = itemView.findViewById(R.id.tvCafeLocation);
         }
     }
+
+
 }

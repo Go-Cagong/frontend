@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -17,7 +16,6 @@ import androidx.annotation.Nullable;
 
 import com.cookandroid.gocafestudy.R;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +30,22 @@ public class FilterView extends LinearLayout {
     private PopupWindow currentPopup = null;
     private String currentKey = null;
 
+    // ------------------------------
+    // 콜백 인터페이스
+    // ------------------------------
+    private OnFilterChangeListener filterChangeListener;
+
+    public interface OnFilterChangeListener {
+        void onFilterChanged(Map<String, String> appliedFilters);
+    }
+
+    public void setOnFilterChangeListener(OnFilterChangeListener listener) {
+        this.filterChangeListener = listener;
+    }
+
+    // ------------------------------
+    // 생성자
+    // ------------------------------
     public FilterView(Context context) {
         super(context);
         init(context);
@@ -46,19 +60,10 @@ public class FilterView extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.filter_button, this, true);
         filterContainer = findViewById(R.id.filterContainer);
 
-// 필터 옵션 초기화 (수정 버전)
+        // 필터 옵션 초기화
         filterMap.put(" 분위기 ", Arrays.asList("조용함", "대화가능", "시끄러움"));
-
-        filterMap.put(" 아메리카노 가격 ", Arrays.asList(
-                "3000원 이하",
-                "3000~5000원",
-                "5000원 이상"
-        ));
-
-        filterMap.put("주차", Arrays.asList(
-                "가능",
-                "불가능"
-        ));
+        filterMap.put(" 아메리카노 가격 ", Arrays.asList("3000원 이하", "3000~5000원", "5000원 이상"));
+        filterMap.put("주차", Arrays.asList("가능", "불가능"));
 
         setupFilterButtons();
     }
@@ -69,7 +74,6 @@ public class FilterView extends LinearLayout {
             final String key = filterBtn.getText().toString();
 
             filterBtn.setOnClickListener(v -> {
-                // 기존 팝업 닫기
                 if (currentPopup != null) currentPopup.dismiss();
 
                 currentKey = key;
@@ -88,7 +92,7 @@ public class FilterView extends LinearLayout {
             @Override
             public View getView(int position, View convertView, android.view.ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
-                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                TextView textView = view.findViewById(android.R.id.text1);
 
                 String option = options.get(position);
                 boolean isSelected = appliedFilters.containsKey(currentKey)
@@ -108,7 +112,7 @@ public class FilterView extends LinearLayout {
                 LayoutParams.WRAP_CONTENT,
                 true);
 
-        popup.setBackgroundDrawable(null); // 필요시 배경 추가
+        popup.setBackgroundDrawable(null);
         popup.setOutsideTouchable(true);
         currentPopup = popup;
         popup.showAsDropDown(anchor);
@@ -125,9 +129,16 @@ public class FilterView extends LinearLayout {
             }
 
             updateFilterButtonColors();
-            adapter.notifyDataSetChanged(); // 여기서 옵션 색상 갱신
+            adapter.notifyDataSetChanged();
             popup.dismiss();
             currentPopup = null;
+
+            // ------------------------------
+            // 콜백 호출
+            // ------------------------------
+            if (filterChangeListener != null) {
+                filterChangeListener.onFilterChanged(new HashMap<>(appliedFilters));
+            }
         });
     }
 

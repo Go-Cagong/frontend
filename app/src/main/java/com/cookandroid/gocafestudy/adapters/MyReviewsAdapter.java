@@ -7,66 +7,72 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.cookandroid.gocafestudy.models.MyReviewItem;
 import com.cookandroid.gocafestudy.R;
+import com.cookandroid.gocafestudy.models.GET.MyReviewItem;
+import com.cookandroid.gocafestudy.repository.MockRepository;
 
 import java.util.List;
 
-public class MyReviewsAdapter extends RecyclerView.Adapter<MyReviewsAdapter.ReviewViewHolder> {
+public class MyReviewsAdapter extends RecyclerView.Adapter<MyReviewsAdapter.ViewHolder> {
 
     private Context context;
-    private List<MyReviewItem> reviewList;
+    private List<MyReviewItem> reviews;
+    private MockRepository repository;
 
-    public MyReviewsAdapter(Context context, List<MyReviewItem> reviewList) {
+    public MyReviewsAdapter(Context context, List<MyReviewItem> reviews) {
         this.context = context;
-        this.reviewList = reviewList;
+        this.reviews = reviews;
+        this.repository = new MockRepository(); // 목 레파지토리 연결
     }
 
     @NonNull
     @Override
-    public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_my_review, parent, false);
-        return new ReviewViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
-        MyReviewItem item = reviewList.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        MyReviewItem review = reviews.get(position);
 
-        holder.tvCafeName.setText(item.cafeName);
-        holder.tvReviewText.setText(item.reviewText);
-        holder.ratingBar.setRating(item.rating);
-
-        // 카페 사진 로드
-        Glide.with(context).load(item.imageUrl).into(holder.ivCafeImage);
+        holder.tvCafeName.setText(review.getCafeName());
+        holder.ratingBar.setRating(review.getRating());
+        holder.tvReviewText.setText(review.getContent());
+        // 이미지는 목데이터로 고정
+        holder.ivCafeImage.setImageResource(R.drawable.ic_cafe1_img);
 
         // 삭제 버튼 클릭
         holder.btnDelete.setOnClickListener(v -> {
-            reviewList.remove(position);
+            // 목 레파지토리 삭제 호출
+            repository.deleteReview(review.getReviewId());
+
+            // RecyclerView에서 아이템 제거
+            reviews.remove(position);
             notifyItemRemoved(position);
-            notifyItemRangeChanged(position, reviewList.size());
+            notifyItemRangeChanged(position, reviews.size());
+
+            Toast.makeText(context, "리뷰가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
         });
     }
 
     @Override
     public int getItemCount() {
-        return reviewList.size();
+        return reviews.size();
     }
 
-    static class ReviewViewHolder extends RecyclerView.ViewHolder {
-
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivCafeImage;
         TextView tvCafeName, tvReviewText, btnDelete;
         RatingBar ratingBar;
 
-        ReviewViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             ivCafeImage = itemView.findViewById(R.id.ivCafeImage);
             tvCafeName = itemView.findViewById(R.id.tvCafeName);
             tvReviewText = itemView.findViewById(R.id.tvReviewText);
