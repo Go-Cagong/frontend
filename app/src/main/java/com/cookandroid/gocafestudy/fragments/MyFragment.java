@@ -164,15 +164,22 @@ public class MyFragment extends Fragment {
             dialog.dismiss();
         });
 
-        // DELETE 카페 저장 요청
 
         Button btnSave = v.findViewById(R.id.btn_save);
-        btnSave.setText("삭제");
-        btnSave.setOnClickListener(click -> {
-            BookmarkDeleteResponse response = repository.deleteBookmark(cafeId);
-            Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show();
-            dialog.dismiss(); // 삭제 후 바텀시트 닫기
-        });
+        if (cafe.isSaved()) {
+            // true일 때
+            btnSave.setText("삭제");
+            btnSave.setOnClickListener(click -> {
+                BookmarkDeleteResponse response = repository.deleteBookmark(cafeId);
+                Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            // false일 때
+            btnSave.setOnClickListener(click -> {
+                BookmarkCreateResponse response = repository.createBookmark(cafeId);
+                Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show();
+            });
+        }
 
         dialog.setContentView(v);
         dialog.show();

@@ -4,6 +4,7 @@
 package com.cookandroid.gocafestudy.models.POST;
 
 import java.util.Date;
+import java.util.List;
 
 public class ReviewCreateResponse {
     private String message;      // 성공 메시지
@@ -29,14 +30,18 @@ public class ReviewCreateResponse {
         private int rating;
         private String content;
         private Date createdAt;
+        private List<String> images; // 추가
 
-        public Review(int reviewId, int cafeId, int userId, int rating, String content, Date createdAt) {
+
+
+        public Review(int reviewId, int cafeId, int userId, int rating, String content, Date createdAt, List<String> images) {
             this.reviewId = reviewId;
             this.cafeId = cafeId;
             this.userId = userId;
             this.rating = rating;
             this.content = content;
             this.createdAt = createdAt;
+            this.images = images;
         }
 
         // Getter & Setter
@@ -57,6 +62,13 @@ public class ReviewCreateResponse {
 
         public Date getCreatedAt() { return createdAt; }
         public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+        public List<String> getImages() {
+            return images;
+        }
+        public void setImages(List<String> images) {
+            this.images = images;
+        }
+
     }
 }
 

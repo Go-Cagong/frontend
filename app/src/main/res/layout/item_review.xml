@@ -1,40 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="8dp"
     android:layout_margin="12dp"
     android:background="@color/white">
 
     <!-- 별점 + 날짜 (가로 배치) -->
     <LinearLayout
-        android:layout_width="327dp"
-        android:layout_height="45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="4dp">
 
-        <RatingBar
-            android:id="@+id/ratingBar"
+        <TextView
+            android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:isIndicator="true"
-            android:numStars="5"
-            android:progressTint="@color/star_yellow"
-            android:rating="4"
-            android:stepSize="1" />
+            android:text="유저 이름"
+            android:textSize="14sp"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tvReviewDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:gravity="end"
             android:text="2025-01-01"
             android:textColor="@color/text_secondary"
             android:textSize="12sp" />
+
     </LinearLayout>
 
-    <!-- 리뷰 내용 -->
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:progressTint="@color/star_yellow"
+        android:rating="4"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:stepSize="1"
+        android:layout_marginStart="-50dp"
+        android:layout_gravity="start" />
+
     <TextView
         android:id="@+id/tvReviewText"
         android:layout_width="wrap_content"
@@ -43,5 +57,23 @@
         android:textSize="15sp"
         android:textColor="@color/text_primary"
         android:layout_marginTop="6dp" />
+
+    <!-- 리뷰 사진 (있을 경우 표시) -->
+    <HorizontalScrollView
+        android:id="@+id/scrollReviewImages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:scrollbars="horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/layoutReviewImages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="4dp" />
+    </HorizontalScrollView>
 
 </LinearLayout>

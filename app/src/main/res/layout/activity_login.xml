@@ -93,8 +93,27 @@
             app:iconGravity="textStart"
             app:iconPadding="@dimen/spacing_md"
             app:iconTint="@color/black"
+            android:layout_marginBottom="@dimen/spacing_md"
+            style="@style/Widget.Material3.Button" />
+
+        <!-- Naver Login Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_naver_login"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/login_naver"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:backgroundTint="#03C75A"
+            app:cornerRadius="@dimen/radius_md"
+            app:icon="@drawable/naver"
+            app:iconTint="@null"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/spacing_md"
             style="@style/Widget.Material3.Button" />
     </LinearLayout>
+
+
 
     <!-- Terms Text -->
     <TextView

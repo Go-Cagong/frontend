@@ -51,7 +51,10 @@
                     android:layout_height="wrap_content"
                     android:numStars="5"
                     android:stepSize="1"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
                     android:rating="4"
+                    android:layout_marginStart="-50dp"
                     android:isIndicator="true"/>
             </LinearLayout>
         </LinearLayout>
@@ -64,7 +67,23 @@
             android:text="리뷰 내용이 여기에 들어갑니다."
             android:textColor="@color/text_secondary"
             android:textSize="14sp" />
+        <!-- 리뷰 사진 (있을 경우 표시) -->
+        <HorizontalScrollView
+            android:id="@+id/scrollReviewImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:scrollbars="horizontal"
+            android:visibility="gone">
 
+            <LinearLayout
+                android:id="@+id/layoutReviewImages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="4dp" />
+        </HorizontalScrollView>
         <!-- 하단 : 삭제 버튼 -->
         <TextView
             android:id="@+id/btnDelete"

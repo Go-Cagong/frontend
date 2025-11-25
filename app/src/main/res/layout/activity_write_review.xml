@@ -257,7 +257,7 @@
             <EditText
                 android:id="@+id/etReview"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:background="@color/white"
                 android:padding="16dp"
                 android:gravity="top|start"
@@ -291,6 +291,67 @@
                     android:textSize="12sp"
                     android:textColor="@color/text_hint" />
             </LinearLayout>
+            <!-- Review Images Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="리뷰 사진 추가"
+                android:textSize="16sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <Button
+                    android:id="@+id/btnReviewCamera"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="사진 촬영"
+                    android:backgroundTint="@color/yellow_primary"
+                    android:textSize="14sp"
+                    android:drawableStart="@drawable/ic_camera"
+                    android:drawablePadding="8dp"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/btnReviewGallery"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="갤러리 선택"
+                    android:backgroundTint="@color/yellow_primary"
+                    android:textSize="14sp"
+                    android:drawableStart="@drawable/ic_image"
+                    android:drawablePadding="8dp"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+            <HorizontalScrollView
+                android:id="@+id/scrollReviewImages"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="16dp"
+                android:fillViewport="false"
+                android:scrollbars="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/layoutReviewImages"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="start|center_vertical"
+                    android:padding="4dp">
+
+                    <!-- 이미지 아이템 예시: 실제로는 동적으로 추가 -->
+                    <!-- 최대 5개까지 동적으로 ImageView 생성해서 넣으면 됨 -->
+
+
+                    <!-- 나머지도 마찬가지, 실제로는 코드에서 추가 -->
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <!-- Submit Button -->
             <Button

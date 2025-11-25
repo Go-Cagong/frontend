@@ -18,13 +18,14 @@ public class CafeDetail {
     private String businessHours;
     private boolean hasParking;
     private String mood;
+    private boolean isSaved;
     private List<String> images;
     private float reviewAverage;
     private int reviewCount;
     private List<Review> recentReviews;
 
     public CafeDetail(int cafeId, String name, String address, String description, String phone,
-                      int americanoPrice, String businessHours, boolean hasParking, String mood,
+                      int americanoPrice, String businessHours, boolean hasParking, String mood, boolean isSaved,
                       List<String> images, float reviewAverage, int reviewCount, List<Review> recentReviews) {
         this.cafeId = cafeId;
         this.name = name;
@@ -35,6 +36,7 @@ public class CafeDetail {
         this.businessHours = businessHours;
         this.hasParking = hasParking;
         this.mood = mood;
+        this.isSaved =isSaved;
         this.images = images;
         this.reviewAverage = reviewAverage;
         this.reviewCount = reviewCount;
@@ -115,6 +117,14 @@ public class CafeDetail {
         this.mood = mood;
     }
 
+    public boolean isSaved() {
+        return isSaved;
+    }
+
+    public void setSaved(boolean saved) {
+        isSaved = saved;
+    }
+
     public List<String> getImages() {
         return images;
     }
@@ -146,4 +156,6 @@ public class CafeDetail {
     public void setRecentReviews(List<Review> recentReviews) {
         this.recentReviews = recentReviews;
     }
+
+
 }

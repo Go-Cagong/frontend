@@ -16,6 +16,7 @@ public class LoginActivity extends AppCompatActivity {
 
         MaterialButton btnGoogleLogin = findViewById(R.id.btn_google_login);
         MaterialButton btnKakaoLogin = findViewById(R.id.btn_kakao_login);
+        MaterialButton btnNaverLogin = findViewById(R.id.btn_naver_login);
 
         btnGoogleLogin.setOnClickListener(v -> {
             // TODO: Implement Google login
@@ -23,6 +24,11 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         btnKakaoLogin.setOnClickListener(v -> {
+            // TODO: Implement Kakao login
+            navigateToMain();
+        });
+
+        btnNaverLogin.setOnClickListener(v -> {
             // TODO: Implement Kakao login
             navigateToMain();
         });

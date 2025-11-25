@@ -6,6 +6,7 @@ import com.cookandroid.gocafestudy.models.POST.*;
 import com.cookandroid.gocafestudy.models.DELETE.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,11 +15,8 @@ public class MockRepository {
     // ---------------------------
     // User 관련
     // ---------------------------
-    public User getUserById(int userId) {
-        for (User u : MockData.getUsers()) {
-            if (u.getUserId() == userId) return u;
-        }
-        return null;
+    public static List<User> getUsers() {
+        return MockData.getUsers();
     }
 
     // ---------------------------
@@ -46,6 +44,7 @@ public class MockRepository {
     public ReviewCreateResponse addReview(int cafeId, ReviewCreateRequest request, int userId) {
         int newReviewId = MockData.getReviews().size() + 301;
 
+
         // POST DTO 타입으로 Review 객체 생성
         ReviewCreateResponse.Review postReview =
                 new ReviewCreateResponse.Review(
@@ -54,20 +53,26 @@ public class MockRepository {
                         userId,
                         request.getRating(),
                         request.getContent(),
-                        new java.util.Date()  // Date 사용
+                        new java.util.Date(),  // Date 사용
+                        request.getImages()
+
                 );
 
-        // GET Review 타입은 MockData에 넣어서 리스트 유지
-        MockData.getReviews().add(
-                new com.cookandroid.gocafestudy.models.GET.Review(
-                        newReviewId,
-                        userId,
-                        cafeId,
-                        request.getRating(),
-                        request.getContent(),
-                        new java.util.Date().toString()
-                )
-        );
+//        // GET Review 타입은 MockData에 넣어서 리스트 유지
+//        List<String> images = request.getImages() != null ? request.getImages() : new ArrayList<>();
+//        MockData.getReviews().add(
+//                new com.cookandroid.gocafestudy.models.GET.Review(
+//                        newReviewId,
+//                        userId,
+//                        userName,
+//                        cafeId,
+//                        request.getRating(),
+//                        request.getContent(),
+//                        new java.util.Date().toString(),
+//                        images
+//                )
+//        );
+
 
         return new ReviewCreateResponse("리뷰가 등록되었습니다.", postReview);
     }
@@ -145,19 +150,8 @@ public class MockRepository {
     }
 
     public List<MyReviewItem> getMyReviews(int userId) {
-        List<MyReviewItem> result = new ArrayList<>();
-        for (Review r : MockData.getReviews()) {
-            if (r.getUserId() == userId) {
-                result.add(new MyReviewItem(
-                        r.getReviewId(),
-                        r.getCafeId(),
-                        MockData.getCafeDetail(r.getCafeId()).getName(),
-                        MockData.getCafeDetail(r.getCafeId()).getImages().get(0),
-                        r.getRating(),
-                        r.getContent()
-                ));
-            }
-        }
-        return result;
+        // 이미 MockData에 API 응답 형식으로 데이터가 정의되어 있으므로,
+        // 별도의 변환 없이 MockData 리스트를 바로 반환합니다.
+        return MockData.getMyReviews();
     }
 }

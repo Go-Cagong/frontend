@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.cookandroid.gocafestudy.R;
 import com.cookandroid.gocafestudy.activities.ActivityReviewList;
 import com.cookandroid.gocafestudy.adapters.ReviewAdapter;
+import com.cookandroid.gocafestudy.models.DELETE.BookmarkDeleteResponse;
 import com.cookandroid.gocafestudy.models.GET.CafeDetail;
 import com.cookandroid.gocafestudy.models.GET.CafeMapItem;
 import com.cookandroid.gocafestudy.models.GET.Review;
@@ -268,6 +269,8 @@ public class MapFragment extends Fragment {
         ReviewAdapter adapter = new ReviewAdapter(previewReviews);
         rvPreviewReviews.setAdapter(adapter);
 
+
+
         // --- 리뷰 전체보기 버튼 ---
         btnReview.setOnClickListener(click -> {
             Intent intent = new Intent(requireContext(), ActivityReviewList.class);
@@ -276,15 +279,23 @@ public class MapFragment extends Fragment {
             dialog.dismiss();
         });
 
-
         // POST 카페 저장 요청
 
         Button btnSave = v.findViewById(R.id.btn_save);
-
-        btnSave.setOnClickListener(click -> {
-            BookmarkCreateResponse response = repository.createBookmark(cafeId);
-            Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show();
-        });
+        if (cafe.isSaved()) {
+            // true일 때
+            btnSave.setText("삭제");
+            btnSave.setOnClickListener(click -> {
+                BookmarkDeleteResponse response = repository.deleteBookmark(cafeId);
+                Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            // false일 때
+            btnSave.setOnClickListener(click -> {
+                BookmarkCreateResponse response = repository.createBookmark(cafeId);
+                Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show();
+            });
+        }
 
         dialog.setContentView(v);
         dialog.show();
