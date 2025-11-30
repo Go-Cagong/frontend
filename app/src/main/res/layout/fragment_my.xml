@@ -37,6 +37,8 @@
                     android:textSize="20sp"
                     android:textColor="@color/yellow_600"
                     android:layout_marginStart="@dimen/spacing_sm"/>
+
+
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -84,7 +86,7 @@
                             android:textColor="@color/white"
                             android:textSize="18sp" />
                     </androidx.cardview.widget.CardView>
-                    <!--  Profile Info  -->
+                    <!--  Profile Info 영역 (이름 + 로그아웃 버튼) -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -92,15 +94,41 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tv_profile_name"
-                            android:layout_width="wrap_content"
+                        <!-- 이름 + 로그아웃 버튼 한 줄 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/profile_name"
-                            android:textColor="@color/gray_900"
-                            android:textSize="18sp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
 
+                            <TextView
+                                android:id="@+id/tv_profile_name"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/profile_name"
+                                android:textColor="@color/gray_900"
+                                android:textSize="18sp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_logout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="로그아웃"
+                                android:textSize="13sp"
+                                android:textColor="@color/white"
+                                app:backgroundTint="#FFD700"
+                                app:cornerRadius="999dp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:layout_marginStart="@dimen/spacing_sm"/>
+
+                        </LinearLayout>
+
+                        <!-- 필요하면 아래에 다른 텍스트/설명 추가 가능 -->
+                        <!-- 예: 등급, 이메일 등 -->
                     </LinearLayout>
+
                     <!--  Edit Button  -->
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
