@@ -1,5 +1,6 @@
 package com.cookandroid.gocafestudy.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,16 +23,22 @@ import com.cookandroid.gocafestudy.R;
 import com.cookandroid.gocafestudy.activities.ActivityMyReviews;
 import com.cookandroid.gocafestudy.activities.ActivityReviewList;
 import com.cookandroid.gocafestudy.activities.ActivitySavedCafes;
-import com.cookandroid.gocafestudy.adapters.ReviewAdapter;
+import com.cookandroid.gocafestudy.activities.LoginActivity;
 import com.cookandroid.gocafestudy.adapters.SavedCafesAdapter;
+import com.cookandroid.gocafestudy.adapters.ReviewAdapter;
 import com.cookandroid.gocafestudy.models.DELETE.BookmarkDeleteResponse;
 import com.cookandroid.gocafestudy.models.GET.Bookmark;
 import com.cookandroid.gocafestudy.models.GET.CafeDetail;
 import com.cookandroid.gocafestudy.models.GET.MyPageInfo;
-import com.cookandroid.gocafestudy.models.GET.Review;
 import com.cookandroid.gocafestudy.models.POST.BookmarkCreateResponse;
 import com.cookandroid.gocafestudy.repository.MockRepository;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import com.cookandroid.gocafestudy.datas.ApiClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +46,7 @@ import java.util.List;
 public class MyFragment extends Fragment {
 
     private MockRepository repository;
+    private ApiClient.CafeApi cafeApi;  
 
     @Nullable
     @Override
@@ -46,6 +54,8 @@ public class MyFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         repository = new MockRepository();
+        cafeApi = ApiClient.getCafeApi(requireContext());
+
         return inflater.inflate(R.layout.fragment_my, container, false);
     }
 
@@ -53,135 +63,57 @@ public class MyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // --- 1. 마이페이지 정보 표시 ---
-        MyPageInfo myPageInfo = repository.getMyPageInfo(1);
+        // ✅ 서버에서 마이페이지 정보 불러오기
+        loadMyPageInfo(view);
+
+
+        // ✅ 로그아웃 버튼 기능 연결
+        Button btnLogout = view.findViewById(R.id.btn_logout);
+        btnLogout.setOnClickListener(v -> {
+            requireContext()
+                    .getSharedPreferences("auth", Context.MODE_PRIVATE)
+                    .edit()
+                    .remove("access_token")
+                    .apply();
+
+            Intent intent = new Intent(requireContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            requireActivity().finish();
+        });
+    }
+
+    private void loadMyPageInfo(View view) {
         TextView tvProfileName = view.findViewById(R.id.tv_profile_name);
         TextView tvReviewCount = view.findViewById(R.id.tv_review_count);
         TextView tvBookmarkCount = view.findViewById(R.id.tv_bookmark_count);
 
-        tvProfileName.setText(myPageInfo.getUser().getName());
-        tvReviewCount.setText(String.valueOf(myPageInfo.getReviewCount()));
-        tvBookmarkCount.setText(String.valueOf(myPageInfo.getBookmarkCount()));
-
-        // --- 2. RecyclerView 설정 ---
-        RecyclerView rvSavedCafes = view.findViewById(R.id.rv_saved_cafes);
-        rvSavedCafes.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        List<Bookmark> allBookmarks = repository.getBookmarksByUserId(1);
-        List<Bookmark> previewBookmarks = new ArrayList<>();
-        for (int i = 0; i < Math.min(3, allBookmarks.size()); i++) {
-            previewBookmarks.add(allBookmarks.get(i));
-        }
-
-        SavedCafesAdapter adapter = new SavedCafesAdapter(
-                getContext(),
-                previewBookmarks,
-                cafeId -> {
-                    Log.d("MyFragment", "Clicked cafeId=" + cafeId);
-                    showCafeDetailBottomSheet(cafeId);
+        cafeApi.getMyPageInfo().enqueue(new Callback<MyPageInfo>() {
+            @Override
+            public void onResponse(Call<MyPageInfo> call, Response<MyPageInfo> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(requireContext(), "마이페이지 응답 실패: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Log.e("MyFragment", "Error code: " + response.code());
+                    return;
                 }
-        );
-        rvSavedCafes.setAdapter(adapter);
 
-        // --- 3. 버튼 클릭 ---
-        View menuMyReviews = view.findViewById(R.id.menu_my_reviews);
-        if (menuMyReviews != null) {
-            menuMyReviews.setOnClickListener(v -> {
-                startActivity(new Intent(getContext(), ActivityMyReviews.class));
-            });
-        }
+                MyPageInfo body = response.body();
+                if (body == null) {
+                    Toast.makeText(requireContext(), "JSON 구조가 DTO와 안 맞거나 응답이 null 입니다", Toast.LENGTH_SHORT).show();
+                    Log.e("MyFragment", "Response body null");
+                    return;
+                }
 
-        TextView btnViewAllSaved = view.findViewById(R.id.btn_view_all_saved);
-        if (btnViewAllSaved != null) {
-            btnViewAllSaved.setOnClickListener(v -> {
-                startActivity(new Intent(getContext(), ActivitySavedCafes.class));
-            });
-        }
-    }
+                tvProfileName.setText(body.getUser().getName());
+                tvReviewCount.setText(String.valueOf(body.getCounts().getReviewCount()));
+                tvBookmarkCount.setText(String.valueOf(body.getCounts().getBookmarkCount()));
+            }
 
-    // -----------------------------
-    // BottomSheet 메서드
-    // -----------------------------
-    private void showCafeDetailBottomSheet(int cafeId) {
-        CafeDetail cafe = repository.getCafeDetail(cafeId);
-        if (cafe == null) return;
-
-        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
-        View v = getLayoutInflater().inflate(R.layout.bottom_sheet_cafe_detail, null);
-
-        // --- 뷰 초기화 ---
-        TextView tvName = v.findViewById(R.id.tv_cafe_name);
-        TextView tvAddress = v.findViewById(R.id.tv_address);
-        TextView tvHours = v.findViewById(R.id.tv_hours);
-        TextView tvTel = v.findViewById(R.id.tel);
-        TextView tvMood = v.findViewById(R.id.cafe_atmosphere);
-        TextView tvPrice = v.findViewById(R.id.cafe_price);
-        TextView tvParking = v.findViewById(R.id.cafe_parking);
-        TextView tvAiSummary = v.findViewById(R.id.tv_ai_summary);
-        TextView tvRating = v.findViewById(R.id.tv_rating);
-        Button btnReview = v.findViewById(R.id.btn_view_all_saved);
-
-        ImageView ivMain = v.findViewById(R.id.iv_cafe_image);
-        ImageView ivSub1 = v.findViewById(R.id.iv_cafe_sub1);
-        ImageView ivSub2 = v.findViewById(R.id.iv_cafe_sub2);
-        ImageView ivSub3 = v.findViewById(R.id.iv_cafe_sub3);
-        ImageView ivSub4 = v.findViewById(R.id.iv_cafe_sub4);
-
-        RecyclerView rvPreviewReviews = v.findViewById(R.id.rv_preview_reviews);
-        rvPreviewReviews.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-        // --- 데이터 연결 ---
-        tvName.setText(cafe.getName());
-        tvAddress.setText(cafe.getAddress());
-        tvHours.setText(cafe.getBusinessHours());
-        tvTel.setText(cafe.getPhone());
-        tvMood.setText(cafe.getMood());
-        tvPrice.setText(cafe.getAmericanoPrice() + "원");
-        tvParking.setText(cafe.isHasParking() ? "주차 가능" : "주차 불가");
-        tvAiSummary.setText(cafe.getDescription());
-        tvRating.setText(String.format("%.1f / 5.0", cafe.getReviewAverage()));
-
-        List<String> images = cafe.getImages();
-        if (images.size() > 0) Glide.with(requireContext()).load(images.get(0)).placeholder(R.drawable.ic_cafe1_img).into(ivMain);
-        if (images.size() > 1) Glide.with(requireContext()).load(images.get(1)).placeholder(R.drawable.ic_cafe1_img).into(ivSub1);
-        if (images.size() > 2) Glide.with(requireContext()).load(images.get(2)).placeholder(R.drawable.ic_cafe1_img).into(ivSub2);
-        if (images.size() > 3) Glide.with(requireContext()).load(images.get(3)).placeholder(R.drawable.ic_cafe1_img).into(ivSub3);
-        if (images.size() > 4) Glide.with(requireContext()).load(images.get(4)).placeholder(R.drawable.ic_cafe1_img).into(ivSub4);
-
-        // --- 리뷰 연결 (최근 3개) ---
-        List<Review> recentReviews = cafe.getRecentReviews();
-        List<Review> previewReviews = new ArrayList<>();
-        for (int i = 0; i < Math.min(3, recentReviews.size()); i++) {
-            previewReviews.add(recentReviews.get(i));
-        }
-        rvPreviewReviews.setAdapter(new ReviewAdapter(previewReviews));
-
-        // --- 리뷰 전체보기 버튼 ---
-        btnReview.setOnClickListener(click -> {
-            Intent intent = new Intent(requireContext(), ActivityReviewList.class);
-            intent.putExtra("cafeId", cafeId);
-            startActivity(intent);
-            dialog.dismiss();
+            @Override
+            public void onFailure(Call<MyPageInfo> call, Throwable t) {
+                Toast.makeText(requireContext(), "서버 통신 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("MyFragment", "Network error", t);
+            }
         });
-
-
-        Button btnSave = v.findViewById(R.id.btn_save);
-        if (cafe.isSaved()) {
-            // true일 때
-            btnSave.setText("삭제");
-            btnSave.setOnClickListener(click -> {
-                BookmarkDeleteResponse response = repository.deleteBookmark(cafeId);
-                Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show();
-            });
-        } else {
-            // false일 때
-            btnSave.setOnClickListener(click -> {
-                BookmarkCreateResponse response = repository.createBookmark(cafeId);
-                Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show();
-            });
-        }
-
-        dialog.setContentView(v);
-        dialog.show();
     }
 }
