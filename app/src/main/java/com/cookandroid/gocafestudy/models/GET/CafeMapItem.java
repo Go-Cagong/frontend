@@ -1,11 +1,6 @@
-
-//지도용 카페 위치 정보
-///api/cafe/map
-
 package com.cookandroid.gocafestudy.models.GET;
 
-import java.util.Date;
-import java.util.List;
+import com.google.gson.annotations.SerializedName; // <-- 이 부분을 import해야 합니다.
 
 // 지도용 카페
 public class CafeMapItem {
@@ -15,8 +10,12 @@ public class CafeMapItem {
     private double longitude;
     private String mood;
     private int americanoPrice;
+
+    // API 응답 필드명 "hasParking"을 자바 필드 parkingAvailable에 매핑
+    @SerializedName("hasParking")
     private boolean parkingAvailable;
 
+    // 생성자 (기존 필드명 유지)
     public CafeMapItem(int id, String name, double latitude, double longitude, String mood, int americanoPrice, boolean parkingAvailable) {
         this.id = id;
         this.name = name;
@@ -27,11 +26,16 @@ public class CafeMapItem {
         this.parkingAvailable = parkingAvailable;
     }
 
-    // Getter & Setter
-    // ...
+    // Getter & Setter (기존 필드명 유지)
 
     public int getId() {
         return id;
+    }
+
+    // ... (다른 Getter/Setter 생략)
+
+    public boolean isParkingAvailable() {
+        return parkingAvailable;
     }
 
     public void setId(int id) {
@@ -78,13 +82,8 @@ public class CafeMapItem {
         this.americanoPrice = americanoPrice;
     }
 
-    public boolean isParkingAvailable() {
-        return parkingAvailable;
-    }
-
     public void setParkingAvailable(boolean parkingAvailable) {
         this.parkingAvailable = parkingAvailable;
     }
 
 }
-

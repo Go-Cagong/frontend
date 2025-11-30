@@ -43,9 +43,17 @@ public class MockData {
     // ---------------------------
     // 2. /api/cafe/{id}
     // ---------------------------
+    // package com.cookandroid.gocafestudy.datas;
+
+// ... (기존 import 및 클래스 정의)
+
+    // ---------------------------
+// 2. /api/cafe/{id}
+// ---------------------------
     public static CafeDetail getCafeDetail(int cafeId) {
+        // ... (기존 images, recentReviews 코드)
         List<String> images = Arrays.asList(
-                "https://cdn.example.com/cafe1_1.jpg",
+                "https://go-cagong-bucket.s3.eu-north-1.amazonaws.com/cafe/1671c901-cc59-4630-b3f9-1bbb0a81ff0d_1000040212.jpg", // API 응답 이미지 사용
                 "https://cdn.example.com/cafe1_2.jpg",
                 "https://cdn.example.com/cafe1_3.jpg",
                 "https://cdn.example.com/cafe1_4.jpg",
@@ -60,12 +68,15 @@ public class MockData {
                         1,
                         "카페 꼼마 송도점",
                         "인천 연수구 센트럴로 263",
+                        37.398306, // 💡 추가: latitude
+                        126.633733, // 💡 추가: longitude
                         "조용하고 넓은 좌석이 특징인 스터디 카페입니다.",
-                        "032-111-1111",
+                        "032-111-1111", // phone (tel)
                         5300,
                         "09:00 - 22:00",
                         true,
                         "조용함",
+                        "넓고 조용한 분위기, 다양한 음료가 준비되어 있습니다.", // 💡 추가: aiSummary
                         true,
                         images,
                         4.6F,
@@ -78,12 +89,15 @@ public class MockData {
                         2,
                         "스테이그린",
                         "인천 연수구 송도동 30-1",
+                        37.383189, // 💡 추가: latitude
+                        126.640720, // 💡 추가: longitude
                         "식물 인테리어 감성 카페입니다.",
                         "032-222-2222",
                         2000,
                         "10:00 - 21:00",
                         true,
                         "조용함",
+                        "화려한 식물 인테리어와 저렴한 가격이 특징입니다.", // 💡 추가: aiSummary
                         true,
                         images,
                         4.2F,
@@ -96,12 +110,35 @@ public class MockData {
                         3,
                         "라운지25",
                         "인천 연수구 송도동 15-7",
+                        37.396184, // 💡 추가: latitude
+                        126.637766, // 💡 추가: longitude
                         "편의점+라운지형 카공공간입니다.",
                         "032-333-3333",
                         4000,
                         "24시간",
                         true,
                         "보통",
+                        "24시간 이용 가능, 편의점과 결합된 신개념 카공 공간입니다.", // 💡 추가: aiSummary
+                        false,
+                        images,
+                        4.0F,
+                        recentReviews.size(),
+                        recentReviews
+                );
+            case 4:
+                return new CafeDetail(
+                        4,
+                        "라운지25",
+                        "인천 연수구 송도동 15-7",
+                        37.396184, // 💡 추가: latitude
+                        126.637766, // 💡 추가: longitude
+                        "편의점+라운지형 카공공간입니다.",
+                        "032-333-3333",
+                        4000,
+                        "24시간",
+                        true,
+                        "보통",
+                        "24시간 이용 가능, 편의점과 결합된 신개념 카공 공간입니다.", // 💡 추가: aiSummary
                         false,
                         images,
                         4.0F,
@@ -110,9 +147,10 @@ public class MockData {
                 );
 
             default:
-                return null;
+                return new CafeDetail();
         }
     }
+// ... (나머지 코드 유지)
 
 
     // ---------------------------
@@ -197,6 +235,12 @@ public class MockData {
         allReviews.add(new Review(502, 30,"유저6",3, 5, "24시간 운영이라 언제든 공부 가능.", "2025-11-13", getRandomImages(img)));
         allReviews.add(new Review(503, 31,"유저7",3, 4, "조용하지만 사람 많으면 조금 시끄러움.", "2025-11-12", getRandomImages(img)));
         allReviews.add(new Review(504, 32,"유저8",3, 5, "자리 넓고 편안해서 좋아요.", "2025-11-11", getRandomImages(img)));
+
+        allReviews.add(new Review(601, 29,"유저5",4, 4, "편의점과 라운지가 같이 있어서 편리해요.", "2025-11-14", getRandomImages(img)));
+        allReviews.add(new Review(602, 30,"유저6",4, 5, "24시간 운영이라 언제든 공부 가능.", "2025-11-13", getRandomImages(img)));
+        allReviews.add(new Review(603, 31,"유저7",4, 4, "조용하지만 사람 많으면 조금 시끄러움.", "2025-11-12", getRandomImages(img)));
+        allReviews.add(new Review(604, 32,"유저8",4, 5, "자리 넓고 편안해서 좋아요.", "2025-11-11", getRandomImages(img)));
+
     }
 
     // 0~5장 랜덤 이미지 생성
