@@ -42,7 +42,26 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.LoginCallbackActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:scheme="cagong"
+                    android:host="login-success" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".activities.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.LogoutActivity"
             android:exported="false" />
 
         <activity android:name=".activities.ActivityMyReviews" />
@@ -52,6 +71,7 @@
 
 
     </application>
+
 
 </manifest>
 
