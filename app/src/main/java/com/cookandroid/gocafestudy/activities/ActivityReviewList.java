@@ -18,6 +18,7 @@ import com.cookandroid.gocafestudy.api.CafeApi;
 import com.cookandroid.gocafestudy.models.GET.CafeReviewResponse;
 import com.cookandroid.gocafestudy.models.GET.Review;
 import com.cookandroid.gocafestudy.repository.RetrofitClient;
+import com.cookandroid.gocafestudy.models.GET.CafeReviewResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +101,8 @@ public class ActivityReviewList extends AppCompatActivity {
                 }
 
                 // ✅ 서버에서 받은 실제 리뷰 리스트
+
+                // ✅ 실제 리뷰 리스트 꺼내기
                 List<Review> reviews = body.getReviews();
 
                 if (reviews == null || reviews.isEmpty()) {
