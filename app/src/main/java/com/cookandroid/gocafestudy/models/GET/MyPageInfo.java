@@ -4,40 +4,46 @@
 
 package com.cookandroid.gocafestudy.models.GET;
 
-public class MyPageInfo {
-    private User user;
-    private int reviewCount;
-    private int bookmarkCount;
+import com.google.gson.annotations.SerializedName;
 
-    public MyPageInfo(User user, int reviewCount, int bookmarkCount) {
-        this.user = user;
-        this.reviewCount = reviewCount;
-        this.bookmarkCount = bookmarkCount;
-    }
-    // Getter & Setter
-    // ...
+public class MyPageInfo {
+
+    @SerializedName("user")
+    private User user;
+
+    @SerializedName("counts")
+    private Counts counts;
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public Counts getCounts() {
+        return counts;
     }
 
     public int getReviewCount() {
-        return reviewCount;
-    }
-
-    public void setReviewCount(int reviewCount) {
-        this.reviewCount = reviewCount;
+        return counts != null ? counts.getReviewCount() : 0;
     }
 
     public int getBookmarkCount() {
-        return bookmarkCount;
+        return counts != null ? counts.getBookmarkCount() : 0;
     }
 
-    public void setBookmarkCount(int bookmarkCount) {
-        this.bookmarkCount = bookmarkCount;
+    public static class Counts {
+        @SerializedName("bookmark_count")
+        private int bookmarkCount;
+
+        @SerializedName("review_count")
+        private int reviewCount;
+
+        public int getBookmarkCount() {
+            return bookmarkCount;
+        }
+
+        public int getReviewCount() {
+            return reviewCount;
+        }
     }
 }
+

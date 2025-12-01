@@ -2,6 +2,7 @@ package com.cookandroid.gocafestudy.api;
 
 import com.cookandroid.gocafestudy.models.DELETE.BookmarkDeleteResponse;
 import com.cookandroid.gocafestudy.models.GET.BookmarkIsSavedResponse;
+import com.cookandroid.gocafestudy.models.GET.BookmarkListResponse;
 import com.cookandroid.gocafestudy.models.POST.BookmarkCreateResponse;
 
 import retrofit2.http.DELETE;
@@ -25,5 +26,8 @@ public interface BookmarkApi {
     Call<BookmarkDeleteResponse> deleteBookmark(
             @Path("cafe_id") int cafeId
     );
+
+    @GET("/api/user/bookmarks")
+    Call<BookmarkListResponse> getMyBookmarks();
 }
 

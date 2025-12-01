@@ -4,16 +4,14 @@ import android.content.Context;
 import com.cookandroid.gocafestudy.activities.AuthInterceptor;
 import com.cookandroid.gocafestudy.api.BookmarkApi;
 import com.cookandroid.gocafestudy.api.CafeApi;
-import com.cookandroid.gocafestudy.models.GET.UserResponse;
+import com.cookandroid.gocafestudy.api.ReviewApi;
 import com.cookandroid.gocafestudy.api.TestAuthApi;
-
+import com.cookandroid.gocafestudy.api.UserApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import okhttp3.OkHttpClient;
-import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
 
 public class RetrofitClient {
     private static final String BASE_URL = "https://go-cagong.ddns.net/";
@@ -22,22 +20,21 @@ public class RetrofitClient {
 
     private RetrofitClient() {}
 
-    // 🌟 커스텀 Gson Builder 생성
+    // 🌟 커스텀 Gson Builder 생성 (lenient 적용)
     private static Gson createCustomGson() {
         return new GsonBuilder()
                 // 서버의 ISO 8601 형식(타임존 없음, 정밀한 밀리초)에 맞추기 위해
-                // 초 단위까지만 파싱하도록 설정하여 JsonSyntaxException을 방지
+                // 초 단위까지만 파싱하도록 설정
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                .setLenient() // JSON 구조가 완전히 깨져도 유연하게 파싱
                 .create();
     }
-
 
     // 1. 일반 API 호출용 (인증 불필요)
     public static Retrofit getClient() {
         if (nonAuthRetrofit == null) {
             nonAuthRetrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    // 🌟 커스텀 Gson 적용
                     .addConverterFactory(GsonConverterFactory.create(createCustomGson()))
                     .build();
         }
@@ -48,14 +45,12 @@ public class RetrofitClient {
     public static Retrofit getAuthClient(Context context) {
         if (authRetrofit == null) {
             OkHttpClient client = new OkHttpClient.Builder()
-                    // AuthInterceptor를 OkHttpClient에 추가
-                    .addInterceptor(new AuthInterceptor(context))
+                    .addInterceptor(new AuthInterceptor(context)) // JWT 토큰 자동 추가
                     .build();
 
             authRetrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(client)
-                    // 🌟 커스텀 Gson 적용
                     .addConverterFactory(GsonConverterFactory.create(createCustomGson()))
                     .build();
         }
@@ -81,5 +76,13 @@ public class RetrofitClient {
 
     public static BookmarkApi getBookmarkApi(Context context) {
         return getAuthClient(context).create(BookmarkApi.class);
+    }
+
+    public static UserApi getUserApi(Context context) {
+        return getAuthClient(context).create(UserApi.class);
+    }
+
+    public static ReviewApi getReviewApi(Context context) {
+        return getAuthClient(context).create(ReviewApi.class);
     }
 }

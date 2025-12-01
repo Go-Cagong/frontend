@@ -1,29 +1,25 @@
-//내 리뷰 목록
-///api/user/reviews
-
 package com.cookandroid.gocafestudy.models.GET;
 
 import java.util.List;
 
-// 개별 리뷰 항목
 public class MyReviewItem {
-    private int reviewId;       // review_id
-    private int cafeId;         // cafe_id
-    private String cafeName;    // cafe_name
-    private String cafeImageUrl; // cafe_image_url
-    private int rating;         // 별점
-    private String content;     // 리뷰 내용
+    private int reviewId;
+    private int cafeId;
+    private String cafeName;
+    private int rating;
+    private String content;
+    private List<String> images;
+    private String createdAt;
 
-    private List<String> images;  // 새로 추가
-
-    public MyReviewItem(int reviewId, int cafeId, String cafeName, String cafeImageUrl, int rating, String content,List<String> images) {
+    // 생성자
+    public MyReviewItem(int reviewId, int cafeId, String cafeName, int rating, String content, List<String> images, String createdAt) {
         this.reviewId = reviewId;
         this.cafeId = cafeId;
         this.cafeName = cafeName;
         this.rating = rating;
         this.content = content;
         this.images = images;
-        this.cafeImageUrl = cafeImageUrl;
+        this.createdAt = createdAt;
     }
 
     // Getter & Setter
@@ -36,20 +32,15 @@ public class MyReviewItem {
     public String getCafeName() { return cafeName; }
     public void setCafeName(String cafeName) { this.cafeName = cafeName; }
 
-    public String getCafeImageUrl() { return cafeImageUrl; }
-    public void setCafeImageUrl(String cafeImageUrl) { this.cafeImageUrl = cafeImageUrl; }
-
     public int getRating() { return rating; }
     public void setRating(int rating) { this.rating = rating; }
 
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
 
-    public List<String> getImages() {
-        return images;
-    }
+    public List<String> getImages() { return images; }
+    public void setImages(List<String> images) { this.images = images; }
 
-    public void setImages(List<String> images) {
-        this.images = images;
-    }
+    public String getCreatedAt() { return createdAt; }
+    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
 }
