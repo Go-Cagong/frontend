@@ -51,7 +51,9 @@ public class MyReviewsAdapter extends RecyclerView.Adapter<MyReviewsAdapter.View
         holder.ratingBar.setRating(review.getRating());
         holder.tvReviewText.setText(review.getContent());
 
-
+        //2. 작성 시간 (createdAt) -> yyyy-mm-dd
+        String createdAt= review.getCreatedAt();
+        String displayDate = createdAt;
 
         // 3. 리뷰 이미지 목록 처리
         holder.layoutReviewImages.removeAllViews();

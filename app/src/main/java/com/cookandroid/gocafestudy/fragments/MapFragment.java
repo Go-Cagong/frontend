@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cookandroid.gocafestudy.models.GET.BookmarkIsSavedResponse;
+import com.cookandroid.gocafestudy.models.GET.CafeReviewResponse;
 import com.naver.maps.map.OnMapReadyCallback;
 
 import androidx.annotation.NonNull;
@@ -393,82 +394,105 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
      * BottomSheet UI를 구성하고 표시하는 헬퍼 함수
      */
     private void displayCafeDetailSheet(int cafeId, CafeDetail cafe) {
-        if (cafe == null) return;
-
-        // ⚠️ 임시 MockRepository 인스턴스 (북마크/리뷰는 아직 API 연동이 안 되었으므로 임시로 사용)
-        MockRepository mockRepository = new MockRepository();
-
         BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
         View v = getLayoutInflater().inflate(R.layout.bottom_sheet_cafe_detail, null);
 
-        // --- 기본 정보 ---
-        TextView tvName = v.findViewById(R.id.tv_cafe_name);
-        TextView tvAddress = v.findViewById(R.id.tv_address);
-        TextView tvHours = v.findViewById(R.id.tv_hours);
-        TextView tvTel = v.findViewById(R.id.tel);
-        TextView cafeAtmosphere = v.findViewById(R.id.cafe_atmosphere);
-        TextView cafePrice = v.findViewById(R.id.cafe_price);
-        TextView cafeParking = v.findViewById(R.id.cafe_parking);
+        TextView tvName      = v.findViewById(R.id.tv_cafe_name);
+        TextView tvAddress   = v.findViewById(R.id.tv_address);
+        TextView tvHours     = v.findViewById(R.id.tv_hours);
+        TextView tvTel       = v.findViewById(R.id.tel);
+        TextView tvMood      = v.findViewById(R.id.cafe_atmosphere);
+        TextView tvPrice     = v.findViewById(R.id.cafe_price);
+        TextView tvParking   = v.findViewById(R.id.cafe_parking);
+        TextView tvAiSummary = v.findViewById(R.id.tv_ai_summary);
+        TextView tvRating    = v.findViewById(R.id.tv_rating);
+        Button   btnReview   = v.findViewById(R.id.btn_view_all_saved);
 
-        TextView tvAiSummary = v.findViewById(R.id.tv_ai_summary); // AI 요약
+        ImageView ivMain  = v.findViewById(R.id.iv_cafe_image);
+        ImageView ivSub1  = v.findViewById(R.id.iv_cafe_sub1);
+        ImageView ivSub2  = v.findViewById(R.id.iv_cafe_sub2);
+        ImageView ivSub3  = v.findViewById(R.id.iv_cafe_sub3);
+        ImageView ivSub4  = v.findViewById(R.id.iv_cafe_sub4);
 
-        ImageView ivMain = v.findViewById(R.id.iv_cafe_image);
-        ImageView ivSub1 = v.findViewById(R.id.iv_cafe_sub1);
-        ImageView ivSub2 = v.findViewById(R.id.iv_cafe_sub2);
-        ImageView ivSub3 = v.findViewById(R.id.iv_cafe_sub3);
-        ImageView ivSub4 = v.findViewById(R.id.iv_cafe_sub4);
-
-        TextView tvRating = v.findViewById(R.id.tv_rating);
-        Button btnReview = v.findViewById(R.id.btn_view_all_saved);
-
+        // ✅ 리뷰 미리보기 RecyclerView
         RecyclerView rvPreviewReviews = v.findViewById(R.id.rv_preview_reviews);
         rvPreviewReviews.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        // --- 기본 정보 연결 ---
+        List<Review> previewReviews = new ArrayList<>();
+        ReviewAdapter previewAdapter = new ReviewAdapter(previewReviews);
+        rvPreviewReviews.setAdapter(previewAdapter);
+
+        // ------------------------------
+        // 1) 카페 기본 정보 채우기 (서버에서 받은 cafeDetail 기반)
+        // ------------------------------
         tvName.setText(cafe.getName());
         tvAddress.setText(cafe.getAddress());
         tvHours.setText(cafe.getBusinessHours());
-
-        // API 필드 'tel'이 DTO의 'phone' 필드에 매핑되어 사용됨
         tvTel.setText(cafe.getPhone());
-
-        cafeAtmosphere.setText(cafe.getMood());
-        cafePrice.setText(cafe.getAmericanoPrice() + "원");
-        cafeParking.setText(cafe.isHasParking() ? "주차 가능" : "주차 불가");
-
-        // --- AI 요약 카드 연결 ---
-        // API 필드 'aiSummary'가 DTO에 추가되어 사용됨
-        tvAiSummary.setText(cafe.getAiSummary());
-
-        // --- 평점 ---
+        tvMood.setText(cafe.getMood());
+        tvPrice.setText(cafe.getAmericanoPrice() + "원");
+        tvParking.setText(cafe.isHasParking() ? "주차 가능" : "주차 불가");
+        tvAiSummary.setText(cafe.getDescription());
         tvRating.setText(String.format("%.1f / 5.0", cafe.getReviewAverage()));
 
-        // --- 이미지 연결 ---
         List<String> images = cafe.getImages();
         if (images != null) {
-            if (images.size() > 0) Glide.with(requireContext()).load(images.get(0)).placeholder(R.drawable.ic_cafe1_img).into(ivMain);
-            if (images.size() > 1) Glide.with(requireContext()).load(images.get(1)).placeholder(R.drawable.ic_cafe1_img).into(ivSub1);
-            if (images.size() > 2) Glide.with(requireContext()).load(images.get(2)).placeholder(R.drawable.ic_cafe1_img).into(ivSub2);
-            if (images.size() > 3) Glide.with(requireContext()).load(images.get(3)).placeholder(R.drawable.ic_cafe1_img).into(ivSub3);
-            if (images.size() > 4) Glide.with(requireContext()).load(images.get(4)).placeholder(R.drawable.ic_cafe1_img).into(ivSub4);
+            if (images.size() > 0)
+                Glide.with(requireContext()).load(images.get(0)).placeholder(R.drawable.ic_cafe1_img).into(ivMain);
+            if (images.size() > 1)
+                Glide.with(requireContext()).load(images.get(1)).placeholder(R.drawable.ic_cafe1_img).into(ivSub1);
+            if (images.size() > 2)
+                Glide.with(requireContext()).load(images.get(2)).placeholder(R.drawable.ic_cafe1_img).into(ivSub2);
+            if (images.size() > 3)
+                Glide.with(requireContext()).load(images.get(3)).placeholder(R.drawable.ic_cafe1_img).into(ivSub3);
+            if (images.size() > 4)
+                Glide.with(requireContext()).load(images.get(4)).placeholder(R.drawable.ic_cafe1_img).into(ivSub4);
         }
 
-        // --- 리뷰 연결 (최근 3개) ---
-        // ⚠️ API 응답에 recentReviews가 없으므로 Mock 데이터를 사용하거나 null 체크 필요
-        List<Review> recentReviews = mockRepository.getCafeDetail(cafeId).getRecentReviews();
-        List<Review> previewReviews = new ArrayList<>();
+        // ------------------------------
+        // 2) 🔥 실제 서버에서 리뷰 미리보기 가져오기
+        // ------------------------------
+        cafeApi.getReviewsByCafeId(cafeId).enqueue(new Callback<CafeReviewResponse>() {
+            @Override
+            public void onResponse(Call<CafeReviewResponse> call, Response<CafeReviewResponse> response) {
+                if (!response.isSuccessful()) {
+                    Log.e(TAG, "preview review error code = " + response.code());
+                    return;
+                }
 
-        if (recentReviews != null) {
-            for (int i = 0; i < Math.min(3, recentReviews.size()); i++) {
-                previewReviews.add(recentReviews.get(i));
+                CafeReviewResponse body = response.body();
+                if (body == null || body.getReviews() == null) {
+                    Log.e(TAG, "preview review body or reviews is null");
+                    return;
+                }
+
+                List<Review> allReviews = body.getReviews();
+
+                // createdAt "yyyy-MM-dd" 까지만 보이게 슬라이스
+                for (Review r : allReviews) {
+                    String createdAt = r.getCreatedAt();
+                    if (createdAt != null && createdAt.length() >= 10) {
+                        r.setCreatedAt(createdAt.substring(0, 10));
+                    }
+                }
+
+                // 최대 3개까지만 BottomSheet에 미리보기로 보여주기
+                previewReviews.clear();
+                for (int i = 0; i < Math.min(3, allReviews.size()); i++) {
+                    previewReviews.add(allReviews.get(i));
+                }
+                previewAdapter.notifyDataSetChanged();
             }
-        }
 
-        ReviewAdapter adapter = new ReviewAdapter(previewReviews);
-        rvPreviewReviews.setAdapter(adapter);
+            @Override
+            public void onFailure(Call<CafeReviewResponse> call, Throwable t) {
+                Log.e(TAG, "preview review onFailure", t);
+            }
+        });
 
-
-        // --- 리뷰 전체보기 버튼 ---
+        // ------------------------------
+        // 3) '리뷰 전체보기' 버튼 → ActivityReviewList
+        // ------------------------------
         btnReview.setOnClickListener(click -> {
             Intent intent = new Intent(requireContext(), ActivityReviewList.class);
             intent.putExtra("cafeId", cafeId);

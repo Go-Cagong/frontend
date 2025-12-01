@@ -23,6 +23,7 @@ import com.cookandroid.gocafestudy.R;
 import com.cookandroid.gocafestudy.activities.ActivityMyReviews;
 import com.cookandroid.gocafestudy.activities.ActivityReviewList;
 import com.cookandroid.gocafestudy.activities.ActivitySavedCafes;
+import com.cookandroid.gocafestudy.activities.LoginActivity;
 import com.cookandroid.gocafestudy.adapters.ReviewAdapter;
 import com.cookandroid.gocafestudy.adapters.SavedCafesAdapter;
 import com.cookandroid.gocafestudy.models.DELETE.BookmarkDeleteResponse;
@@ -73,6 +74,22 @@ public class MyFragment extends Fragment {
             btnViewAllSaved.setOnClickListener(v ->
                     startActivity(new Intent(getContext(), ActivitySavedCafes.class))
             );
+        }
+        Button btnLogout = view.findViewById(R.id.btn_logout);
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(v -> {
+                requireContext()
+                        .getSharedPreferences("auth", Context.MODE_PRIVATE)
+                        .edit()
+                        .remove("access_token")
+                        .remove("refresh_token")
+                        .apply();
+
+                Intent intent = new Intent(requireContext(), LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                requireActivity().finish();
+            });
         }
     }
 
