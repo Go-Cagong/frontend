@@ -295,8 +295,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     // -------------------------
-    // 카페 상세 BottomSheet (TODO: 다음 단계에서 API 연동 필요)
-    // -------------------------
     private void showCafeDetailBottomSheet(int cafeId) {
         // ❌ MockRepository 호출 제거
         // CafeDetail cafe = mockRepository.getCafeDetail(cafeId);
@@ -460,8 +458,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             tvRating.setText("평점 로딩중...");
         }
         //if (tvReviewCount != null) {
-            //tvReviewCount.setText(""); // 혹은 "0개" 등
-       //}
+        //tvReviewCount.setText(""); // 혹은 "0개" 등
+        //}
 
         List<String> images = cafe.getImages();
         if (images != null) {
@@ -502,7 +500,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     tvRating.setText(String.format("%.1f / 5.0", avg));
                 }
                 //if (tvReviewCount != null) {
-                    //tvReviewCount.setText("(" + count + "개의 리뷰)");
+                //tvReviewCount.setText("(" + count + "개의 리뷰)");
                 //}
 
                 List<Review> allReviews = body.getReviews();
