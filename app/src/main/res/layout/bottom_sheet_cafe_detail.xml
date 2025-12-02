@@ -31,14 +31,6 @@
             android:textColor="@color/gray_900"
             />
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="카페 정보"
-            android:textSize="12dp"
-            android:textColor="@color/gray_500"/>
-
         <LinearLayout
             android:layout_width="130dp"
             android:layout_height="43dp"
@@ -138,6 +130,54 @@
             </GridLayout>
         </LinearLayout>
         <!-- ===== /Images Section ===== -->
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/yellow_50"
+            app:cardCornerRadius="@dimen/radius_lg"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/yellow_100"
+            app:strokeWidth="1dp"
+            android:layout_marginBottom="@dimen/spacing_lg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_lg">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/spacing_sm">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/info"
+                        app:tint="@color/yellow_600"
+                        android:layout_marginEnd="@dimen/spacing_sm" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="카페 정보"
+                        android:textSize="14sp"
+                        android:textColor="@color/yellow_700" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="넓은 공간과 편안한 좌석이 인상적이에요."
+                    android:textSize="14sp"
+                    android:textColor="@color/gray_700"
+                    android:lineSpacingMultiplier="1.4" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <!-- AI Summary Card -->
         <androidx.cardview.widget.CardView
