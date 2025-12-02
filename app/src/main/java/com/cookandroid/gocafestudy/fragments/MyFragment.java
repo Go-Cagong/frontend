@@ -213,9 +213,10 @@ public class MyFragment extends Fragment {
         TextView tvMood = v.findViewById(R.id.cafe_atmosphere);
         TextView tvPrice = v.findViewById(R.id.cafe_price);
         TextView tvParking = v.findViewById(R.id.cafe_parking);
-        TextView tvAiSummary = v.findViewById(R.id.tv_ai_summary);
         TextView tvRating = v.findViewById(R.id.tv_rating);
         Button btnReview = v.findViewById(R.id.btn_view_all_saved);
+        TextView tvAiSummary = v.findViewById(R.id.tv_ai_summary);
+        TextView tvDescription = v.findViewById(R.id.description);
 
         ImageView ivMain = v.findViewById(R.id.iv_cafe_image);
         ImageView ivSub1 = v.findViewById(R.id.iv_cafe_sub1);
@@ -235,6 +236,7 @@ public class MyFragment extends Fragment {
         tvPrice.setText(cafe.getAmericanoPrice() + "원");
         tvParking.setText(cafe.isHasParking() ? "주차 가능" : "주차 불가");
         tvAiSummary.setText(cafe.getAiSummary());
+        tvDescription.setText(cafe.getDescription());
         tvRating.setText(String.format("%.1f / 5.0", cafe.getReviewAverage()));
 
         // --- 이미지 로드 ---

@@ -421,6 +421,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         TextView tvPrice     = v.findViewById(R.id.cafe_price);
         TextView tvParking   = v.findViewById(R.id.cafe_parking);
         TextView tvAiSummary = v.findViewById(R.id.tv_ai_summary);
+        TextView tvDescription = v.findViewById(R.id.description);
 
         // 평점 + (리뷰 개수 표시하고 싶으면 추가)
         TextView tvRating    = v.findViewById(R.id.tv_rating);
@@ -451,7 +452,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         tvMood.setText(cafe.getMood());
         tvPrice.setText(cafe.getAmericanoPrice() + "원");
         tvParking.setText(cafe.isHasParking() ? "주차 가능" : "주차 불가");
-        tvAiSummary.setText(cafe.getDescription());
+        tvAiSummary.setText(cafe.getAiSummary());
+        tvDescription.setText(cafe.getDescription());
 
         // 여기서는 일단 "로딩중" 문구만
         if (tvRating != null) {

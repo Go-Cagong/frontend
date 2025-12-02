@@ -29,10 +29,17 @@ public class MyReviewsAdapter extends RecyclerView.Adapter<MyReviewsAdapter.View
 
     private Context context;
     private List<MyReviewItem> reviews;
+    private OnReviewClickListener listener;
 
-    public MyReviewsAdapter(Context context, List<MyReviewItem> reviews) {
+    // ⭐ 클릭 리스너 추가
+    public interface OnReviewClickListener {
+        void onReviewClick(int cafeId);
+    }
+
+    public MyReviewsAdapter(Context context, List<MyReviewItem> reviews, OnReviewClickListener listener) {
         this.context = context;
         this.reviews = reviews;
+        this.listener = listener;
     }
 
     @NonNull
@@ -46,63 +53,62 @@ public class MyReviewsAdapter extends RecyclerView.Adapter<MyReviewsAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MyReviewItem review = reviews.get(position);
 
-        // 1. 텍스트 및 별점
         holder.tvCafeName.setText(review.getCafeName());
         holder.ratingBar.setRating(review.getRating());
         holder.tvReviewText.setText(review.getContent());
 
-        //2. 작성 시간 (createdAt) -> yyyy-mm-dd
-        String createdAt= review.getCreatedAt();
-        String displayDate = createdAt;
-
-        // 3. 리뷰 이미지 목록 처리
+        // 리뷰 이미지
         holder.layoutReviewImages.removeAllViews();
         List<String> reviewImages = review.getImages();
         if (reviewImages != null && !reviewImages.isEmpty()) {
             holder.scrollReviewImages.setVisibility(View.VISIBLE);
+
             for (String imgUrl : reviewImages) {
                 ImageView imageView = new ImageView(context);
-                int sizeInDp = 100;
-                int sizeInPx = (int) (sizeInDp * context.getResources().getDisplayMetrics().density);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(sizeInPx, sizeInPx);
+                int size = (int) (100 * context.getResources().getDisplayMetrics().density);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
                 params.setMargins(0, 0, 16, 0);
                 imageView.setLayoutParams(params);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-                Glide.with(context)
-                        .load(imgUrl)
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .into(imageView);
-
+                Glide.with(context).load(imgUrl).into(imageView);
                 holder.layoutReviewImages.addView(imageView);
             }
         } else {
             holder.scrollReviewImages.setVisibility(View.GONE);
         }
 
-        // 4. 삭제 버튼 클릭
+        // ⭐ 삭제 버튼
         holder.btnDelete.setOnClickListener(v -> deleteReview(review.getReviewId(), position));
+
+        // ⭐ 아이템 클릭 → 상세 바텀시트
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onReviewClick(review.getCafeId());
+            }
+        });
     }
 
     private void deleteReview(int reviewId, int position) {
-        RetrofitClient.getReviewApi(context).deleteReview(reviewId).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    reviews.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, reviews.size());
-                    Toast.makeText(context, "리뷰가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "삭제 실패: " + response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
+        RetrofitClient.getReviewApi(context).deleteReview(reviewId)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            reviews.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, reviews.size());
+                            Toast.makeText(context, "리뷰가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "삭제 실패: " + response.code(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(context, "삭제 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(context, "삭제 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override

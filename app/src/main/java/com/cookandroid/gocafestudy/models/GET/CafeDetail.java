@@ -25,6 +25,7 @@ public class CafeDetail {
     private String aiSummary;
     private boolean isSaved;
     private List<String> images;
+    @SerializedName("averageRating")
     private float reviewAverage;
     private int reviewCount;
 
