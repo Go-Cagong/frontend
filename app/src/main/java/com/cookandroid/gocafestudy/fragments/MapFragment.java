@@ -53,6 +53,7 @@ import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
 
 import java.util.ArrayList;
@@ -194,6 +195,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         for (CafeMapItem cafe : cafes) {
             Marker marker = new Marker();
             marker.setPosition(new LatLng(cafe.getLatitude(), cafe.getLongitude()));
+
+            // 커스텀 마커 아이콘
+            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_cafe_marker));
+
+            //  카페 이름 표시
+            marker.setCaptionText(cafe.getName());
+            marker.setCaptionTextSize(14);        // 글자 크기
+            marker.setCaptionColor(0xFF000000);   // 글자 색 (검정)
+            marker.setCaptionHaloColor(0xFFFFFFFF); // 글자 테두리(가독성 UP)
+
+            marker.setWidth(90);
+            marker.setHeight(90);
+
             marker.setMap(naverMapRef);
             markerList.add(marker);
 
@@ -203,6 +217,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             });
         }
     }
+
+
 
 
     private void updateMarkers(Map<String, String> appliedFilters) {
