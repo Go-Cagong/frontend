@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.TextView;   // ★ 추가
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +19,6 @@ import com.cookandroid.gocafestudy.api.CafeApi;
 import com.cookandroid.gocafestudy.models.GET.CafeReviewResponse;
 import com.cookandroid.gocafestudy.models.GET.Review;
 import com.cookandroid.gocafestudy.repository.RetrofitClient;
-import com.cookandroid.gocafestudy.models.GET.CafeReviewResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,10 @@ public class ActivityReviewList extends AppCompatActivity {
     private CafeApi cafeApi;
     private int cafeId;
 
+    // ★ 평점 평균 / 리뷰 개수 텍스트뷰
+    private TextView tvAvgRating;
+    private TextView tvReviewCount;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,10 @@ public class ActivityReviewList extends AppCompatActivity {
             return;
         }
 
+        // 헤더 TextView 찾아오기 (xml에 추가한 것들)
+        tvAvgRating = findViewById(R.id.tv_avg_rating);
+        tvReviewCount = findViewById(R.id.tv_review_count);
+
         // 2) RecyclerView + Adapter 세팅
         recyclerView = findViewById(R.id.rv_reviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -59,7 +67,7 @@ public class ActivityReviewList extends AppCompatActivity {
         // 3) RetrofitClient에서 CafeApi 가져오기 (비인증용)
         cafeApi = RetrofitClient.getCafeApi();
 
-        // 4) 서버에서 리뷰 목록 불러오기
+        // 4) 서버에서 리뷰 목록 + 평점 정보 불러오기
         loadReviewsFromServer(cafeId);
 
         // 🔙 뒤로가기 버튼
@@ -100,9 +108,18 @@ public class ActivityReviewList extends AppCompatActivity {
                     return;
                 }
 
-                // ✅ 서버에서 받은 실제 리뷰 리스트
+                //  1) 헤더에 평균 평점 / 리뷰 개수 세팅
+                double avg = body.getAverageRating();   // 서버 DTO에 맞는 이름
+                int count = body.getReviewCount();      // 서버 DTO에 맞는 이름
 
-                // ✅ 실제 리뷰 리스트 꺼내기
+                if (tvAvgRating != null) {
+                    tvAvgRating.setText(String.format("%.1f / 5.0", avg));
+                }
+                if (tvReviewCount != null) {
+                    tvReviewCount.setText("(" + count + "개의 리뷰)");
+                }
+
+                // 2) 실제 리뷰 리스트 꺼내기
                 List<Review> reviews = body.getReviews();
 
                 if (reviews == null || reviews.isEmpty()) {
@@ -114,9 +131,9 @@ public class ActivityReviewList extends AppCompatActivity {
                     return;
                 }
 
-                // ✅ createdAt을 "yyyy-MM-dd" 형식(일 단위까지만)으로 잘라 넣기
+                // 3) createdAt을 "yyyy-MM-dd" 형식으로 자르기
                 for (Review r : reviews) {
-                    String createdAt = r.getCreatedAt();  // "2025-11-14T10:21:00"
+                    String createdAt = r.getCreatedAt();  // 예: "2025-11-14T10:21:00"
                     if (createdAt != null && createdAt.length() >= 10) {
                         r.setCreatedAt(createdAt.substring(0, 10)); // "2025-11-14"
                     }
@@ -125,11 +142,6 @@ public class ActivityReviewList extends AppCompatActivity {
                 reviewList.clear();
                 reviewList.addAll(reviews);
                 reviewAdapter.notifyDataSetChanged();
-
-                // 필요하면 여기서 평균 평점/리뷰 개수도 쓸 수 있음
-                // double avg = body.getAverageRating();
-                // int count = body.getReviewCount();
-                // TextView에 표시하고 싶으면 여기서 처리하면 됨
             }
 
             @Override
@@ -140,5 +152,13 @@ public class ActivityReviewList extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // ★ 선택사항: 리뷰 작성 후 돌아왔을 때 자동 새로고침하고 싶으면 주석 풀어도 됨
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadReviewsFromServer(cafeId);
     }
 }

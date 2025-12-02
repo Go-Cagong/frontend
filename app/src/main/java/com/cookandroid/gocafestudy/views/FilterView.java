@@ -61,7 +61,7 @@ public class FilterView extends LinearLayout {
         filterContainer = findViewById(R.id.filterContainer);
 
         // 필터 옵션 초기화
-        filterMap.put("분위기", Arrays.asList("조용함", "대화가능", "시끄러움"));
+        filterMap.put("분위기", Arrays.asList("조용함", "편안함", "활기참"));
         filterMap.put("아메리카노 가격", Arrays.asList("3000원 이하", "3000~5000원", "5000원 이상"));
         filterMap.put("주차", Arrays.asList("가능", "불가능"));
 

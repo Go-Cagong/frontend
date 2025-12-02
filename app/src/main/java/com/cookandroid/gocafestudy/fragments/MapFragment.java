@@ -405,7 +405,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         TextView tvPrice     = v.findViewById(R.id.cafe_price);
         TextView tvParking   = v.findViewById(R.id.cafe_parking);
         TextView tvAiSummary = v.findViewById(R.id.tv_ai_summary);
+
+        // 평점 + (리뷰 개수 표시하고 싶으면 추가)
         TextView tvRating    = v.findViewById(R.id.tv_rating);
+        //TextView tvReviewCount = v.findViewById(R.id.tv_review_count); // 레이아웃에 있으면
         Button   btnReview   = v.findViewById(R.id.btn_view_all_saved);
 
         ImageView ivMain  = v.findViewById(R.id.iv_cafe_image);
@@ -423,7 +426,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         rvPreviewReviews.setAdapter(previewAdapter);
 
         // ------------------------------
-        // 1) 카페 기본 정보 채우기 (서버에서 받은 cafeDetail 기반)
+        // 1) 카페 기본 정보 채우기
         // ------------------------------
         tvName.setText(cafe.getName());
         tvAddress.setText(cafe.getAddress());
@@ -433,24 +436,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         tvPrice.setText(cafe.getAmericanoPrice() + "원");
         tvParking.setText(cafe.isHasParking() ? "주차 가능" : "주차 불가");
         tvAiSummary.setText(cafe.getDescription());
-        tvRating.setText(String.format("%.1f / 5.0", cafe.getReviewAverage()));
+
+        // 여기서는 일단 "로딩중" 문구만
+        if (tvRating != null) {
+            tvRating.setText("평점 로딩중...");
+        }
+        //if (tvReviewCount != null) {
+            //tvReviewCount.setText(""); // 혹은 "0개" 등
+       //}
 
         List<String> images = cafe.getImages();
         if (images != null) {
             if (images.size() > 0)
-                Glide.with(requireContext()).load(images.get(0)).placeholder(R.drawable.ic_cafe1_img).into(ivMain);
+                Glide.with(requireContext()).load(images.get(0)).placeholder(R.drawable.ic_camera_gray).into(ivMain);
             if (images.size() > 1)
-                Glide.with(requireContext()).load(images.get(1)).placeholder(R.drawable.ic_cafe1_img).into(ivSub1);
+                Glide.with(requireContext()).load(images.get(1)).placeholder(R.drawable.ic_camera_gray).into(ivSub1);
             if (images.size() > 2)
-                Glide.with(requireContext()).load(images.get(2)).placeholder(R.drawable.ic_cafe1_img).into(ivSub2);
+                Glide.with(requireContext()).load(images.get(2)).placeholder(R.drawable.ic_camera_gray).into(ivSub2);
             if (images.size() > 3)
-                Glide.with(requireContext()).load(images.get(3)).placeholder(R.drawable.ic_cafe1_img).into(ivSub3);
+                Glide.with(requireContext()).load(images.get(3)).placeholder(R.drawable.ic_camera_gray).into(ivSub3);
             if (images.size() > 4)
-                Glide.with(requireContext()).load(images.get(4)).placeholder(R.drawable.ic_cafe1_img).into(ivSub4);
+                Glide.with(requireContext()).load(images.get(4)).placeholder(R.drawable.ic_camera_gray).into(ivSub4);
         }
 
         // ------------------------------
-        // 2) 🔥 실제 서버에서 리뷰 미리보기 가져오기
+        // 2) 🔥 서버에서 리뷰 + 평점 요약 가져오기
         // ------------------------------
         cafeApi.getReviewsByCafeId(cafeId).enqueue(new Callback<CafeReviewResponse>() {
             @Override
@@ -465,6 +475,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     Log.e(TAG, "preview review body or reviews is null");
                     return;
                 }
+
+                // ★ 여기서 평균 평점 / 리뷰 개수 세팅
+                double avg = body.getAverageRating();   // DTO 필드명에 맞게
+                int count  = body.getReviewCount();
+
+                if (tvRating != null) {
+                    tvRating.setText(String.format("%.1f / 5.0", avg));
+                }
+                //if (tvReviewCount != null) {
+                    //tvReviewCount.setText("(" + count + "개의 리뷰)");
+                //}
 
                 List<Review> allReviews = body.getReviews();
 
@@ -491,7 +512,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
 
         // ------------------------------
-        // 3) '리뷰 전체보기' 버튼 → ActivityReviewList
+        // 3) '리뷰 전체보기' 버튼
         // ------------------------------
         btnReview.setOnClickListener(click -> {
             Intent intent = new Intent(requireContext(), ActivityReviewList.class);
@@ -501,22 +522,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
 
         Button btnSave = v.findViewById(R.id.btn_save);
-
-        // 👉 북마크 여부 조회
         loadBookmarkState(getContext(), cafeId, btnSave);
 
-        // POST 카페 저장 요청 (MockRepository 호출 유지)
-        // ⚠️ API 응답에 isSaved가 없으므로 Mock 데이터를 사용하거나 false로 초기화 필요
-
-        // 버튼 클릭으로 토글
         btnSave.setOnClickListener(view -> {
             String currentText = btnSave.getText().toString();
 
             if (currentText.equals("저장하기")) {
-                // 저장하기 → POST
                 createBookmark(getContext(), cafeId, btnSave);
             } else {
-                // 저장 취소하기 → DELETE
                 deleteBookmark(getContext(), cafeId, btnSave);
             }
         });
@@ -524,4 +537,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         dialog.setContentView(v);
         dialog.show();
     }
+
 }

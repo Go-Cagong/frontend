@@ -46,6 +46,8 @@ import retrofit2.Response;
 
 public class MyFragment extends Fragment {
 
+    private View rootView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -57,6 +59,8 @@ public class MyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        rootView = view;
 
         loadMyPageInfo(view);
         loadSavedCafes(view);
@@ -75,6 +79,7 @@ public class MyFragment extends Fragment {
                     startActivity(new Intent(getContext(), ActivitySavedCafes.class))
             );
         }
+
         Button btnLogout = view.findViewById(R.id.btn_logout);
         if (btnLogout != null) {
             btnLogout.setOnClickListener(v -> {
@@ -93,6 +98,16 @@ public class MyFragment extends Fragment {
         }
     }
 
+    // ★ 다른 액티비티(리뷰 삭제 / 저장 카페 관리) 다녀온 뒤에 자동 리프레시
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (rootView != null) {
+            loadMyPageInfo(rootView);
+            loadSavedCafes(rootView);
+        }
+    }
+
     // -----------------------------
     // 1. 마이페이지 정보 로드
     // -----------------------------
@@ -106,7 +121,7 @@ public class MyFragment extends Fragment {
                 .enqueue(new Callback<MyPageInfo>() {
                     @Override
                     public void onResponse(Call<MyPageInfo> call, Response<MyPageInfo> response) {
-                        if(response.isSuccessful() && response.body() != null){
+                        if (response.isSuccessful() && response.body() != null) {
                             MyPageInfo info = response.body();
                             tvProfileName.setText(info.getUser().getName());
                             tvReviewCount.setText(String.valueOf(info.getReviewCount()));
@@ -137,11 +152,11 @@ public class MyFragment extends Fragment {
                 .enqueue(new Callback<BookmarkListResponse>() {
                     @Override
                     public void onResponse(Call<BookmarkListResponse> call, Response<BookmarkListResponse> response) {
-                        if(response.isSuccessful() && response.body() != null){
+                        if (response.isSuccessful() && response.body() != null) {
                             List<Bookmark> list = response.body().getBookmarks();
 
                             List<Bookmark> preview = new ArrayList<>();
-                            for(int i=0; i<Math.min(3, list.size()); i++){
+                            for (int i = 0; i < Math.min(3, list.size()); i++) {
                                 preview.add(list.get(i));
                             }
 
@@ -170,7 +185,7 @@ public class MyFragment extends Fragment {
                 .enqueue(new Callback<CafeDetail>() {
                     @Override
                     public void onResponse(Call<CafeDetail> call, Response<CafeDetail> response) {
-                        if(response.isSuccessful() && response.body() != null){
+                        if (response.isSuccessful() && response.body() != null) {
                             displayCafeDetailSheet(cafeId, response.body());
                         } else {
                             Toast.makeText(getContext(), "카페 상세 로드 실패", Toast.LENGTH_SHORT).show();
@@ -185,7 +200,7 @@ public class MyFragment extends Fragment {
     }
 
     private void displayCafeDetailSheet(int cafeId, CafeDetail cafe) {
-        if(cafe == null) return;
+        if (cafe == null) return;
 
         BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
         View v = getLayoutInflater().inflate(R.layout.bottom_sheet_cafe_detail, null);
@@ -224,19 +239,24 @@ public class MyFragment extends Fragment {
 
         // --- 이미지 로드 ---
         List<String> images = cafe.getImages();
-        if(images != null){
-            if(images.size() > 0) Glide.with(requireContext()).load(images.get(0)).placeholder(R.drawable.ic_cafe1_img).into(ivMain);
-            if(images.size() > 1) Glide.with(requireContext()).load(images.get(1)).placeholder(R.drawable.ic_cafe1_img).into(ivSub1);
-            if(images.size() > 2) Glide.with(requireContext()).load(images.get(2)).placeholder(R.drawable.ic_cafe1_img).into(ivSub2);
-            if(images.size() > 3) Glide.with(requireContext()).load(images.get(3)).placeholder(R.drawable.ic_cafe1_img).into(ivSub3);
-            if(images.size() > 4) Glide.with(requireContext()).load(images.get(4)).placeholder(R.drawable.ic_cafe1_img).into(ivSub4);
+        if (images != null) {
+            if (images.size() > 0)
+                Glide.with(requireContext()).load(images.get(0)).placeholder(R.drawable.ic_cafe1_img).into(ivMain);
+            if (images.size() > 1)
+                Glide.with(requireContext()).load(images.get(1)).placeholder(R.drawable.ic_cafe1_img).into(ivSub1);
+            if (images.size() > 2)
+                Glide.with(requireContext()).load(images.get(2)).placeholder(R.drawable.ic_cafe1_img).into(ivSub2);
+            if (images.size() > 3)
+                Glide.with(requireContext()).load(images.get(3)).placeholder(R.drawable.ic_cafe1_img).into(ivSub3);
+            if (images.size() > 4)
+                Glide.with(requireContext()).load(images.get(4)).placeholder(R.drawable.ic_cafe1_img).into(ivSub4);
         }
 
         // --- 리뷰 최근 3개 ---
         List<Review> recentReviews = cafe.getRecentReviews();
-        if(recentReviews == null) recentReviews = new ArrayList<>();
+        if (recentReviews == null) recentReviews = new ArrayList<>();
         List<Review> previewReviews = new ArrayList<>();
-        for(int i=0; i<Math.min(3, recentReviews.size()); i++){
+        for (int i = 0; i < Math.min(3, recentReviews.size()); i++) {
             previewReviews.add(recentReviews.get(i));
         }
         rvPreviewReviews.setAdapter(new ReviewAdapter(previewReviews));
@@ -267,7 +287,7 @@ public class MyFragment extends Fragment {
                 .enqueue(new Callback<BookmarkIsSavedResponse>() {
                     @Override
                     public void onResponse(Call<BookmarkIsSavedResponse> call, Response<BookmarkIsSavedResponse> response) {
-                        if(response.isSuccessful() && response.body() != null){
+                        if (response.isSuccessful() && response.body() != null) {
                             boolean saved = response.body().isSaved();
                             btnSave.setText(saved ? "저장 취소하기" : "저장하기");
                         } else {
@@ -288,8 +308,14 @@ public class MyFragment extends Fragment {
                 .enqueue(new Callback<BookmarkCreateResponse>() {
                     @Override
                     public void onResponse(Call<BookmarkCreateResponse> call, Response<BookmarkCreateResponse> response) {
-                        if(response.isSuccessful() && response.body() != null){
+                        if (response.isSuccessful() && response.body() != null) {
                             btnSave.setText("저장 취소하기");
+
+                            // ★ 북마크 생성 후 마이페이지 정보 & 북마크 목록 새로고침
+                            if (rootView != null) {
+                                loadMyPageInfo(rootView);
+                                loadSavedCafes(rootView);
+                            }
                         } else {
                             Log.e("BookmarkPOST", "저장 실패: " + response.code());
                         }
@@ -308,8 +334,14 @@ public class MyFragment extends Fragment {
                 .enqueue(new Callback<BookmarkDeleteResponse>() {
                     @Override
                     public void onResponse(Call<BookmarkDeleteResponse> call, Response<BookmarkDeleteResponse> response) {
-                        if(response.isSuccessful() && response.body() != null){
+                        if (response.isSuccessful() && response.body() != null) {
                             btnSave.setText("저장하기");
+
+                            // ★ 북마크 삭제 후 마이페이지 정보 & 북마크 목록 새로고침
+                            if (rootView != null) {
+                                loadMyPageInfo(rootView);
+                                loadSavedCafes(rootView);
+                            }
                         } else {
                             Log.e("BookmarkDELETE", "삭제 실패: " + response.code());
                         }
@@ -322,9 +354,9 @@ public class MyFragment extends Fragment {
                 });
     }
 
-    private void toggleBookmark(Context context, int cafeId, Button btnSave){
+    private void toggleBookmark(Context context, int cafeId, Button btnSave) {
         String text = btnSave.getText().toString();
-        if(text.equals("저장하기")){
+        if (text.equals("저장하기")) {
             createBookmark(context, cafeId, btnSave);
         } else {
             deleteBookmark(context, cafeId, btnSave);
