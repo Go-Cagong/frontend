@@ -267,39 +267,48 @@ public class ActivityWriteReview extends AppCompatActivity {
                 });
     }
 
-    // --- OCR 결과 분석: 영수증 여부 판단 ---
+    // --- OCR 결과 분석: 영수증 여부 판단 (키워드 개수 기반) ---
     private void analyzeText(Text result) {
         String fullText = result.getText();
         Log.d(TAG, "OCR 결과:\n" + fullText);
 
         if (fullText == null) fullText = "";
-        String normalized = fullText.replace(" ", "");
 
-        // 간단한 규칙 기반 체크
-        boolean hasKeyword =
-                normalized.contains("영수증") ||
-                        normalized.contains("합계")   ||
-                        normalized.contains("결제")   ||
-                        normalized.contains("금액")   ||
-                        normalized.contains("카드")   ||
-                        normalized.contains("현금")   ||
-                        normalized.contains("승인");
+        // 텍스트 정규화: 모든 공백과 줄바꿈을 제거하고 소문자로 변환하여 비교 정확도 높이기
+        String normalized = fullText.replace(" ", "").replace("\n", "").toLowerCase();
 
-        boolean hasWon = normalized.contains("원");
-        boolean longEnough = fullText.length() > 20;
+        // 1. 핵심 키워드 세트 정의
+        // 영수증에서 자주 발견되는 단어들을 포괄적으로 포함
+        String[] keywords = {
+                "영수증", "합계", "결제", "금액", "카드", "현금",
+                "승인", "부가세", "세액", "매출", "일시", "판매",
+                "원", "vat", "total" // '원'과 영문 키워드 추가
+        };
 
-        boolean isReceipt = (hasKeyword && hasWon) || (hasWon && longEnough);
+        // 2. 키워드 포함 개수 체크
+        int keywordMatchCount = 0;
+        for (String keyword : keywords) {
+            if (normalized.contains(keyword)) {
+                keywordMatchCount++;
+                Log.d(TAG, "키워드 일치: " + keyword);
+            }
+        }
+
+        // 3. 인증 기준 설정: 키워드 3개 이상 포함 시 영수증으로 인정
+        final int KEYWORD_THRESHOLD = 3;
+
+        boolean isReceipt = keywordMatchCount >= KEYWORD_THRESHOLD;
 
         if (isReceipt) {
             // 영수증으로 인정
-            tvReceiptStatus.setText("✅ 영수증으로 인식되었습니다.");
+            tvReceiptStatus.setText("✅ 영수증으로 인식되었습니다. (키워드 " + keywordMatchCount + "개)");
             ivReceiptStatusIcon.setVisibility(View.VISIBLE);
             ivReceiptStatusIcon.setImageResource(R.drawable.ic_check_circle);
             receiptVerified = true;
             Toast.makeText(this, "영수증 인증 완료!", Toast.LENGTH_SHORT).show();
         } else {
             // 영수증 아님
-            tvReceiptStatus.setText(" 영수증으로 인식되지 않았습니다. 다른 사진을 등록해 주세요.");
+            tvReceiptStatus.setText(" 영수증으로 인식되지 않았습니다. (키워드 " + keywordMatchCount + "개 일치)");
             ivReceiptStatusIcon.setVisibility(View.VISIBLE);
             ivReceiptStatusIcon.setImageResource(R.drawable.ic_warning);
             receiptVerified = false;
