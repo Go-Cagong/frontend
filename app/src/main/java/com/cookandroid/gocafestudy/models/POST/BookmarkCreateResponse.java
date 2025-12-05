@@ -9,4 +9,9 @@ public class BookmarkCreateResponse {
     public String message;
     public int bookmark_id;
     public int cafe_id;
+
+    public String getMessage() { return message; }
+    public int getBookmarkId() { return bookmark_id; }
+    public int getCafeId() { return cafe_id; }
 }
+

@@ -47,6 +47,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         holder.tvReviewText.setText(review.getContent());
         holder.tvReviewDate.setText(review.getCreatedAt());
 
+        String createdAt = review.getCreatedAt();   // 예: "2025-11-14T10:21:00"
+        String displayDate = createdAt;
         // --- 리뷰 이미지 처리 ---
         holder.layoutReviewImages.removeAllViews(); // 재사용 대비 초기화
 

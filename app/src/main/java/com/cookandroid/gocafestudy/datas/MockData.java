@@ -169,32 +169,28 @@ public class MockData {
     // ---------------------------
     // 4. /api/user/mypage
     // ---------------------------
-    public static MyPageInfo getMyPageInfo() {
-        // User 객체 생성 (id와 name만 있음)
-        User user = new User(1, "카공러");
-        return new MyPageInfo(user, 8, 6);
-    }
+
 
     // ---------------------------
     // 5. /api/user/reviews
     // ---------------------------
-    public static List<MyReviewItem> getMyReviews() {
-        String img = "ic_cafe1_img";
-        List<MyReviewItem> reviews = new ArrayList<>();
-        reviews.add(new MyReviewItem(101, 201, "센트럴파크 카페", "ic_cafe1_img", 5, "넓은 공간과 편안한 좌석이 인상적이에요...",getRandomImages(img)));
-        reviews.add(new MyReviewItem(98, 305, "송도 스터디룸", "ic_cafe1_img", 4, "카공 전용 공간이라 분위기가 최고예요.",getRandomImages(img)));
-        return reviews;
-    }
+//    public static List<MyReviewItem> getMyReviews() {
+//        String img = "ic_cafe1_img";
+//        List<MyReviewItem> reviews = new ArrayList<>();
+//        reviews.add(new MyReviewItem(101, 201, "센트럴파크 카페", "ic_cafe1_img", 5, "넓은 공간과 편안한 좌석이 인상적이에요...",getRandomImages(img)));
+//        reviews.add(new MyReviewItem(98, 305, "송도 스터디룸", "ic_cafe1_img", 4, "카공 전용 공간이라 분위기가 최고예요.",getRandomImages(img)));
+//        return reviews;
+//    }
 
     // ---------------------------
     // 6. /api/user/bookmarks
     // ---------------------------
-    public static List<Bookmark> getBookmarks() {
-        List<Bookmark> bookmarks = new ArrayList<>();
-        bookmarks.add(new Bookmark(50, 1, 1, "카페 꼼마 송도점", "인천 연수구 센트럴로 263", 4.8, "url", null));
-        bookmarks.add(new Bookmark(51, 1, 2, "스테이그린", "인천 연수구 송도동 123", 4.5, "url", null));
-        return bookmarks;
-    }
+//    public static List<Bookmark> getBookmarks() {
+//        List<Bookmark> bookmarks = new ArrayList<>();
+//        bookmarks.add(new Bookmark(50, 1, 1, "카페 꼼마 송도점", "인천 연수구 센트럴로 263", 4.8, "url", null));
+//        bookmarks.add(new Bookmark(51, 1, 2, "스테이그린", "인천 연수구 송도동 123", 4.5, "url", null));
+//        return bookmarks;
+//    }
 
     // MockData.java
     public static List<User> getUsers() {

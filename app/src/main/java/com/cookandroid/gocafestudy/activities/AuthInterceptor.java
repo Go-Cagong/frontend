@@ -21,7 +21,8 @@ public class AuthInterceptor implements okhttp3.Interceptor {
         okhttp3.Request.Builder builder = original.newBuilder();
 
         if (token != null) {
-            builder.header("Authorization", "Bearer " + token);
+            // 🚨 수정: Cookie 헤더에 access_token=... 형식으로 토큰 전달
+            builder.header("Cookie", "access_token=" + token);
         }
 
         return chain.proceed(builder.build());

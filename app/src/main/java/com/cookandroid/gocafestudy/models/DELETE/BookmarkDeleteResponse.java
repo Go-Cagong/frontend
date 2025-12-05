@@ -5,4 +5,6 @@ package com.cookandroid.gocafestudy.models.DELETE;
 
 public class BookmarkDeleteResponse {
     public String message;
+
+    public String getMessage() { return message; }
 }

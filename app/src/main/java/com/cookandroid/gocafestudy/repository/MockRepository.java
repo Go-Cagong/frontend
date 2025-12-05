@@ -103,13 +103,13 @@ public class MockRepository {
     // ---------------------------
     // Bookmark 관련 (GET)
     // ---------------------------
-    public List<Bookmark> getBookmarksByUserId(int userId) {
-        List<Bookmark> result = new ArrayList<>();
-        for (Bookmark b : MockData.getBookmarks()) {
-            if (b.getUserId() == userId) result.add(b);
-        }
-        return result;
-    }
+//    public List<Bookmark> getBookmarksByUserId(int userId) {
+//        List<Bookmark> result = new ArrayList<>();
+//        for (Bookmark b : MockData.getBookmarks()) {
+//            if (b.getUserId() == userId) result.add(b);
+//        }
+//        return result;
+//    }
     public BookmarkCreateResponse createBookmark(int cafeId) {
         // 실제 서버는 Request Body 없이 URL + 토큰으로 처리 가능
         // MockData에서는 bookmark_id 자동 증가처럼 처리
@@ -125,33 +125,29 @@ public class MockRepository {
 
         return response;
     }
-    public BookmarkDeleteResponse deleteBookmark(int cafeId) {
-        boolean removed = false;
-        Iterator<Bookmark> iter = MockData.getBookmarks().iterator();
-        while (iter.hasNext()) {
-            Bookmark b = iter.next();
-            if (b.getCafeId() == cafeId) {
-                iter.remove();
-                removed = true;
-                break;
-            }
-        }
-        BookmarkDeleteResponse response = new BookmarkDeleteResponse();
-        response.message = removed ? "저장한 카페가 삭제되었습니다." : "삭제할 카페를 찾을 수 없습니다.";
-        return response;
-    }
+//    public BookmarkDeleteResponse deleteBookmark(int cafeId) {
+//        boolean removed = false;
+//        Iterator<Bookmark> iter = MockData.getBookmarks().iterator();
+//        while (iter.hasNext()) {
+//            Bookmark b = iter.next();
+//            if (b.getCafeId() == cafeId) {
+//                iter.remove();
+//                removed = true;
+//                break;
+//            }
+//        }
+//        BookmarkDeleteResponse response = new BookmarkDeleteResponse();
+//        response.message = removed ? "저장한 카페가 삭제되었습니다." : "삭제할 카페를 찾을 수 없습니다.";
+//        return response;
+//    }
 
     // ---------------------------
     // MyPage / User Info (GET)
     // ---------------------------
-    public MyPageInfo getMyPageInfo(int userId) {
-        // 그냥 목데이터 값 그대로
-        return MockData.getMyPageInfo();
-    }
 
-    public List<MyReviewItem> getMyReviews(int userId) {
-        // 이미 MockData에 API 응답 형식으로 데이터가 정의되어 있으므로,
-        // 별도의 변환 없이 MockData 리스트를 바로 반환합니다.
-        return MockData.getMyReviews();
-    }
+//    public List<MyReviewItem> getMyReviews(int userId) {
+//        // 이미 MockData에 API 응답 형식으로 데이터가 정의되어 있으므로,
+//        // 별도의 변환 없이 MockData 리스트를 바로 반환합니다.
+//        return MockData.getMyReviews();
+//    }
 }
