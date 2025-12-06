@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 도트 스타일 커피 아이콘 (픽셀 아트) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+
+    <!-- 컵 몸통 -->
+    <path
+        android:fillColor="@color/coffee_caramel"
+        android:pathData="M20,28 L20,48 L44,48 L44,28 Z"/>
+
+    <!-- 컵 외곽선 (픽셀 스타일) -->
+    <path
+        android:fillColor="@color/coffee_espresso"
+        android:pathData="M16,24 L16,28 L20,28 L20,24 Z
+                         M44,24 L44,28 L48,28 L48,24 Z
+                         M16,48 L16,52 L20,52 L20,48 Z
+                         M44,48 L44,52 L48,52 L48,48 Z"/>
+
+    <!-- 컵 상단 림 -->
+    <path
+        android:fillColor="@color/coffee_dark"
+        android:pathData="M16,24 L48,24 L48,28 L16,28 Z"/>
+
+    <!-- 커피 증기 (도트 스타일) -->
+    <path
+        android:fillColor="@color/coffee_mocha"
+        android:pathData="M24,12 L28,12 L28,16 L24,16 Z
+                         M28,8 L32,8 L32,12 L28,12 Z
+                         M32,12 L36,12 L36,16 L32,16 Z
+                         M36,8 L40,8 L40,12 L36,12 Z"/>
+
+    <!-- 컵 손잡이 -->
+    <path
+        android:fillColor="@color/coffee_caramel"
+        android:pathData="M48,32 L52,32 L52,40 L48,40 Z"/>
+    <path
+        android:fillColor="@color/coffee_espresso"
+        android:pathData="M52,32 L56,32 L56,36 L52,36 Z
+                         M52,36 L56,36 L56,40 L52,40 Z"/>
+</vector>

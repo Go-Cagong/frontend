@@ -1,48 +1,49 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/gradient_my_bg">
-    <!--  App Bar  -->
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_50">
+
+    <!-- Header - Toss Style -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         app:elevation="0dp">
+
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             app:contentInsetStart="0dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:paddingStart="@dimen/spacing_lg"
-                android:paddingEnd="@dimen/spacing_lg">
-                <androidx.cardview.widget.CardView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    app:cardBackgroundColor="@color/yellow_400"
-                    app:cardCornerRadius="@dimen/radius_md"
-                    app:cardElevation="0dp">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_coffee"
-                        app:tint="@color/white"/>
-                </androidx.cardview.widget.CardView>
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/app_name"
-                    android:textSize="20sp"
-                    android:textColor="@color/yellow_600"
-                    android:layout_marginStart="@dimen/spacing_sm"/>
-
-
+                    android:text="마이페이지"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray_900"
+                    android:fontFamily="sans-serif-black"
+                    android:letterSpacing="-0.03" />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
-    <!--  Scrollable Content  -->
+
+    <!-- Scrollable Content - Toss Style -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,104 +52,99 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/spacing_lg">
-            <!--  Profile Card  -->
-            <com.google.android.material.card.MaterialCardView
+            android:orientation="vertical">
+
+            <!-- Profile Card - Toss Style -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_lg"
-                app:cardCornerRadius="@dimen/radius_lg"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp">
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="28dp"
+                android:paddingBottom="28dp">
 
+                <!-- Profile Info -->
                 <LinearLayout
-                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:color="#FFE4E1"
-                    android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="@dimen/spacing_xl">
-                    <!--  Avatar  -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        app:cardBackgroundColor="@color/yellow_400"
-                        app:cardCornerRadius="32dp"
-                        app:cardElevation="0dp">
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                    <!-- Profile Icon -->
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@color/glass_white"
+                        android:layout_marginEnd="16dp">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:layout_gravity="center"
-                            android:text="카공"
-                            android:textColor="@color/white"
-                            android:textSize="18sp" />
-                    </androidx.cardview.widget.CardView>
-                    <!--  Profile Info 영역 (이름 + 로그아웃 버튼) -->
-                    <LinearLayout
+                            android:src="@drawable/cat"
+                            android:contentDescription="프로필 아이콘" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/tv_profile_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/spacing_lg"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:text="@string/profile_name"
+                        android:textColor="@color/gray_900"
+                        android:textStyle="bold"
+                        android:textSize="24sp"
+                        android:fontFamily="sans-serif-black"
+                        android:letterSpacing="-0.03" />
 
-                        <!-- 이름 + 로그아웃 버튼 한 줄 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <TextView
-                                android:id="@+id/tv_profile_name"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="@string/profile_name"
-                                android:textColor="@color/gray_900"
-                                android:textSize="18sp" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn_logout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="로그아웃"
-                                android:textSize="13sp"
-                                android:textColor="@color/white"
-                                app:backgroundTint="#FFD700"
-                                app:cornerRadius="999dp"
-                                android:insetTop="0dp"
-                                android:insetBottom="0dp"
-                                android:layout_marginStart="@dimen/spacing_sm"/>
-
-                        </LinearLayout>
-
-                        <!-- 필요하면 아래에 다른 텍스트/설명 추가 가능 -->
-                        <!-- 예: 등급, 이메일 등 -->
-                    </LinearLayout>
-
-                    <!--  Edit Button  -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_logout"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:text="로그아웃"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gray_600"
+                        app:cornerRadius="0dp"
+                        app:elevation="0dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-            <!--  Stats Grid  -->
+            </LinearLayout>
+
+            <!-- Section Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/gray_50" />
+
+            <!-- My Reviews Menu - Toss Style -->
             <LinearLayout
                 android:id="@+id/menu_my_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:color="#FFE4E1"
-                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/spacing_lg">
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="@dimen/spacing_md"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
                     android:src="@drawable/ic_star"
-                    app:tint="@color/gray_400" />
+                    android:contentDescription="내 리뷰"
+                    app:tint="@color/yellow_primary" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -156,112 +152,91 @@
                     android:layout_weight="1"
                     android:text="@string/my_reviews"
                     android:textColor="@color/gray_900"
-                    android:textSize="14sp" />
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:letterSpacing="-0.02" />
 
                 <TextView
                     android:id="@+id/tv_review_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/spacing_sm"
+                    android:layout_marginEnd="12dp"
                     android:text="0"
-                    android:textColor="@color/gray_400"
-                    android:textSize="14sp" />
+                    android:textColor="@color/gray_500"
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_chevron_right"
+                    android:contentDescription="이동"
                     app:tint="@color/gray_400" />
             </LinearLayout>
 
+            <!-- Section Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/gray_50" />
+
+            <!-- Saved Cafes Section - Toss Style -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_lg"
-                android:orientation="horizontal">
-                <!--  Saved Cafes Stat  -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/spacing_sm"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="@dimen/radius_lg"
-                    app:cardElevation="2dp"
-                    app:strokeWidth="0dp" />
-                <!--  Visited Cafes Stat  -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/spacing_sm"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="@dimen/radius_lg"
-                    app:cardElevation="2dp"
-                    app:strokeWidth="0dp" />
-                <!--  Reviews Stat  -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="@dimen/radius_lg"
-                    app:cardElevation="2dp"
-                    app:strokeWidth="0dp" />
-            </LinearLayout>
-            <!--  Saved Cafes Section  -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_md"
-                android:color="#FFE4E1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:background="@color/white">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/saved_cafes"
-                    android:textColor="@color/gray_900"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/tv_bookmark_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="@color/gray_400"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/btn_view_all_saved"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:padding="@dimen/spacing_sm"
-                    android:text="@string/view_all"
-                    android:textColor="@color/yellow_600"
-                    android:textSize="14sp" />
-            </LinearLayout>
-            <!--  Saved Cafes List  -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_saved_cafes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_xl"
-                android:nestedScrollingEnabled="false" />
-            <!--  Recent Visits Section  -->
-            <!--  Menu Items  -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="@dimen/radius_lg"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp">
-
+                <!-- Section Header -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
-            </com.google.android.material.card.MaterialCardView>
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/saved_cafes"
+                        android:textColor="@color/gray_900"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:letterSpacing="-0.02" />
+
+                    <TextView
+                        android:id="@+id/tv_bookmark_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:text="0"
+                        android:textColor="@color/gray_500"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/btn_view_all_saved"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:padding="8dp"
+                        android:text="@string/view_all"
+                        android:textColor="@color/gray_700"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Saved Cafes List -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_saved_cafes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingBottom="20dp"
+                    android:clipToPadding="false" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

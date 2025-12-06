@@ -80,8 +80,10 @@ public class ActivityReviewList extends AppCompatActivity {
         Button btnWriteReview = findViewById(R.id.btn_write_review);
         if (btnWriteReview != null) {
             btnWriteReview.setOnClickListener(v -> {
-                Intent intent = new Intent(ActivityReviewList.this, ActivityWriteReview.class);
+                Intent intent = new Intent(ActivityReviewList.this, ActivityUploadReceipt.class);
                 intent.putExtra("cafeId", cafeId);
+                String cafeName = getIntent().getStringExtra("cafeName");
+                intent.putExtra("cafeName", cafeName);
                 startActivity(intent);
             });
         }
@@ -113,10 +115,10 @@ public class ActivityReviewList extends AppCompatActivity {
                 int count = body.getReviewCount();      // 서버 DTO에 맞는 이름
 
                 if (tvAvgRating != null) {
-                    tvAvgRating.setText(String.format("%.1f / 5.0", avg));
+                    tvAvgRating.setText(String.format("%.1f", avg));
                 }
                 if (tvReviewCount != null) {
-                    tvReviewCount.setText("(" + count + "개의 리뷰)");
+                    tvReviewCount.setText(count + "개의 리뷰");
                 }
 
                 // 2) 실제 리뷰 리스트 꺼내기

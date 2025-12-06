@@ -1,8 +1,12 @@
 package com.cookandroid.gocafestudy.activities;
 
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.ImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cookandroid.gocafestudy.R;
@@ -17,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         MaterialButton btnGoogleLogin = findViewById(R.id.btn_google_login);
         MaterialButton btnKakaoLogin = findViewById(R.id.btn_kakao_login);
         MaterialButton btnNaverLogin = findViewById(R.id.btn_naver_login);
@@ -24,6 +29,13 @@ public class LoginActivity extends AppCompatActivity {
         btnGoogleLogin.setOnClickListener(v -> openOAuthPage("google"));
         btnKakaoLogin.setOnClickListener(v -> openOAuthPage("kakao"));
         btnNaverLogin.setOnClickListener(v -> openOAuthPage("naver"));
+        ImageView iv = findViewById(R.id.iv_logo);
+        Drawable drawable = iv.getDrawable();
+
+        if (drawable instanceof Animatable) {
+            ((Animatable) drawable).start();
+        }
+
     }
 
     private void openOAuthPage(String provider) {

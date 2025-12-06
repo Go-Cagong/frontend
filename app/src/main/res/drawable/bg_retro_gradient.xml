@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 레트로 커피 그라디언트 배경 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="@color/coffee_milk"
+                android:centerColor="@color/gradient_coffee_mid"
+                android:endColor="@color/coffee_cream"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Subtle dot pattern overlay (simulated with semi-transparent layer) -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/retro_dot_overlay" />
+        </shape>
+    </item>
+</layer-list>

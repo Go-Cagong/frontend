@@ -1,26 +1,85 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--  ========== MODERN COFFEE PALETTE ========== -->
 
-    <color name="text_primary">#111827</color>   <!-- 진한 글자 -->
-    <color name="text_secondary">#6B7280</color> <!-- 보조 글자, 안내/설명용 -->
-    <color name="text_hint">#9CA3AF</color>      <!-- 입력 힌트용 -->
-    <color name="gray">#E5E7EB</color>
-    <color name="background_gray">#F3F4F6</color>   <!-- 배경용 연한 회색 -->
-    <color name="border_gray">#E5E7EB</color>       <!-- 테두리용 회색 -->
-    <color name="star_yellow">#FACC15</color>
-    <!--  Primary Colors  -->
+    <!--  Primary Coffee Colors (메인 컬러)  -->
+    <color name="coffee_primary">#6B4423</color>        <!-- 시그니처 커피 브라운 -->
+    <color name="coffee_dark">#3E2723</color>           <!-- 다크 에스프레소 -->
+    <color name="coffee_medium">#8D6E53</color>         <!-- 미디엄 로스트 -->
+    <color name="coffee_light">#B08968</color>          <!-- 라떼 브라운 -->
+
+    <!--  Accent Coffee Tones (악센트)  -->
+    <color name="caramel">#C19A6B</color>               <!-- 카라멜 -->
+    <color name="caramel_light">#D4A574</color>         <!-- 연한 카라멜 -->
+    <color name="mocha">#A1887F</color>                 <!-- 모카 -->
+    <color name="cream">#E8D5C4</color>                 <!-- 크림 -->
+
+    <!--  Background & Surface Colors  -->
+    <color name="bg_primary">#FFFBF7</color>            <!-- 메인 배경 (따뜻한 화이트) -->
+    <color name="bg_secondary">#FFF5EB</color>          <!-- 세컨더리 배경 (크림) -->
+    <color name="surface">#FFFFFF</color>               <!-- 카드/서피스 -->
+    <color name="surface_elevated">#FFFEFA</color>      <!-- 떠있는 서피스 -->
+
+    <!--  Text Colors  -->
+    <color name="text_primary">#2C1810</color>          <!-- 주요 텍스트 -->
+    <color name="text_secondary">#6B5446</color>        <!-- 보조 텍스트 -->
+    <color name="text_tertiary">#A39082</color>         <!-- 3차 텍스트 -->
+    <color name="text_disabled">#C9B8AA</color>         <!-- 비활성 텍스트 -->
+
+    <!--  Semantic Colors  -->
+    <color name="success">#4CAF50</color>               <!-- 성공 -->
+    <color name="warning">#FF9800</color>               <!-- 경고 -->
+    <color name="error">#F44336</color>                 <!-- 에러 -->
+    <color name="info">#2196F3</color>                  <!-- 정보 -->
+
+    <!--  Glassmorphism & Modern Effects  -->
+    <color name="glass_surface">#E6FFFFFF</color>        <!-- 90% 투명 화이트 -->
+    <color name="glass_surface_light">#B3FFFFFF</color>  <!-- 70% 투명 화이트 -->
+    <color name="glass_border">#33FFFFFF</color>         <!-- 20% 투명 화이트 -->
+    <color name="glass_shadow">#1A000000</color>         <!-- 10% 블랙 그림자 -->
+    <color name="glass_highlight">#40FFFFFF</color>      <!-- 25% 화이트 하이라이트 -->
+
+    <!--  Gradient Colors  -->
+    <color name="gradient_start">#FFFBF7</color>         <!-- 그라디언트 시작 -->
+    <color name="gradient_mid">#FFF5EB</color>           <!-- 그라디언트 중간 -->
+    <color name="gradient_end">#FFEFD5</color>           <!-- 그라디언트 끝 -->
+
+    <!--  Pixel Art Accent Colors  -->
+    <color name="pixel_coffee">#6B4423</color>           <!-- 픽셀 커피 -->
+    <color name="pixel_cream">#F5DEB3</color>            <!-- 픽셀 크림 -->
+    <color name="pixel_steam">#D4D4D4</color>            <!-- 픽셀 증기 -->
+    <color name="pixel_outline">#2C1810</color>          <!-- 픽셀 아웃라인 -->
+
+    <!--  ========== LEGACY COMPATIBILITY ========== -->
+    <color name="coffee_espresso">#2C1810</color>
+    <color name="coffee_caramel">#8D6E53</color>
+    <color name="coffee_mocha">#A1887F</color>
+    <color name="coffee_latte">#BCAAA4</color>
+    <color name="coffee_cream">#EFEBE9</color>
+    <color name="coffee_milk">#FFF8F0</color>
+    <color name="coffee_vanilla">#FFF3E0</color>
+    <color name="coffee_cinnamon">#D84315</color>
+    <color name="coffee_honey">#FFB74D</color>
+    <color name="coffee_caramel_light">#FFCC80</color>
     <color name="yellow">#FFC107</color>
-    <color name="yellow_primary">#FACC15</color>
-    <color name="yellow_dark">#CA8A04</color>
-    <color name="yellow_light">#FEF9C3</color>
-    <color name="yellow_50">#FEFCE8</color>
-    <color name="yellow_100">#FEF9C3</color>
-    <color name="yellow_400">#FACC15</color>
-    <color name="yellow_500">#EAB308</color>
-    <color name="yellow_600">#CA8A04</color>
-    <color name="yellow_700">#A16207</color>
+    <color name="yellow_primary">#D4A574</color>
+    <color name="yellow_dark">#8D6E63</color>
+    <color name="yellow_light">#F5E6D3</color>
+    <color name="yellow_50">#FFF8F0</color>
+    <color name="yellow_100">#F5E6D3</color>
+    <color name="yellow_400">#D4A574</color>
+    <color name="yellow_500">#C19A6B</color>
+    <color name="yellow_600">#A67C52</color>
+    <color name="yellow_700">#8B6F47</color>
+    <color name="gray">#E5E7EB</color>
+    <color name="background_gray">#F3F4F6</color>
+    <color name="border_gray">#E5E7EB</color>
+    <color name="star_yellow">#FACC15</color>
+
     <!--  Neutral Colors  -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="retro_white">#FFFEF9</color>            <!-- 약간 누런 화이트 -->
+    <color name="retro_paper">#F5F1E8</color>            <!-- 종이 질감 -->
     <color name="gray_50">#F9FAFB</color>
     <color name="gray_100">#F3F4F6</color>
     <color name="gray_200">#E5E7EB</color>
@@ -29,8 +88,33 @@
     <color name="gray_600">#4B5563</color>
     <color name="gray_700">#374151</color>
     <color name="gray_900">#111827</color>
-    <!--  Kakao  -->
+
+    <!--  Social Login Colors  -->
     <color name="kakao_yellow">#FEE500</color>
     <color name="kakao_brown">#3C1E1E</color>
+    <color name="naver_green">#03C75A</color>
+    <color name="google_white">#FFFFFF</color>
     <color name="red">#FF0000</color>
+
+    <!--  Retro Effects & Overlays  -->
+    <color name="retro_dot_overlay">#1A2C1810</color>    <!-- 도트 오버레이 -->
+    <color name="retro_shadow">#40000000</color>         <!-- 레트로 그림자 -->
+    <color name="retro_border">#4E342E</color>           <!-- 레트로 테두리 -->
+
+    <!--  Glass/Legacy (하위 호환)  -->
+    <color name="glass_white">#99FFFFFF</color>
+    <color name="glass_white_light">#B3FFFFFF</color>
+    <color name="glass_yellow">#66D4A574</color>
+    <color name="glass_yellow_light">#33D4A574</color>
+    <color name="blur_overlay">#80F9FAFB</color>
+
+    <!--  Retro Gradient Colors  -->
+    <color name="gradient_coffee_start">#FFF8F0</color>  <!-- 크림 시작 -->
+    <color name="gradient_coffee_mid">#F5E6D3</color>    <!-- 베이지 중간 -->
+    <color name="gradient_coffee_end">#EFEBE9</color>    <!-- 크림 끝 -->
+    <color name="gradient_yellow_start">#FEF9C3</color>
+    <color name="gradient_yellow_mid">#FEF3C7</color>
+    <color name="gradient_yellow_end">#FDE68A</color>
+    <color name="gradient_white_start">#FFFBEB</color>
+    <color name="gradient_white_end">#F9FAFB</color>
 </resources>

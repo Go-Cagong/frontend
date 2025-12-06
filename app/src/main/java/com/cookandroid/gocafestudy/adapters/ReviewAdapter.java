@@ -19,10 +19,19 @@ import com.cookandroid.gocafestudy.models.GET.Review;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
     private List<Review> reviewList;
+    private static final int[] ANIMAL_PROFILES = {
+            R.drawable.ic_profile_cat,
+            R.drawable.ic_profile_dog,
+            R.drawable.ic_profile_rabbit,
+            R.drawable.ic_profile_panda,
+            R.drawable.ic_profile_bear
+    };
+    private Random random = new Random();
 
     public ReviewAdapter(List<Review> reviewList) {
         this.reviewList = reviewList;
@@ -40,6 +49,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     @Override
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
         Review review = reviewList.get(position);
+
+        // 랜덤 동물 프로필 사진 배정
+        int randomAnimal = ANIMAL_PROFILES[random.nextInt(ANIMAL_PROFILES.length)];
+        holder.ivProfilePicture.setImageResource(randomAnimal);
 
         holder.tvUserName.setText(review.getUserName());
 
@@ -82,6 +95,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     }
 
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
+        ImageView ivProfilePicture;
         TextView tvUserName;
         RatingBar ratingBar;
         TextView tvReviewText;
@@ -91,6 +105,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
         public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivProfilePicture = itemView.findViewById(R.id.ivProfilePicture);
             tvUserName = itemView.findViewById(R.id.tvUserName);
             ratingBar = itemView.findViewById(R.id.ratingBar);
             tvReviewText = itemView.findViewById(R.id.tvReviewText);

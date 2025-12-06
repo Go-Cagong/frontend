@@ -1,0 +1,41 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- 강아지 귀 (왼쪽) -->
+    <path
+        android:fillColor="#8D6E63"
+        android:pathData="M5,6 L7,4 L7,10 L5,10 Z" />
+
+    <!-- 강아지 귀 (오른쪽) -->
+    <path
+        android:fillColor="#8D6E63"
+        android:pathData="M17,6 L19,4 L19,10 L17,10 Z" />
+
+    <!-- 강아지 얼굴 -->
+    <path
+        android:fillColor="#A1887F"
+        android:pathData="M7,6 L17,6 L17,18 L7,18 Z" />
+
+    <!-- 왼쪽 눈 -->
+    <path
+        android:fillColor="#212121"
+        android:pathData="M9,10 L11,10 L11,12 L9,12 Z" />
+
+    <!-- 오른쪽 눈 -->
+    <path
+        android:fillColor="#212121"
+        android:pathData="M13,10 L15,10 L15,12 L13,12 Z" />
+
+    <!-- 코 -->
+    <path
+        android:fillColor="#212121"
+        android:pathData="M11,13 L13,13 L13,15 L11,15 Z" />
+
+    <!-- 혀 -->
+    <path
+        android:fillColor="#F06292"
+        android:pathData="M11,15 L13,15 L13,16 L11,16 Z" />
+</vector>

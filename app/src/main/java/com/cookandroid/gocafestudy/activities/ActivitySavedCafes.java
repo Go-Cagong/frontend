@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.res.ColorStateList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ import com.cookandroid.gocafestudy.models.GET.Review;
 import com.cookandroid.gocafestudy.models.POST.BookmarkCreateResponse;
 import com.cookandroid.gocafestudy.repository.RetrofitClient;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +124,7 @@ public class ActivitySavedCafes extends AppCompatActivity {
         });
     }
 
-    private void loadBookmarkState(Context context, int cafeId, Button btnSave) {
+    private void loadBookmarkState(Context context, int cafeId, MaterialButton btnSave) {
 
         RetrofitClient.getBookmarkApi(context)
                 .getBookmarkState(cafeId)
@@ -135,11 +137,15 @@ public class ActivitySavedCafes extends AppCompatActivity {
                         if (response.isSuccessful() && response.body() != null) {
                             boolean saved = response.body().isSaved();
 
-                            // 👉 텍스트만 변경
+                            // 👉 아이콘 변경
                             if (saved) {
-                                btnSave.setText("저장 취소하기");
+                                btnSave.setIcon(getDrawable(R.drawable.ic_bookmark_filled));
+                                btnSave.setIconTint(ColorStateList.valueOf(getColor(R.color.yellow_primary)));
+                                btnSave.setTag("saved");
                             } else {
-                                btnSave.setText("저장하기");
+                                btnSave.setIcon(getDrawable(R.drawable.ic_bookmark));
+                                btnSave.setIconTint(ColorStateList.valueOf(getColor(R.color.gray_500)));
+                                btnSave.setTag("not_saved");
                             }
 
                             Log.d("Bookmark", "isSaved = " + saved);
@@ -156,7 +162,7 @@ public class ActivitySavedCafes extends AppCompatActivity {
 
 
     }
-    private void createBookmark(Context context, int cafeId, Button btnSave) {
+    private void createBookmark(Context context, int cafeId, MaterialButton btnSave) {
 
         RetrofitClient.getBookmarkApi(context)
                 .createBookmark(cafeId)
@@ -166,7 +172,10 @@ public class ActivitySavedCafes extends AppCompatActivity {
                     public void onResponse(Call<BookmarkCreateResponse> call,
                                            Response<BookmarkCreateResponse> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            btnSave.setText("저장 취소하기");
+                            btnSave.setIcon(getDrawable(R.drawable.ic_bookmark_filled));
+                            btnSave.setIconTint(ColorStateList.valueOf(getColor(R.color.yellow_primary)));
+                            btnSave.setTag("saved");
+                            Toast.makeText(context, "저장되었습니다", Toast.LENGTH_SHORT).show();
                             Log.d("BookmarkPOST", "저장 완료: " + response.body().getMessage());
                         } else {
                             Log.e("BookmarkPOST", "저장 실패: " + response.code());
@@ -180,7 +189,7 @@ public class ActivitySavedCafes extends AppCompatActivity {
                 });
     }
 
-    private void deleteBookmark(Context context, int cafeId, Button btnSave) {
+    private void deleteBookmark(Context context, int cafeId, MaterialButton btnSave) {
 
         RetrofitClient.getBookmarkApi(context)
                 .deleteBookmark(cafeId)
@@ -190,7 +199,10 @@ public class ActivitySavedCafes extends AppCompatActivity {
                     public void onResponse(Call<BookmarkDeleteResponse> call,
                                            Response<BookmarkDeleteResponse> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            btnSave.setText("저장하기");
+                            btnSave.setIcon(getDrawable(R.drawable.ic_bookmark));
+                            btnSave.setIconTint(ColorStateList.valueOf(getColor(R.color.gray_500)));
+                            btnSave.setTag("not_saved");
+                            Toast.makeText(context, "저장이 취소되었습니다", Toast.LENGTH_SHORT).show();
                             Log.d("BookmarkDELETE", "저장 해제됨: " + response.body().getMessage());
                         } else {
                             Log.e("BookmarkDELETE", "해제 실패: " + response.code());
@@ -340,16 +352,16 @@ public class ActivitySavedCafes extends AppCompatActivity {
             dialog.dismiss();
         });
 
-        Button btnSave = v.findViewById(R.id.btn_save);
+        MaterialButton btnSave = v.findViewById(R.id.btn_save);
         loadBookmarkState(ActivitySavedCafes.this, cafeId, btnSave);
 
         btnSave.setOnClickListener(view -> {
-            String currentText = btnSave.getText().toString();
+            String currentState = (String) btnSave.getTag();
 
-            if (currentText.equals("저장하기")) {
-                createBookmark(ActivitySavedCafes.this, cafeId, btnSave);
-            } else {
+            if ("saved".equals(currentState)) {
                 deleteBookmark(ActivitySavedCafes.this, cafeId, btnSave);
+            } else {
+                createBookmark(ActivitySavedCafes.this, cafeId, btnSave);
             }
         });
 

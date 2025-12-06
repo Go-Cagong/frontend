@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 빈 상태 픽셀 일러스트 (텅 빈 커피잔) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- 그림자 -->
+    <path
+        android:fillColor="#30000000"
+        android:pathData="M30,100 L30,108 L90,108 L90,100 Z"/>
+
+    <!-- 빈 커피컵 몸통 -->
+    <path
+        android:fillColor="@color/cream"
+        android:pathData="M30,50 L30,90 L90,90 L90,50 Z"/>
+
+    <!-- 컵 외곽선 -->
+    <path
+        android:fillColor="@color/coffee_medium"
+        android:pathData="M24,44 L24,50 L30,50 L30,44 Z
+                         M90,44 L90,50 L96,50 L96,44 Z
+                         M24,90 L24,96 L30,96 L30,90 Z
+                         M90,90 L90,96 L96,96 L96,90 Z"/>
+
+    <!-- 컵 상단 림 -->
+    <path
+        android:fillColor="@color/caramel"
+        android:pathData="M24,44 L96,44 L96,50 L24,50 Z"/>
+
+    <!-- 빈 내부 표시 (음영) -->
+    <path
+        android:fillColor="#20000000"
+        android:pathData="M30,54 L90,54 L90,90 L30,90 Z"/>
+
+    <!-- 슬픈 얼굴 (눈) -->
+    <path
+        android:fillColor="@color/coffee_dark"
+        android:pathData="M42,64 L48,64 L48,70 L42,70 Z
+                         M72,64 L78,64 L78,70 L72,70 Z"/>
+
+    <!-- 슬픈 입 -->
+    <path
+        android:fillColor="@color/coffee_dark"
+        android:pathData="M48,78 L72,78 L72,84 L48,84 Z
+                         M42,84 L48,84 L48,90 L42,90 Z
+                         M72,84 L78,84 L78,90 L72,90 Z"/>
+
+    <!-- 손잡이 -->
+    <path
+        android:fillColor="@color/caramel_light"
+        android:pathData="M96,60 L102,60 L102,80 L96,80 Z"/>
+    <path
+        android:fillColor="@color/coffee_medium"
+        android:pathData="M102,60 L108,60 L108,66 L102,66 Z
+                         M102,74 L108,74 L108,80 L102,80 Z"/>
+</vector>

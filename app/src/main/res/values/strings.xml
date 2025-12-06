@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Go 카공</string>
+    <string name="app_name">고-카공</string>
     <!--  Login Screen  -->
     <string name="login_subtitle">카공하기 좋은 카페를 찾아보세요</string>
     <string name="login_google">Google로 계속하기</string>
@@ -8,9 +8,9 @@
     <string name="login_terms">로그인하시면 이용약관 및 개인정보처리방침에 동의하는 것으로 간주됩니다</string>
     <!--  Bottom Navigation  -->
     <string name="nav_map">지도</string>
-    <string name="nav_my">MY</string>
+    <string name="nav_my">마이페이지</string>
     <!--  Map Screen  -->
-    <string name="ai_summary">AI 요약 리뷰</string>
+    <string name="ai_summary">AI 리뷰요약</string>
     <string name="address_label">주소</string>
     <string name="hours_label">영업시간</string>
     <string name="rating_label">평점</string>

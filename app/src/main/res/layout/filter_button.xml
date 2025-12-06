@@ -3,71 +3,107 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainFrame"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="wrap_content"
     tools:context=".activities.MainActivity">
 
-    <!-- 상단 필터 버튼 영역 -->
+    <!-- 상단 필터 칩 영역 -->
     <HorizontalScrollView
         android:id="@+id/filterScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
+        android:layout_height="wrap_content"
         android:scrollbars="none"
         android:background="@android:color/transparent"
-        android:padding="0dp"
-        android:layout_gravity="top">
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:id="@+id/filterContainer"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp">
 
-            <Button
+            <!-- 분위기 칩 -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFilter1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
                 android:text="분위기"
-                android:textColor="@color/black"
-                android:background="@drawable/filter_button_background"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/gray_700"
+                android:background="@drawable/bg_filter_chip"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
                 app:backgroundTint="@null"
-                android:backgroundTint="@null"
-                android:layout_marginEnd="8dp" />
+                app:rippleColor="#20000000"
+                app:strokeWidth="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginEnd="6dp"
+                android:minWidth="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/ic_atmosphere"
+                app:iconTint="@null"
+                app:iconSize="18dp" />
 
-            <Button
+            <!-- 가격 칩 -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFilter3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.25"
-                android:text="아메리카노 가격"
-                android:textColor="@color/black"
-                android:background="@drawable/filter_button_background"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="가격"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/gray_700"
+                android:background="@drawable/bg_filter_chip"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
                 app:backgroundTint="@null"
-                android:backgroundTint="@null"
-                android:layout_marginEnd="8dp" />
+                app:rippleColor="#20000000"
+                app:strokeWidth="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginEnd="6dp"
+                android:minWidth="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/ic_price"
+                app:iconTint="@null"
+                app:iconSize="18dp"/>
 
-            <Button
+            <!-- 주차 칩 -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFilter4"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
                 android:text="주차"
-                android:textColor="@color/black"
-                android:background="@drawable/filter_button_background"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/gray_700"
+                android:background="@drawable/bg_filter_chip"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
                 app:backgroundTint="@null"
-                android:backgroundTint="@null" />
+                app:rippleColor="#20000000"
+                app:strokeWidth="0dp"
+                android:minWidth="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/ic_parking"
+                app:iconTint="@null"
+                app:iconSize="18dp"/>
+
         </LinearLayout>
     </HorizontalScrollView>
 
-
-    <ListView
-        android:id="@+id/optionListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="#CCCCCC"
-        android:dividerHeight="1dp"
-        android:background="@drawable/filter_button_background"
-        android:visibility="gone" />
 </FrameLayout>

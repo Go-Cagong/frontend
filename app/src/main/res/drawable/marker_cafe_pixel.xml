@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 픽셀 아트 카페 마커 (지도용) -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 그림자 -->
+    <item
+        android:top="48dp"
+        android:left="8dp">
+        <shape android:shape="oval">
+            <size android:width="32dp" android:height="8dp"/>
+            <solid android:color="#40000000"/>
+        </shape>
+    </item>
+
+    <!-- 마커 본체 -->
+    <item
+        android:width="48dp"
+        android:height="56dp"
+        android:gravity="top">
+        <vector
+            android:width="48dp"
+            android:height="56dp"
+            android:viewportWidth="48"
+            android:viewportHeight="56">
+
+            <!-- 핀 메인 바디 -->
+            <path
+                android:fillColor="@color/caramel_light"
+                android:pathData="M12,8 L12,28 L36,28 L36,8 Z"/>
+
+            <!-- 핀 외곽선 -->
+            <path
+                android:fillColor="@color/pixel_outline"
+                android:pathData="M8,8 L8,12 L12,12 L12,8 Z
+                                 M36,8 L36,12 L40,12 L40,8 Z
+                                 M8,28 L8,32 L12,32 L12,28 Z
+                                 M36,28 L36,32 L40,32 L40,28 Z"/>
+
+            <!-- 핀 둥근 상단 -->
+            <path
+                android:fillColor="@color/caramel"
+                android:pathData="M12,4 L36,4 L36,8 L12,8 Z"/>
+            <path
+                android:fillColor="@color/pixel_outline"
+                android:pathData="M8,4 L8,8 L12,8 L12,4 Z
+                                 M36,4 L36,8 L40,8 L40,4 Z"/>
+            <path
+                android:fillColor="@color/caramel"
+                android:pathData="M16,0 L32,0 L32,4 L16,4 Z"/>
+
+            <!-- 커피잔 아이콘 (중앙) -->
+            <path
+                android:fillColor="@color/coffee_primary"
+                android:pathData="M18,14 L18,22 L30,22 L30,14 Z"/>
+
+            <!-- 커피잔 테두리 -->
+            <path
+                android:fillColor="@color/pixel_outline"
+                android:pathData="M16,12 L16,14 L18,14 L18,12 Z
+                                 M30,12 L30,14 L32,14 L32,12 Z"/>
+            <path
+                android:fillColor="@color/pixel_outline"
+                android:pathData="M16,12 L32,12 L32,14 L16,14 Z"/>
+
+            <!-- 증기 (귀여운 도트) -->
+            <path
+                android:fillColor="@color/pixel_steam"
+                android:pathData="M20,8 L22,8 L22,10 L20,10 Z
+                                 M26,8 L28,8 L28,10 L26,10 Z
+                                 M23,6 L25,6 L25,8 L23,8 Z"/>
+
+            <!-- 핀 하단 뾰족 부분 -->
+            <path
+                android:fillColor="@color/caramel_light"
+                android:pathData="M18,32 L30,32 L30,36 L18,36 Z"/>
+            <path
+                android:fillColor="@color/caramel_light"
+                android:pathData="M20,36 L28,36 L28,40 L20,40 Z"/>
+            <path
+                android:fillColor="@color/caramel_light"
+                android:pathData="M22,40 L26,40 L26,48 L22,48 Z"/>
+            <path
+                android:fillColor="@color/caramel_light"
+                android:pathData="M23,48 L25,48 L25,52 L23,52 Z"/>
+        </vector>
+    </item>
+</layer-list>

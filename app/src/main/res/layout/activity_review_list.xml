@@ -5,23 +5,24 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_my_bg">
+    android:background="@color/gray_50">
 
-    <!-- Header -->
+    <!-- Header - Toss Style -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:background="@color/white"
-        android:elevation="2dp">
+        android:paddingStart="8dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:background="@color/white">
 
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_left"
             android:contentDescription="뒤로가기" />
@@ -30,45 +31,135 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="12dp"
-            android:text="리뷰보기"
-            android:textSize="18sp" />
+            android:text="리뷰"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/gray_900"
+            android:letterSpacing="-0.02" />
     </LinearLayout>
-    <!-- 리뷰 요약 헤더 -->
-    <!-- 리뷰 요약 헤더 -->
+
+    <!-- 리뷰 요약 카드 - Toss Style Big Number -->
     <LinearLayout
         android:id="@+id/layout_review_summary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="center_vertical">
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="48dp"
+        android:paddingBottom="48dp"
+        android:background="@color/white">
 
-        <ImageView
-            android:id="@+id/img_star"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_star"
-            android:tint="#FFC107"
-            android:layout_marginEnd="6dp"/>
-
-        <TextView
-            android:id="@+id/tv_avg_rating"
+        <!-- 평균 평점 - 대형 숫자 -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0.0 / 5.0"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:paddingEnd="8dp"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
 
+            <TextView
+                android:id="@+id/tv_avg_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0"
+                android:textSize="56sp"
+                android:textStyle="bold"
+                android:textColor="@color/gray_900"
+                android:fontFamily="sans-serif-black"
+                android:letterSpacing="-0.04" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/5.0"
+                android:textSize="24sp"
+                android:textColor="@color/gray_400"
+                android:layout_marginStart="6dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="8dp" />
+        </LinearLayout>
+
+        <!-- 별 5개 표시 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_star"
+                app:tint="@color/yellow_600"
+                android:layout_marginEnd="4dp" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_star"
+                app:tint="@color/yellow_600"
+                android:layout_marginEnd="4dp" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_star"
+                app:tint="@color/yellow_600"
+                android:layout_marginEnd="4dp" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_star"
+                app:tint="@color/yellow_600"
+                android:layout_marginEnd="4dp" />
+
+            <ImageView
+                android:id="@+id/img_star"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_star"
+                app:tint="@color/yellow_600" />
+        </LinearLayout>
+
+        <!-- 리뷰 개수 -->
         <TextView
             android:id="@+id/tv_review_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(0개의 리뷰)"
-            android:textSize="14sp"/>
+            android:text="0개의 리뷰"
+            android:textSize="15sp"
+            android:textColor="@color/gray_500" />
     </LinearLayout>
 
+    <!-- 섹션 구분 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:background="@color/gray_50" />
+
+    <!-- 전체 리뷰 헤더 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="12dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="리뷰 목록이에요"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/gray_900"
+            android:letterSpacing="-0.02" />
+    </LinearLayout>
 
     <!-- 리뷰 리스트 -->
     <androidx.recyclerview.widget.RecyclerView
@@ -76,17 +167,33 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingBottom="80dp"
-        android:clipToPadding="false"
-        android:scrollbars="vertical" />
+        android:background="@color/white"
+        android:paddingBottom="96dp"
+        android:clipToPadding="false" />
 
-    <!-- 고정 리뷰 작성 버튼 -->
-    <Button
-        android:id="@+id/btn_write_review"
+    <!-- 하단 고정 버튼 영역 -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="리뷰 작성하기"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/yellow_primary"
-        android:layout_margin="16dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:elevation="8dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_write_review"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="리뷰 작성하기"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/gray_900"
+            app:backgroundTint="@color/yellow_primary"
+            app:cornerRadius="0dp"
+            app:elevation="0dp"
+            android:letterSpacing="-0.01" />
+    </LinearLayout>
 </LinearLayout>

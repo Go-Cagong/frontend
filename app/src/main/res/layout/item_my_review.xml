@@ -1,93 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_marginBottom="16dp"
     android:layout_height="wrap_content"
-    card_view:cardElevation="4dp"
-    card_view:cardCornerRadius="12dp"
-    android:background="@android:color/white">
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:layout_marginBottom="1dp">
 
+    <!-- Profile Picture - Toss Style Circle -->
+    <ImageView
+        android:id="@+id/ivProfilePicture"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:src="@drawable/ic_profile_dog"
+        android:background="@drawable/bg_profile_circle"
+        android:padding="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_gravity="top" />
+
+    <!-- Content -->
     <LinearLayout
-        android:padding="12dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <!-- 상단 : 카페 이미지 + 이름 + 별점 -->
+        <!-- Header: Cafe Name + Date -->
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
 
-
-            <LinearLayout
-                android:layout_marginStart="12dp"
-                android:orientation="vertical"
+            <TextView
+                android:id="@+id/tvCafeName"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_height="wrap_content">
+                android:text="카페 이름"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/gray_900"
+                android:letterSpacing="-0.02" />
 
-                <TextView
-                    android:id="@+id/tvCafeName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="카페 이름"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_primary"
-                    android:fontFamily="sans-serif-medium"/>
-
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    android:progressTint="@color/star_yellow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:numStars="5"
-                    android:stepSize="1"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:rating="4"
-                    android:layout_marginStart="-50dp"
-                    android:isIndicator="true"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvReviewText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="리뷰 내용이 여기에 들어갑니다."
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp" />
-        <!-- 리뷰 사진 (있을 경우 표시) -->
-        <HorizontalScrollView
-            android:id="@+id/scrollReviewImages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:scrollbars="horizontal"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:id="@+id/layoutReviewImages"
+            <TextView
+                android:id="@+id/tvReviewDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="4dp" />
-        </HorizontalScrollView>
-        <!-- 하단 : 삭제 버튼 -->
+                android:text="2025-01-01"
+                android:textColor="@color/gray_500"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+    <!-- Rating Bar -->
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="47dp"
+            android:layout_marginBottom="0dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:progressTint="@color/yellow_600"
+            android:rating="4"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:stepSize="1"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp" />
+
+    <!-- Review Text -->
+    <TextView
+        android:id="@+id/tvReviewText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="리뷰 내용이 들어갑니다."
+        android:textSize="15sp"
+        android:textColor="@color/gray_700"
+        android:lineSpacingMultiplier="1.4"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Review Images -->
+    <HorizontalScrollView
+        android:id="@+id/scrollReviewImages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginBottom="12dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/layoutReviewImages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
+
+        <!-- Delete Button -->
         <TextView
             android:id="@+id/btnDelete"
-            android:layout_width="385dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="4dp"
-            android:textColor="@color/red"
             android:text="삭제"
-            android:textSize="14sp" />
+            android:textColor="@color/red"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:background="?attr/selectableItemBackground"
+            android:padding="8dp" />
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</LinearLayout>
