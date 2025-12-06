@@ -67,6 +67,7 @@
 
         <activity android:name=".activities.ActivityMyReviews" />
         <activity android:name=".activities.ActivityReviewList" />
+        <activity android:name=".activities.ActivityUploadReceipt" />
         <activity android:name=".activities.ActivityWriteReview" />
         <activity android:name=".activities.ActivitySavedCafes" />
 

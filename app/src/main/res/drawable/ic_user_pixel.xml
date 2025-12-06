@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 픽셀 아트 유저/마이 아이콘 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- 머리 (둥근 원형) -->
+    <path
+        android:fillColor="@color/coffee_light"
+        android:pathData="M9,4 L15,4 L15,10 L9,10 Z"/>
+
+    <!-- 머리 외곽 -->
+    <path
+        android:fillColor="@color/pixel_outline"
+        android:pathData="M7,4 L7,6 L9,6 L9,4 Z
+                         M15,4 L15,6 L17,6 L17,4 Z
+                         M7,10 L7,12 L9,12 L9,10 Z
+                         M15,10 L15,12 L17,12 L17,10 Z"/>
+
+    <!-- 머리 둥근 상단 -->
+    <path
+        android:fillColor="@color/coffee_light"
+        android:pathData="M9,2 L15,2 L15,4 L9,4 Z"/>
+    <path
+        android:fillColor="@color/pixel_outline"
+        android:pathData="M7,2 L7,4 L9,4 L9,2 Z
+                         M15,2 L15,4 L17,4 L17,2 Z"/>
+
+    <!-- 눈 -->
+    <path
+        android:fillColor="@color/pixel_outline"
+        android:pathData="M10,6 L11,6 L11,7 L10,7 Z
+                         M13,6 L14,6 L14,7 L13,7 Z"/>
+
+    <!-- 미소 -->
+    <path
+        android:fillColor="@color/pixel_outline"
+        android:pathData="M10,8 L11,8 L11,9 L10,9 Z
+                         M13,8 L14,8 L14,9 L13,9 Z
+                         M11,9 L13,9 L13,10 L11,10 Z"/>
+
+    <!-- 몸통 (넓은 사다리꼴) -->
+    <path
+        android:fillColor="@color/coffee_primary"
+        android:pathData="M5,12 L19,12 L19,20 L5,20 Z"/>
+
+    <!-- 몸통 외곽 -->
+    <path
+        android:fillColor="@color/pixel_outline"
+        android:pathData="M3,12 L3,14 L5,14 L5,12 Z
+                         M19,12 L19,14 L21,14 L21,12 Z
+                         M3,20 L3,22 L5,22 L5,20 Z
+                         M19,20 L19,22 L21,22 L21,20 Z"/>
+
+    <!-- 몸통 상단 라인 -->
+    <path
+        android:fillColor="@color/pixel_outline"
+        android:pathData="M3,12 L21,12 L21,13 L3,13 Z"/>
+</vector>

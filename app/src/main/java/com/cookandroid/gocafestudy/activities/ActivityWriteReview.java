@@ -4,12 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -31,11 +28,7 @@ import com.cookandroid.gocafestudy.repository.RetrofitClient;
 import com.cookandroid.gocafestudy.utils.UserSessionManager;
 import com.cookandroid.gocafestudy.models.GET.UserResponse;
 import com.cookandroid.gocafestudy.models.POST.ReviewCreateResponse;
-
-import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.text.Text;
-import com.google.mlkit.vision.text.TextRecognition;
-import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions;
+import com.google.android.material.button.MaterialButton;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -54,62 +47,52 @@ import java.util.List;
 public class ActivityWriteReview extends AppCompatActivity {
 
     private static final String TAG = "WriteReviewActivity";
-
-    private EditText etReview;
-    private Button btnSubmit, btnCamera, btnGallery;
-
-    // --- 영수증 관련 ---
-    private ImageView ivReceiptPreview, ivRemoveImage, ivReceiptStatusIcon;
-    private LinearLayout layoutReceiptStatus, layoutImagePlaceholder;
-    private TextView tvReceiptStatus, tvCharCount;
-    private RatingBar ratingBar;
-    private boolean receiptVerified = false;   // 🔥 이제 기본값은 false
-
-    // --- 리뷰 사진 관련 ---
-    private LinearLayout layoutReviewImages;
-    private Button btnReviewCamera, btnReviewGallery;
-    private List<Bitmap> reviewBitmaps = new ArrayList<>();
+    private static final int PERMISSION_CAMERA_REQUEST = 2000;
     private static final int MAX_REVIEW_IMAGES = 5;
 
-    // --- ActivityResultLauncher ---
-    private ActivityResultLauncher<Void> cameraLauncher;
-    private ActivityResultLauncher<String> galleryLauncher;
+    private EditText etReview;
+    private MaterialButton btnSubmit, btnReviewCamera, btnReviewGallery;
+    private TextView tvCharCount, tvCafeName;
+    private RatingBar ratingBar;
+    private LinearLayout layoutReviewImages;
+    private List<Bitmap> reviewBitmaps = new ArrayList<>();
+
+    private int cafeId;
+    private String cafeName;
+
     private ActivityResultLauncher<Void> reviewCameraLauncher;
     private ActivityResultLauncher<String> reviewGalleryLauncher;
-
-    private static final int PERMISSION_CAMERA_REQUEST = 2000;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_review);
 
-        // --- View 초기화 ---
+        // Intent에서 cafeId, cafeName 받기
+        cafeId = getIntent().getIntExtra("cafeId", -1);
+        cafeName = getIntent().getStringExtra("cafeName");
+
+        if (cafeId == -1) {
+            Toast.makeText(this, "카페 정보가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // View 초기화
         etReview = findViewById(R.id.etReview);
         btnSubmit = findViewById(R.id.btnSubmit);
-        btnCamera = findViewById(R.id.btnCamera);
-        btnGallery = findViewById(R.id.btnGallery);
-        ivReceiptPreview = findViewById(R.id.ivReceiptPreview);
-        ivRemoveImage = findViewById(R.id.ivRemoveImage);
-        layoutReceiptStatus = findViewById(R.id.layoutReceiptStatus);
-        layoutImagePlaceholder = findViewById(R.id.layoutImagePlaceholder);
-        tvReceiptStatus = findViewById(R.id.tvReceiptStatus);
         tvCharCount = findViewById(R.id.tvCharCount);
         ratingBar = findViewById(R.id.ratingBar);
-        ivReceiptStatusIcon = findViewById(R.id.ivReceiptStatusIcon);
-
         layoutReviewImages = findViewById(R.id.layoutReviewImages);
         btnReviewCamera = findViewById(R.id.btnReviewCamera);
         btnReviewGallery = findViewById(R.id.btnReviewGallery);
+        tvCafeName = findViewById(R.id.tvCafeName);
+
+        tvCafeName.setText(cafeName != null ? cafeName : "");
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
-        // 🔥 초기에는 영수증 인증 안내만, verified=false
-        layoutReceiptStatus.setVisibility(View.VISIBLE);
-        tvReceiptStatus.setText("영수증 사진을 등록해 주세요.");
-        ivReceiptStatusIcon.setVisibility(View.GONE); // 아직 인증 전
-
-        // --- 글자 수 감지 ---
+        // 글자 수 감지
         etReview.addTextChangedListener(new android.text.TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void afterTextChanged(android.text.Editable s) {}
@@ -120,34 +103,15 @@ public class ActivityWriteReview extends AppCompatActivity {
             }
         });
 
-        // --- 별점 감지 ---
+        // 별점 감지
         ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> checkSubmitEnable());
 
-        // --- 영수증용 카메라/갤러리 ---
-        cameraLauncher = registerForActivityResult(
-                new ActivityResultContracts.TakePicturePreview(),
-                this::processReceiptBitmap
-        );
-        galleryLauncher = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                uri -> {
-                    if (uri != null) {
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                            processReceiptBitmap(bitmap);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(this, "이미지 처리 실패", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-        );
-
-        // --- 리뷰 사진용 카메라/갤러리 ---
+        // 리뷰 사진용 카메라/갤러리
         reviewCameraLauncher = registerForActivityResult(
                 new ActivityResultContracts.TakePicturePreview(),
                 this::addReviewImage
         );
+
         reviewGalleryLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 uri -> {
@@ -162,12 +126,6 @@ public class ActivityWriteReview extends AppCompatActivity {
                     }
                 }
         );
-
-        // --- 버튼 클릭 리스너 ---
-        btnCamera.setOnClickListener(v -> checkPermissionAndLaunchCamera());
-        btnGallery.setOnClickListener(v -> galleryLauncher.launch("image/*"));
-        ivRemoveImage.setOnClickListener(v -> removeReceipt());
-        btnSubmit.setOnClickListener(v -> submitReview());
 
         btnReviewCamera.setOnClickListener(v -> {
             if (reviewBitmaps.size() >= MAX_REVIEW_IMAGES) {
@@ -185,20 +143,11 @@ public class ActivityWriteReview extends AppCompatActivity {
             reviewGalleryLauncher.launch("image/*");
         });
 
+        btnSubmit.setOnClickListener(v -> submitReview());
+
         checkSubmitEnable();
     }
 
-    // --- 권한 체크 (영수증) ---
-    private void checkPermissionAndLaunchCamera() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSION_CAMERA_REQUEST);
-        } else {
-            cameraLauncher.launch(null);
-        }
-    }
-
-    // --- 권한 체크 (리뷰 사진) ---
     private void checkReviewImagePermissionAndLaunchCamera() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -215,110 +164,13 @@ public class ActivityWriteReview extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_CAMERA_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 여기서는 영수증 카메라 쪽으로 통일
-                cameraLauncher.launch(null);
+                reviewCameraLauncher.launch(null);
             } else {
                 Toast.makeText(this, "카메라 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    // --- 영수증 제거 ---
-    private void removeReceipt() {
-        ivReceiptPreview.setVisibility(View.GONE);
-        ivRemoveImage.setVisibility(View.GONE);
-        layoutImagePlaceholder.setVisibility(View.VISIBLE);
-
-        receiptVerified = false;   // 🔥 다시 false로
-        layoutReceiptStatus.setVisibility(View.VISIBLE);
-        tvReceiptStatus.setText("영수증 사진을 등록해 주세요.");
-        ivReceiptStatusIcon.setVisibility(View.GONE);
-
-        checkSubmitEnable();
-    }
-
-    // --- 영수증 사진 처리 + OCR ---
-    private void processReceiptBitmap(Bitmap bitmap) {
-        if (bitmap == null) return;
-
-        ivReceiptPreview.setImageBitmap(bitmap);
-        ivReceiptPreview.setVisibility(View.VISIBLE);
-        ivRemoveImage.setVisibility(View.VISIBLE);
-        layoutImagePlaceholder.setVisibility(View.GONE);
-
-        layoutReceiptStatus.setVisibility(View.VISIBLE);
-        tvReceiptStatus.setText("영수증 분석 중...");
-        ivReceiptStatusIcon.setVisibility(View.GONE);
-
-        receiptVerified = false;
-        checkSubmitEnable();
-
-        InputImage image = InputImage.fromBitmap(bitmap, 0);
-        TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build())
-                .process(image)
-                .addOnSuccessListener(this::analyzeText)
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "OCR 실패", e);
-                    tvReceiptStatus.setText("영수증을 인식하지 못했습니다. 다시 시도해 주세요.");
-                    ivReceiptStatusIcon.setVisibility(View.VISIBLE);
-                    ivReceiptStatusIcon.setImageResource(R.drawable.ic_warning); // 경고 아이콘 하나 만들어놨으면 좋음
-                    receiptVerified = false;
-                    checkSubmitEnable();
-                });
-    }
-
-    // --- OCR 결과 분석: 영수증 여부 판단 (키워드 개수 기반) ---
-    private void analyzeText(Text result) {
-        String fullText = result.getText();
-        Log.d(TAG, "OCR 결과:\n" + fullText);
-
-        if (fullText == null) fullText = "";
-
-        // 텍스트 정규화: 모든 공백과 줄바꿈을 제거하고 소문자로 변환하여 비교 정확도 높이기
-        String normalized = fullText.replace(" ", "").replace("\n", "").toLowerCase();
-
-        // 1. 핵심 키워드 세트 정의
-        // 영수증에서 자주 발견되는 단어들을 포괄적으로 포함
-        String[] keywords = {
-                "영수증", "합계", "결제", "금액", "카드", "현금",
-                "승인", "부가세", "세액", "매출", "일시", "판매",
-                "원", "vat", "total" // '원'과 영문 키워드 추가
-        };
-
-        // 2. 키워드 포함 개수 체크
-        int keywordMatchCount = 0;
-        for (String keyword : keywords) {
-            if (normalized.contains(keyword)) {
-                keywordMatchCount++;
-                Log.d(TAG, "키워드 일치: " + keyword);
-            }
-        }
-
-        // 3. 인증 기준 설정: 키워드 3개 이상 포함 시 영수증으로 인정
-        final int KEYWORD_THRESHOLD = 3;
-
-        boolean isReceipt = keywordMatchCount >= KEYWORD_THRESHOLD;
-
-        if (isReceipt) {
-            // 영수증으로 인정
-            tvReceiptStatus.setText("✅ 영수증으로 인식되었습니다. (키워드 " + keywordMatchCount + "개)");
-            ivReceiptStatusIcon.setVisibility(View.VISIBLE);
-            ivReceiptStatusIcon.setImageResource(R.drawable.ic_check_circle);
-            receiptVerified = true;
-            Toast.makeText(this, "영수증 인증 완료!", Toast.LENGTH_SHORT).show();
-        } else {
-            // 영수증 아님
-            tvReceiptStatus.setText(" 영수증으로 인식되지 않았습니다. (키워드 " + keywordMatchCount + "개 일치)");
-            ivReceiptStatusIcon.setVisibility(View.VISIBLE);
-            ivReceiptStatusIcon.setImageResource(R.drawable.ic_warning);
-            receiptVerified = false;
-            Toast.makeText(this, "영수증이 아닌 것으로 인식되었습니다.", Toast.LENGTH_SHORT).show();
-        }
-
-        checkSubmitEnable();
-    }
-
-    // --- 리뷰 사진 추가 ---
     private void addReviewImage(Bitmap bitmap) {
         if (bitmap == null) return;
 
@@ -330,18 +182,20 @@ public class ActivityWriteReview extends AppCompatActivity {
         reviewBitmaps.add(bitmap);
 
         ImageView imageView = new ImageView(this);
-        int sizePx = (int) (160 * getResources().getDisplayMetrics().density);
-        int marginPx = (int) (16 * getResources().getDisplayMetrics().density);
+        int sizePx = (int) (120 * getResources().getDisplayMetrics().density);
+        int marginPx = (int) (12 * getResources().getDisplayMetrics().density);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(sizePx, sizePx);
         params.setMargins(0, 0, marginPx, 0);
 
         imageView.setLayoutParams(params);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setImageBitmap(bitmap);
+        imageView.setBackground(ContextCompat.getDrawable(this, R.drawable.bg_glass_card));
 
         imageView.setOnClickListener(v -> {
             layoutReviewImages.removeView(imageView);
             reviewBitmaps.remove(bitmap);
+            Toast.makeText(this, "사진 삭제됨", Toast.LENGTH_SHORT).show();
         });
 
         layoutReviewImages.addView(imageView);
@@ -350,18 +204,12 @@ public class ActivityWriteReview extends AppCompatActivity {
         scrollView.post(() -> scrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT));
     }
 
-    // --- 제출 버튼 활성화 ---
     private void checkSubmitEnable() {
         boolean enable = etReview.getText().length() >= 10
-                && receiptVerified
                 && ratingBar.getRating() > 0;
         btnSubmit.setEnabled(enable);
-        btnSubmit.setBackgroundColor(enable ?
-                ContextCompat.getColor(this, R.color.yellow_primary) :
-                ContextCompat.getColor(this, android.R.color.darker_gray));
     }
 
-    // --- Bitmap → File ---
     private File getTempFileFromBitmap(Context context, Bitmap bitmap, String fileName) throws IOException {
         File file = new File(context.getCacheDir(), fileName + ".jpg");
         if (file.exists()) file.delete();
@@ -379,7 +227,6 @@ public class ActivityWriteReview extends AppCompatActivity {
         return file;
     }
 
-    // --- Bitmap → MultipartBody.Part ---
     private MultipartBody.Part createMultipartPart(Bitmap bitmap, String partName, int index) {
         try {
             File file = getTempFileFromBitmap(this, bitmap, "review_image_" + index);
@@ -396,20 +243,13 @@ public class ActivityWriteReview extends AppCompatActivity {
         }
     }
 
-    // --- 리뷰 제출 ---
     private void submitReview() {
         String reviewText = etReview.getText().toString();
         int rating = (int) ratingBar.getRating();
-        int cafeId = getIntent().getIntExtra("cafeId", -1);
 
         UserResponse currentUser = UserSessionManager.getInstance().getCurrentUser();
         if (currentUser == null) {
             Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (cafeId == -1) {
-            Toast.makeText(this, "카페 ID가 유효하지 않습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -437,7 +277,7 @@ public class ActivityWriteReview extends AppCompatActivity {
             public void onResponse(Call<ReviewCreateResponse> call, Response<ReviewCreateResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     ReviewCreateResponse reviewResponse = response.body();
-                    Toast.makeText(ActivityWriteReview.this, "리뷰 등록 성공: " + reviewResponse.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ActivityWriteReview.this, "리뷰 등록 성공!", Toast.LENGTH_LONG).show();
 
                     android.content.Intent intent = new android.content.Intent();
                     intent.putExtra("newReviewId", reviewResponse.getReview().getReviewId());

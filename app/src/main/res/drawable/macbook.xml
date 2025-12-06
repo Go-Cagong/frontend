@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- 화면 배경 -->
+    <path android:fillColor="#E0E0E0" android:pathData="M5,5h14v10h-14z"/>
+
+    <!-- 화면 테두리 -->
+    <path android:fillColor="#C9C9C9" android:pathData="M4,4h16v1h-16z"/>
+    <path android:fillColor="#C9C9C9" android:pathData="M4,5h1v10h-1z"/>
+    <path android:fillColor="#C9C9C9" android:pathData="M19,5h1v10h-1z"/>
+    <path android:fillColor="#C9C9C9" android:pathData="M4,15h16v1h-16z"/>
+
+    <!-- 화면 안 UI (애플 감성 회색 줄) -->
+    <path android:fillColor="#BDBDBD" android:pathData="M7,7h10v1h-10z"/>
+    <path android:fillColor="#BDBDBD" android:pathData="M7,9h8v1h-8z"/>
+    <path android:fillColor="#BDBDBD" android:pathData="M7,11h6v1h-6z"/>
+
+    <!-- 힌지 -->
+    <path android:fillColor="#A8A8A8" android:pathData="M6,16h12v1h-12z"/>
+
+    <!-- 키보드 부분 -->
+    <path android:fillColor="#D6D6D6" android:pathData="M3,17h18v3h-18z"/>
+
+    <!-- 터치패드 -->
+    <path android:fillColor="#C0C0C0" android:pathData="M10,18h4v1h-4z"/>
+
+</vector>

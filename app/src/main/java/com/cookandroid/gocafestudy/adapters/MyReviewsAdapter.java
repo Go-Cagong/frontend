@@ -20,6 +20,7 @@ import com.cookandroid.gocafestudy.models.GET.MyReviewItem;
 import com.cookandroid.gocafestudy.repository.RetrofitClient;
 
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +31,14 @@ public class MyReviewsAdapter extends RecyclerView.Adapter<MyReviewsAdapter.View
     private Context context;
     private List<MyReviewItem> reviews;
     private OnReviewClickListener listener;
+    private static final int[] ANIMAL_PROFILES = {
+            R.drawable.ic_profile_cat,
+            R.drawable.ic_profile_dog,
+            R.drawable.ic_profile_rabbit,
+            R.drawable.ic_profile_panda,
+            R.drawable.ic_profile_bear
+    };
+    private Random random = new Random();
 
     // ⭐ 클릭 리스너 추가
     public interface OnReviewClickListener {
@@ -53,9 +62,21 @@ public class MyReviewsAdapter extends RecyclerView.Adapter<MyReviewsAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MyReviewItem review = reviews.get(position);
 
+        // 랜덤 동물 프로필 사진 배정
+        int randomAnimal = ANIMAL_PROFILES[random.nextInt(ANIMAL_PROFILES.length)];
+        holder.ivProfilePicture.setImageResource(randomAnimal);
+
         holder.tvCafeName.setText(review.getCafeName());
         holder.ratingBar.setRating(review.getRating());
         holder.tvReviewText.setText(review.getContent());
+
+        // 날짜 표시 (createdAt을 "yyyy-MM-dd" 형식으로 자르기)
+        String createdAt = review.getCreatedAt();
+        if (createdAt != null && createdAt.length() >= 10) {
+            holder.tvReviewDate.setText(createdAt.substring(0, 10));
+        } else {
+            holder.tvReviewDate.setText("");
+        }
 
         // 리뷰 이미지
         holder.layoutReviewImages.removeAllViews();
@@ -117,15 +138,18 @@ public class MyReviewsAdapter extends RecyclerView.Adapter<MyReviewsAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCafeName, tvReviewText, btnDelete;
+        ImageView ivProfilePicture;
+        TextView tvCafeName, tvReviewText, tvReviewDate, btnDelete;
         RatingBar ratingBar;
         HorizontalScrollView scrollReviewImages;
         LinearLayout layoutReviewImages;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivProfilePicture = itemView.findViewById(R.id.ivProfilePicture);
             tvCafeName = itemView.findViewById(R.id.tvCafeName);
             tvReviewText = itemView.findViewById(R.id.tvReviewText);
+            tvReviewDate = itemView.findViewById(R.id.tvReviewDate);
             btnDelete = itemView.findViewById(R.id.btnDelete);
             ratingBar = itemView.findViewById(R.id.ratingBar);
             scrollReviewImages = itemView.findViewById(R.id.scrollReviewImages);

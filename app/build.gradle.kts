@@ -10,7 +10,7 @@ android {
         applicationId = "com.cookandroid.gocagong"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
+        versionCode = 100
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -26,6 +26,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 
@@ -37,6 +41,7 @@ dependencies {
     // ✅ Naver Maps SDK
     implementation("com.naver.maps:map-sdk:3.23.0")
     implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:1.3.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")

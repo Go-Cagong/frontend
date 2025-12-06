@@ -67,7 +67,7 @@ public class LoginCallbackActivity extends AppCompatActivity {
                     UserSessionManager.getInstance().login(user);
 
                     // 2. 로그 및 토스트 출력
-                    String message = "로그인 성공: " + user.getName() + " (" + user.getEmail() + ")";
+                    String message = "로그인 성공!";
                     android.util.Log.d(TAG, message);
                     Toast.makeText(LoginCallbackActivity.this, message, Toast.LENGTH_LONG).show();
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 레트로 다크 카드 (로고 컨테이너용) -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow -->
+    <item
+        android:left="0dp"
+        android:top="6dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/retro_shadow" />
+            <corners android:radius="28dp" />
+        </shape>
+    </item>
+
+    <!-- Main dark card with gradient -->
+    <item
+        android:bottom="6dp"
+        android:right="0dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="@color/coffee_caramel"
+                android:endColor="@color/coffee_mocha"
+                android:type="linear" />
+            <stroke
+                android:width="4dp"
+                android:color="@color/coffee_espresso" />
+            <corners android:radius="28dp" />
+        </shape>
+    </item>
+</layer-list>

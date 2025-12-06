@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- 부드러운 노란색 그라데이션 배경 -->
+    <gradient
+        android:angle="135"
+        android:startColor="@color/gradient_yellow_start"
+        android:centerColor="@color/gradient_yellow_mid"
+        android:endColor="@color/gradient_white_end"
+        android:type="linear" />
+</shape>

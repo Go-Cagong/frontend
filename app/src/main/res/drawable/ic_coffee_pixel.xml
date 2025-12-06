@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+
+    <!-- 배경은 투명, 화면에서만 베이지 깔면 됨 -->
+
+    <!-- 바닥 그림자 -->
+    <path android:fillColor="#CFC5BC" android:pathData="M6,25h20v1h-20z" />
+    <path android:fillColor="#BEB3AA" android:pathData="M8,26h16v1h-16z" />
+
+    <!-- 왼쪽 발 -->
+    <path android:fillColor="#F1AE4E" android:pathData="M10,21h2v1h-2z" />
+    <path android:fillColor="#E09736" android:pathData="M9,22h4v1h-4z" />
+
+    <!-- 오른쪽 발 -->
+    <path android:fillColor="#F1AE4E" android:pathData="M17,21h2v1h-2z" />
+    <path android:fillColor="#E09736" android:pathData="M16,22h4v1h-4z" />
+
+    <!-- 몸통 가장 어두운 윤곽 -->
+    <path android:fillColor="#2C2625" android:pathData="M7,11h12v11h-12z" />
+
+    <!-- 몸통 어두운 톤 -->
+    <path android:fillColor="#3A3331" android:pathData="M8,12h10v9h-10z" />
+
+    <!-- 몸통 중간 톤 (배 부분) -->
+    <path android:fillColor="#4A4240" android:pathData="M10,13h7v7h-7z" />
+
+    <!-- 몸통 하이라이트 톤 (가슴) -->
+    <path android:fillColor="#5A514E" android:pathData="M11,14h5v5h-5z" />
+
+    <!-- 꼬리 -->
+    <path android:fillColor="#2C2625" android:pathData="M7,15h2v3h-2z" />
+    <path android:fillColor="#3A3331" android:pathData="M6,16h1v2h-1z" />
+
+    <!-- 머리 -->
+    <path android:fillColor="#3A3331" android:pathData="M12,7h7v5h-7z" />
+
+    <!-- 머리 위 톱니 느낌 -->
+    <path android:fillColor="#3A3331" android:pathData="M13,6h5v1h-5z" />
+
+    <!-- 눈 흰자 -->
+    <path android:fillColor="#FFFFFF" android:pathData="M14,8h3v3h-3z" />
+
+    <!-- 눈 검은자 -->
+    <path android:fillColor="#000000" android:pathData="M15,8h1v1h-1z" />
+    <path android:fillColor="#000000" android:pathData="M16,9h1v1h-1z" />
+
+    <!-- 눈 하이라이트 작은 점 -->
+    <path android:fillColor="#FFFFFF" android:pathData="M15,9h1v1h-1z" />
+
+    <!-- 부리 -->
+    <path android:fillColor="#F2B257" android:pathData="M19,9h2v1h-2z" />
+    <path android:fillColor="#D89333" android:pathData="M19,10h1v1h-1z" />
+
+    <!-- 날개 그림자 -->
+    <path android:fillColor="#2C2625" android:pathData="M9,15h4v5h-4z" />
+    <!-- 날개 몸통 톤 -->
+    <path android:fillColor="#3A3331" android:pathData="M10,16h3v3h-3z" />
+    <!-- 날개 하이라이트 -->
+    <path android:fillColor="#4A4240" android:pathData="M11,17h1v1h-1z" />
+
+    <!-- 컵 몸통 -->
+    <path android:fillColor="#B3443D" android:pathData="M21,13h5v6h-5z" />
+    <!-- 컵 오른쪽 그림자 -->
+    <path android:fillColor="#8E2D27" android:pathData="M26,13h1v6h-1z" />
+    <!-- 컵 윗면 하이라이트 -->
+    <path android:fillColor="#C75B54" android:pathData="M22,13h3v1h-3z" />
+    <!-- 컵 아래 약간 어두운 띠 -->
+    <path android:fillColor="#99332D" android:pathData="M22,18h3v1h-3z" />
+
+    <!-- 스팀 그룹: 이걸 애니메이션으로 움직일 거라 group으로 묶음 -->
+    <group
+        android:name="steamGroup"
+        android:translateX="0"
+        android:translateY="0">
+
+        <path
+            android:fillColor="@color/yellow_500"
+            android:pathData="M23,8h1v1h-1z" />
+        <path
+            android:fillColor="@color/yellow_500"
+            android:pathData="M24,7h1v1h-1z" />
+        <path
+            android:fillColor="@color/yellow_500"
+            android:pathData="M25,8h1v1h-1z" />
+        <path
+            android:fillColor="@color/yellow_500"
+            android:pathData="M24,9h1v1h-1z" />
+    </group>
+
+</vector>

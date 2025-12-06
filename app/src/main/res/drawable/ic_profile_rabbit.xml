@@ -1,0 +1,46 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- 토끼 귀 (왼쪽) -->
+    <path
+        android:fillColor="#E1BEE7"
+        android:pathData="M8,2 L10,2 L10,8 L8,8 Z" />
+
+    <!-- 토끼 귀 (오른쪽) -->
+    <path
+        android:fillColor="#E1BEE7"
+        android:pathData="M14,2 L16,2 L16,8 L14,8 Z" />
+
+    <!-- 토끼 얼굴 -->
+    <path
+        android:fillColor="#F3E5F5"
+        android:pathData="M6,8 L18,8 L18,18 L6,18 Z" />
+
+    <!-- 왼쪽 눈 -->
+    <path
+        android:fillColor="#D81B60"
+        android:pathData="M9,11 L11,11 L11,13 L9,13 Z" />
+
+    <!-- 오른쪽 눈 -->
+    <path
+        android:fillColor="#D81B60"
+        android:pathData="M13,11 L15,11 L15,13 L13,13 Z" />
+
+    <!-- 코 -->
+    <path
+        android:fillColor="#EC407A"
+        android:pathData="M11,14 L13,14 L12,15 Z" />
+
+    <!-- 입 (왼쪽) -->
+    <path
+        android:fillColor="#212121"
+        android:pathData="M10,15 L11,15 L11,16 L10,16 Z" />
+
+    <!-- 입 (오른쪽) -->
+    <path
+        android:fillColor="#212121"
+        android:pathData="M13,15 L14,15 L14,16 L13,16 Z" />
+</vector>

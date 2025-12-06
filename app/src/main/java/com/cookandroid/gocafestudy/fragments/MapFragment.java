@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import com.google.android.material.button.MaterialButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,9 +45,7 @@ import com.cookandroid.gocafestudy.models.GET.CafeDetail;
 import com.cookandroid.gocafestudy.models.GET.CafeMapItem;
 import com.cookandroid.gocafestudy.models.GET.Review;
 import com.cookandroid.gocafestudy.models.POST.BookmarkCreateResponse;
-import com.cookandroid.gocafestudy.repository.MockRepository; // MockRepository는 임시로 남겨두고 필드는 제거
 import com.cookandroid.gocafestudy.views.FilterView;
-import com.cookandroid.gocafestudy.adapters.ReviewAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraUpdate;
@@ -197,7 +196,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             marker.setPosition(new LatLng(cafe.getLatitude(), cafe.getLongitude()));
 
             // 커스텀 마커 아이콘
-            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_cafe_marker));
+            marker.setIcon(OverlayImage.fromResource(R.drawable.coffee));
 
             //  카페 이름 표시
             marker.setCaptionText(cafe.getName());
@@ -228,22 +227,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             boolean visible = true;
 
-            // 분위기 필터
+            // 분위기 필터 (이모지 포함된 키)
             if (appliedFilters.containsKey("분위기")) {
                 String mood = appliedFilters.get("분위기");
                 if (!cafe.getMood().equals(mood)) visible = false;
             }
 
-            // 아메리카노 가격 필터
-            if (appliedFilters.containsKey("아메리카노 가격")) {
-                String priceFilter = appliedFilters.get("아메리카노 가격");
+            // 아메리카노 가격 필터 (이모지 포함된 키)
+            if (appliedFilters.containsKey("가격")) {
+                String priceFilter = appliedFilters.get("가격");
                 int price = cafe.getAmericanoPrice();
                 if (priceFilter.equals("3000원 이하") && price > 3000) visible = false;
                 else if (priceFilter.equals("3000~5000원") && (price < 3000 || price > 5000)) visible = false;
                 else if (priceFilter.equals("5000원 이상") && price < 5000) visible = false;
             }
 
-            // 주차 필터 (isParkingAvailable()은 @SerializedName("hasParking")을 사용해 매핑됨)
+            // 주차 필터 (이모지 포함된 키)
             if (appliedFilters.containsKey("주차")) {
                 String parking = appliedFilters.get("주차");
                 if (parking.equals("가능") && !cafe.isParkingAvailable()) visible = false;
@@ -319,7 +318,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
-    private void loadBookmarkState(Context context, int cafeId, Button btnSave) {
+    private void loadBookmarkState(Context context, int cafeId, MaterialButton btnSave, boolean[] isSaved) {
 
         RetrofitClient.getBookmarkApi(context)
                 .getBookmarkState(cafeId)
@@ -331,12 +330,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         if (response.isSuccessful() && response.body() != null) {
                             boolean saved = response.body().isSaved();
+                            isSaved[0] = saved;
 
-                            // 👉 텍스트만 변경
+                            // 북마크 아이콘으로 상태 표시
                             if (saved) {
-                                btnSave.setText("저장 취소하기");
+                                btnSave.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_bookmark_filled));
+                                btnSave.setIconTint(ContextCompat.getColorStateList(context, R.color.yellow_600));
                             } else {
-                                btnSave.setText("저장하기");
+                                btnSave.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
+                                btnSave.setIconTint(ContextCompat.getColorStateList(context, R.color.gray_500));
                             }
 
                             Log.d("Bookmark", "isSaved = " + saved);
@@ -350,10 +352,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         Log.e("Bookmark", "네트워크 오류", t);
                     }
                 });
-
-
     }
-    private void createBookmark(Context context, int cafeId, Button btnSave) {
+    private void createBookmark(Context context, int cafeId, MaterialButton btnSave, boolean[] isSaved) {
 
         RetrofitClient.getBookmarkApi(context)
                 .createBookmark(cafeId)
@@ -363,21 +363,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     public void onResponse(Call<BookmarkCreateResponse> call,
                                            Response<BookmarkCreateResponse> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            btnSave.setText("저장 취소하기");
+                            isSaved[0] = true;
+                            btnSave.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_bookmark_filled));
+                            btnSave.setIconTint(ContextCompat.getColorStateList(context, R.color.yellow_600));
+                            Toast.makeText(context, "저장되었습니다", Toast.LENGTH_SHORT).show();
                             Log.d("BookmarkPOST", "저장 완료: " + response.body().getMessage());
                         } else {
                             Log.e("BookmarkPOST", "저장 실패: " + response.code());
+                            Toast.makeText(context, "저장 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<BookmarkCreateResponse> call, Throwable t) {
                         Log.e("BookmarkPOST", "네트워크 오류", t);
+                        Toast.makeText(context, "네트워크 오류", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void deleteBookmark(Context context, int cafeId, Button btnSave) {
+    private void deleteBookmark(Context context, int cafeId, MaterialButton btnSave, boolean[] isSaved) {
 
         RetrofitClient.getBookmarkApi(context)
                 .deleteBookmark(cafeId)
@@ -387,16 +392,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     public void onResponse(Call<BookmarkDeleteResponse> call,
                                            Response<BookmarkDeleteResponse> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            btnSave.setText("저장하기");
+                            isSaved[0] = false;
+                            btnSave.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
+                            btnSave.setIconTint(ContextCompat.getColorStateList(context, R.color.gray_500));
+                            Toast.makeText(context, "저장 취소되었습니다", Toast.LENGTH_SHORT).show();
                             Log.d("BookmarkDELETE", "저장 해제됨: " + response.body().getMessage());
                         } else {
                             Log.e("BookmarkDELETE", "해제 실패: " + response.code());
+                            Toast.makeText(context, "취소 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<BookmarkDeleteResponse> call, Throwable t) {
                         Log.e("BookmarkDELETE", "네트워크 오류", t);
+                        Toast.makeText(context, "네트워크 오류", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -537,16 +547,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             dialog.dismiss();
         });
 
-        Button btnSave = v.findViewById(R.id.btn_save);
-        loadBookmarkState(getContext(), cafeId, btnSave);
+        MaterialButton btnSave = v.findViewById(R.id.btn_save);
+
+        // 북마크 상태를 저장할 배열 (람다 내부에서 수정하기 위해)
+        final boolean[] isSaved = {false};
+
+        loadBookmarkState(getContext(), cafeId, btnSave, isSaved);
 
         btnSave.setOnClickListener(view -> {
-            String currentText = btnSave.getText().toString();
-
-            if (currentText.equals("저장하기")) {
-                createBookmark(getContext(), cafeId, btnSave);
+            if (isSaved[0]) {
+                deleteBookmark(getContext(), cafeId, btnSave, isSaved);
             } else {
-                deleteBookmark(getContext(), cafeId, btnSave);
+                createBookmark(getContext(), cafeId, btnSave, isSaved);
             }
         });
 

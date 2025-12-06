@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 트렌디한 커피 톤 mesh 그라디언트 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="135"
+                android:startColor="#FFFCF8"
+                android:centerColor="#F5EFE7"
+                android:endColor="#EDE4D9"
+                android:useLevel="false" />
+        </shape>
+    </item>
+
+    <!-- Warm coffee overlay -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="900dp"
+                android:centerX="0.2"
+                android:centerY="0.15"
+                android:startColor="#18D4A574"
+                android:endColor="#00FFFFFF"
+                android:useLevel="false" />
+        </shape>
+    </item>
+
+    <!-- Mocha accent -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="700dp"
+                android:centerX="0.8"
+                android:centerY="0.85"
+                android:startColor="#12C19A6B"
+                android:endColor="#00FFFFFF"
+                android:useLevel="false" />
+        </shape>
+    </item>
+</layer-list>

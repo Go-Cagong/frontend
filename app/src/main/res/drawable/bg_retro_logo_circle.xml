@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 레트로 로고 원형 배경 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow -->
+    <item
+        android:left="0dp"
+        android:top="5dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/retro_shadow" />
+        </shape>
+    </item>
+
+    <!-- Circle with gradient -->
+    <item
+        android:bottom="5dp"
+        android:right="0dp">
+        <shape android:shape="oval">
+            <gradient
+                android:angle="135"
+                android:startColor="@color/coffee_honey"
+                android:endColor="@color/coffee_caramel_light"
+                android:type="linear" />
+            <stroke
+                android:width="4dp"
+                android:color="@color/coffee_espresso" />
+        </shape>
+    </item>
+</layer-list>
