@@ -84,7 +84,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
-                        android:hint="카페 이름 검색"
+                        android:hint="어떤 카페를 찾으시나요?"
                         android:textColorHint="@color/gray_400"
                         android:textColor="@color/gray_900"
                         android:textSize="15sp"

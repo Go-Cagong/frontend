@@ -409,7 +409,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="☕️ 카페 정보에요"
+                android:text="카페 정보에요 ☕️"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/gray_900"
@@ -427,7 +427,7 @@
         <!-- Divider -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="8dp"
+            android:layout_height="4dp"
             android:background="@color/gray_100" />
 
 
@@ -444,7 +444,7 @@
 
 
 
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="✨ AI가 리뷰를 요약했어요" android:textSize="16sp" android:textStyle="bold" android:textColor="@color/gray_900" android:layout_marginBottom="12dp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AI가 리뷰를 요약했어요 ✨" android:textSize="16sp" android:textStyle="bold" android:textColor="@color/gray_900" android:layout_marginBottom="12dp" />
 
             <TextView
                 android:id="@+id/tv_ai_summary"
@@ -460,7 +460,7 @@
         <!-- Divider -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="8dp"
+            android:layout_height="4dp"
             android:background="@color/gray_100" />
 
         <!-- Reviews Section -->
@@ -485,7 +485,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="👻 이런 리뷰를 남겼어요"
+                    android:text="이런 리뷰를 남겼어요"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/gray_900" />
