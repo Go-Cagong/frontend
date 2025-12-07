@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">고-카공</string>
+    <string name="app_name">GO! 카공</string>
     <!--  Login Screen  -->
     <string name="login_subtitle">카공하기 좋은 카페를 찾아보세요</string>
     <string name="login_google">Google로 계속하기</string>

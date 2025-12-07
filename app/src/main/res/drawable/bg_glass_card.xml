@@ -1,14 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <!-- 반투명 흰색 배경 -->
-    <solid android:color="@color/glass_white" />
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- 둥근 모서리 -->
-    <corners android:radius="24dp" />
+    <!-- 그림자 레이어 -->
+    <item
+        android:left="0dp"
+        android:top="3dp"
+        android:right="0dp"
+        android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#30000000" />
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
 
-    <!-- 밝은 테두리 (유리 효과) -->
-    <stroke
-        android:width="1dp"
-        android:color="@color/glass_border" />
-</shape>
+    <!-- 메인 레이어 -->
+    <item
+        android:left="0dp"
+        android:top="0dp"
+        android:right="0dp"
+        android:bottom="3dp">
+        <shape android:shape="rectangle">
+            <!-- 반투명 흰색 배경 -->
+            <solid android:color="@color/white" />
+            <!-- 둥근 모서리 -->
+            <corners android:radius="24dp" />
+            <!-- 밝은 테두리 (유리 효과) -->
+            <stroke
+                android:width="1dp"
+                android:color="@color/glass_border" />
+        </shape>
+    </item>
+
+</layer-list>

@@ -22,6 +22,9 @@
         app:elevation="8dp"
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
+        app:itemIconSize="28dp"
+        app:itemTextAppearanceActive="@style/BottomNavTextActive"
+        app:itemTextAppearanceInactive="@style/BottomNavTextInactive"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_navigation_menu" />
 

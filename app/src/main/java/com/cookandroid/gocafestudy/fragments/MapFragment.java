@@ -11,9 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import com.google.android.material.button.MaterialButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.text.Editable;
+import android.text.TextWatcher;
 
 import com.cookandroid.gocafestudy.models.GET.BookmarkIsSavedResponse;
 import com.cookandroid.gocafestudy.models.GET.CafeReviewResponse;
@@ -57,6 +60,7 @@ import com.naver.maps.map.util.FusedLocationSource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
@@ -92,6 +96,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // 필터뷰 연결
         FilterView filterView = view.findViewById(R.id.filterView);
 
+        // 검색창 연결
+        EditText searchCafe = view.findViewById(R.id.search_cafe);
+        searchCafe.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchCafeByName(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         // -------------------------
         // 마커 데이터 초기화 (Mock 호출 제거)
         // cafeList = repository.getCafeMap(); // Mock 호출 제거
@@ -119,6 +138,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMapRef = naverMap;
+
+        naverMap.setLocale(new Locale("ko"));
 
         naverMapRef.setLocationSource(locationSource);
         naverMapRef.getUiSettings().setLocationButtonEnabled(true);
@@ -196,10 +217,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             marker.setPosition(new LatLng(cafe.getLatitude(), cafe.getLongitude()));
 
             // 커스텀 마커 아이콘
-            marker.setIcon(OverlayImage.fromResource(R.drawable.coffee));
+            marker.setIcon(OverlayImage.fromResource(R.drawable.marker_5));
 
-            //  카페 이름 표시
-            marker.setCaptionText(cafe.getName());
+            //  카페 이름 표시 (한글만)
+            String cafeName = cafe.getName();
+            marker.setCaptionText(cafeName);
             marker.setCaptionTextSize(14);        // 글자 크기
             marker.setCaptionColor(0xFF000000);   // 글자 색 (검정)
             marker.setCaptionHaloColor(0xFFFFFFFF); // 글자 테두리(가독성 UP)
@@ -219,6 +241,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
 
+
+    /**
+     * 카페 이름으로 검색
+     */
+    private void searchCafeByName(String query) {
+        if (naverMapRef == null) return;
+
+        String searchQuery = query.trim().toLowerCase();
+
+        for (int i = 0; i < cafeList.size(); i++) {
+            CafeMapItem cafe = cafeList.get(i);
+            Marker marker = markerList.get(i);
+
+            boolean visible = searchQuery.isEmpty() ||
+                            cafe.getName().toLowerCase().contains(searchQuery);
+
+            marker.setMap(visible ? naverMapRef : null);
+        }
+    }
 
     private void updateMarkers(Map<String, String> appliedFilters) {
         for (int i = 0; i < cafeList.size(); i++) {

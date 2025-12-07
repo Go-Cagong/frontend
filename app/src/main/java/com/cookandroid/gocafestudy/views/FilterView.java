@@ -111,8 +111,8 @@ public class FilterView extends LinearLayout {
                     textView.setTextColor(context.getColor(R.color.gray_700));
                 }
 
-                textView.setPadding(32, 20, 32, 20);
-                textView.setTextSize(15);
+                textView.setPadding(18, 12, 18, 12);
+                textView.setTextSize(10);
                 textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
                 // 아이템 간격
@@ -120,7 +120,7 @@ public class FilterView extends LinearLayout {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 );
-                params.setMargins(0, 0, 0, 8);
+                params.setMargins(0, 0, 0, 6);
                 textView.setLayoutParams(params);
 
                 return view;
@@ -129,8 +129,11 @@ public class FilterView extends LinearLayout {
 
         listView.setAdapter(adapter);
 
+        // 텍스트 길이에 따라 동적으로 너비 계산
+        int popupWidth = calculatePopupWidth(context, options);
+
         PopupWindow popup = new PopupWindow(listView,
-                (int) (anchor.getWidth() * 1.5),
+                popupWidth,
                 LayoutParams.WRAP_CONTENT,
                 true);
 
@@ -164,6 +167,28 @@ public class FilterView extends LinearLayout {
                 filterChangeListener.onFilterChanged(new HashMap<>(appliedFilters));
             }
         });
+    }
+
+    private int calculatePopupWidth(Context context, List<String> options) {
+        android.graphics.Paint paint = new android.graphics.Paint();
+        paint.setTextSize(12 * context.getResources().getDisplayMetrics().scaledDensity);
+
+        float maxWidth = 0;
+        for (String option : options) {
+            float width = paint.measureText(option);
+            if (width > maxWidth) {
+                maxWidth = width;
+            }
+        }
+
+        // 패딩(24*2) + 여유 공간 추가
+        int calculatedWidth = (int) (maxWidth + 48 + 40);
+
+        // 최소/최대 너비 제한
+        int minWidth = (int) (120 * context.getResources().getDisplayMetrics().density);
+        int maxWidthLimit = (int) (200 * context.getResources().getDisplayMetrics().density);
+
+        return Math.max(minWidth, Math.min(calculatedWidth, maxWidthLimit));
     }
 
     private void updateFilterButtonColors() {

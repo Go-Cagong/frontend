@@ -37,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_camera_gray" />
+                android:src="@drawable/coffee_main2" />
 
             <!-- Sub Images Grid -->
             <GridLayout
@@ -56,7 +56,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_camera_gray" />
+                    android:src="@drawable/coffee_main2" />
 
                 <ImageView
                     android:id="@+id/iv_cafe_sub2"
@@ -65,7 +65,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_camera_gray" />
+                    android:src="@drawable/coffee_main2" />
 
                 <ImageView
                     android:id="@+id/iv_cafe_sub3"
@@ -74,7 +74,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_camera_gray" />
+                    android:src="@drawable/coffee_main2" />
 
                 <ImageView
                     android:id="@+id/iv_cafe_sub4"
@@ -83,7 +83,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_camera_gray" />
+                    android:src="@drawable/coffee_main2" />
             </GridLayout>
         </LinearLayout>
 
@@ -409,7 +409,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="카페 정보에요"
+                android:text="☕️ 카페 정보에요"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/gray_900"
@@ -442,14 +442,9 @@
             android:paddingTop="28dp"
             android:paddingBottom="28dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="AI가 리뷰를 요약했어요"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/gray_900"
-                android:layout_marginBottom="12dp" />
+
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="✨ AI가 리뷰를 요약했어요" android:textSize="16sp" android:textStyle="bold" android:textColor="@color/gray_900" android:layout_marginBottom="12dp" />
 
             <TextView
                 android:id="@+id/tv_ai_summary"
@@ -490,7 +485,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="이런 리뷰를 남겼어요"
+                    android:text="👻 이런 리뷰를 남겼어요"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/gray_900" />
