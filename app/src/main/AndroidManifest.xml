@@ -59,6 +59,9 @@
         </activity>
 
         <activity
+            android:name=".activities.ActivityEtiquette"
+            android:exported="false" />
+        <activity
             android:name=".activities.MainActivity"
             android:exported="false" />
         <activity

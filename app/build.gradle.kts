@@ -37,6 +37,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("com.google.android.material:material:1.13.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
+    implementation("androidx.exifinterface:exifinterface:1.3.7")
 
     // ✅ Naver Maps SDK
     implementation("com.naver.maps:map-sdk:3.23.0")

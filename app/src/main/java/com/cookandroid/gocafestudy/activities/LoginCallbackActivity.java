@@ -71,8 +71,8 @@ public class LoginCallbackActivity extends AppCompatActivity {
                     android.util.Log.d(TAG, message);
                     Toast.makeText(LoginCallbackActivity.this, message, Toast.LENGTH_LONG).show();
 
-                    // 3. 메인으로 이동
-                    Intent intent = new Intent(LoginCallbackActivity.this, MainActivity.class);
+                    // 3. 에티켓 화면으로 이동
+                    Intent intent = new Intent(LoginCallbackActivity.this, ActivityEtiquette.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
 

@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -14,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.exifinterface.media.ExifInterface;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -117,7 +121,7 @@ public class ActivityWriteReview extends AppCompatActivity {
                 uri -> {
                     if (uri != null) {
                         try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                            Bitmap bitmap = getCorrectlyOrientedBitmap(uri);
                             addReviewImage(bitmap);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -225,6 +229,40 @@ public class ActivityWriteReview extends AppCompatActivity {
         fos.close();
         bos.close();
         return file;
+    }
+
+    private Bitmap getCorrectlyOrientedBitmap(Uri uri) throws IOException {
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+        // EXIF orientation 정보 읽기
+        ExifInterface exif = new ExifInterface(getContentResolver().openInputStream(uri));
+        int orientation = exif.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
+        );
+
+        // orientation에 따라 회전 각도 결정
+        int rotation = 0;
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                rotation = 90;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                rotation = 180;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                rotation = 270;
+                break;
+        }
+
+        // 이미지 회전
+        if (rotation != 0) {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(rotation);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        }
+
+        return bitmap;
     }
 
     private MultipartBody.Part createMultipartPart(Bitmap bitmap, String partName, int index) {

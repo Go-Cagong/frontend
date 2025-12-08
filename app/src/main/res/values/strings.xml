@@ -35,6 +35,22 @@
     <string name="concent">콘센트</string>
     <string name="price">가격</string>
 
-
+    <!--  Etiquette Messages  -->
+    <string name="etiquette_title">카공 에티켓</string>
+    <string name="etiquette_tap">화면을 터치하여 계속하기</string>
+    <string-array name="etiquette_messages">
+        <item>조용한 목소리로\n대화해주세요</item>
+        <item>자리를 비울 땐\n짐을 챙겨주세요</item>
+        <item>긴 시간 공부할수록\n음료는 한잔 더!</item>
+        <item>테이블은 깨끗하게\n정리해주세요</item>
+        <item>콘센트는\n본인의 자리것만</item>
+    </string-array>
+    <string-array name="etiquette_icons">
+        <item>🤫</item>
+        <item>🎒</item>
+        <item>⏰</item>
+        <item>✨</item>
+        <item>⚡️</item>
+    </string-array>
 
 </resources>
